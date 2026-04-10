@@ -2,26 +2,25 @@
     flex-grow: 1;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 0, 0, 0.2); /* Semi-transparent red for confirmation */
+    background-color: rgba(0, 0, 0, 0); /* Completely transparent */
 }
 
 .hud-panel {
-    background-color: #000000;
-    border-width: 4px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-width: 2px;
     border-color: #ffffff;
-    border-radius: 20px;
-    padding: 20px;
+    border-radius: 10px;
+    padding: 10px;
     flex-direction: row;
     justify-content: space-around;
     align-self: center;
-    width: 90%;
-    margin-top: 50px; /* More margin from top */
-    min-height: 150px; /* Taller panel */
+    width: 95%;
+    margin-top: 20px;
 }
 
 .count-item {
     align-items: center;
-    min-width: 120px;
+    min-width: 80px;
 }
 
 Label {
@@ -30,19 +29,18 @@ Label {
 }
 
 .count-label {
-    font-size: 24px;
+    font-size: 14px;
 }
 
 .count-value {
-    font-size: 48px;
-    margin-top: 10px;
+    font-size: 28px;
+    margin-top: 4px;
 }
 
-/* Indicators */
-.sword { border-bottom-width: 10px; border-bottom-color: #ff0000; }
-.shield { border-bottom-width: 10px; border-bottom-color: #0000ff; }
-.magic { border-bottom-width: 10px; border-bottom-color: #a000ff; }
-.heal { border-bottom-width: 10px; border-bottom-color: #00ff00; }
-.gem { border-bottom-width: 10px; border-bottom-color: #00ffff; }
-.key { border-bottom-width: 10px; border-bottom-color: #ffff00; }
-.ska { border-bottom-width: 10px; border-bottom-color: #808080; }
+.sword { border-bottom-width: 5px; border-bottom-color: #ff0000; }
+.shield { border-bottom-width: 5px; border-bottom-color: #0000ff; }
+.magic { border-bottom-width: 5px; border-bottom-color: #a000ff; }
+.heal { border-bottom-width: 5px; border-bottom-color: #00ff00; }
+.gem { border-bottom-width: 5px; border-bottom-color: #00ffff; }
+.key { border-bottom-width: 5px; border-bottom-color: #ffff00; }
+.ska { border-bottom-width: 5px; border-bottom-color: #808080; }
