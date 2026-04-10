@@ -149,6 +149,12 @@
       "conversation_id": "230833d9-7bef-4d22-91cf-05adacd2f430",
       "content": "さらなるルールの調整として、**マッチしたブロックの上下左右に隣接している「スカ」ブロックも同時に消滅する**ように実装しました。\n\n### 変更内容\n1.  **隣接スカブロックの探索**: マッチおよびその同色クラスターとして抽出された各ブロックについて、上下左右の 4 方向をチェックします。\n2.  **誘爆処理**: 隣接するブロックが `BlockType.Ska`（グレイのスカブロック）である場合、そのスカブロックも消滅対象リスト（`finalMatchedSet`）に追加します。\n3.  **カウント更新**: 消滅したスカブロックも `matchCounts` に加算（UI 上の `EmptyCount` に反映）されるようにしています。\n\nこれにより、パズルを解く際、周囲の「スカ」ブロックを巻き込んで一掃することが可能になりました。\n\n### 修正されたファイル\n*   `Assets/Scripts/GridManager.cs`\n\nコンパイルは正常に完了しています。動作をご確認ください。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "796f8089-0220-453c-a32b-d052908a60bc",
+      "conversation_id": "230833d9-7bef-4d22-91cf-05adacd2f430",
+      "content": "ブロックの出現率に重み（偏り）を持たせ、Inspector 上で調整できるように変更しました。\n\n### 変更点\n1.  **重み付きランダムの実装**:\n    *   `GetWeightedRandomType()` メソッドを追加し、設定された重みに基づいてブロックの種類を抽選するようにしました。\n2.  **Inspector への露出**:\n    *   `GridManager` コンポーネントに `Type Weights` という配列（長さ 6）を追加しました。\n    *   インデックス 0〜5 がそれぞれ **Sword, Shield, Magic, Heal, Gem, Key** に対応しています。\n3.  **初期値の設定**:\n    *   ご要望に合わせて、以下のデフォルト値を設定しました：\n        *   **Sword, Shield**: 1.0（多い）\n        *   **Magic, Heal**: 0.5（普通）\n        *   **Gem, Key**: 0.2（少ない）\n    *   これにより、Sword や Shield が Gem や Key よりも約 5 倍出現しやすくなっています。\n4.  **適用箇所**:\n    *   ゲーム開始時の盤面生成（`InitializeGrid`）およびブロック補充時（`DecideNewBlockType`）の両方でこの重みが適用されます。\n\n### 修正されたファイル\n*   `Assets/Scripts/GridManager.cs`\n\nUnity Editor の Inspector で `GridManager` を選択すると、`Generation Settings` セクションから各ブロックの出現頻度をリアルタイムに微調整いただけます。コンパイルエラーもございません。",
+      "snapshot_message_type": 1
     }
   ]
 }

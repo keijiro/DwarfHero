@@ -27,6 +27,10 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Sprite whiteSprite;
     [SerializeField] private UIDocument uiDocument;
 
+    [Header("Generation Settings")]
+    [Tooltip("Weights for Sword, Shield, Magic, Heal, Gem, Key (Ska is handled separately)")]
+    [SerializeField] private float[] typeWeights = new float[6] { 1.0f, 1.0f, 0.5f, 0.5f, 0.2f, 0.2f };
+
     private BlockType[,] grid = new BlockType[GridWidth, GridHeight];
     private SpriteRenderer[,] renderers = new SpriteRenderer[GridWidth, GridHeight];
     private int[] matchCounts = new int[7];
@@ -67,7 +71,7 @@ public class GridManager : MonoBehaviour
                 BlockType type;
                 do
                 {
-                    type = (BlockType)Random.Range(0, 6);
+                    type = GetWeightedRandomType();
                 } while (WouldMatch(x, y, type));
                 
                 grid[x, y] = type;
@@ -76,8 +80,25 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    private bool WouldMatch(int x, int y, BlockType type)
+    private BlockType GetWeightedRandomType()
     {
+        float totalWeight = 0;
+        foreach (float w in typeWeights) totalWeight += w;
+
+        float r = Random.value * totalWeight;
+        float currentWeight = 0;
+
+        for (int i = 0; i < typeWeights.Length; i++)
+        {
+            currentWeight += typeWeights[i];
+            if (r <= currentWeight) return (BlockType)i;
+        }
+
+        return BlockType.Sword;
+    }
+
+    private bool WouldMatch(int x, int y, BlockType type)
+{
         if (x >= 2 && grid[x - 1, y] == type && grid[x - 2, y] == type) return true;
         if (y >= 2 && grid[x, y - 1] == type && grid[x, y - 2] == type) return true;
         return false;
@@ -233,12 +254,12 @@ public class GridManager : MonoBehaviour
         {
             // 手動破壊時の補充は「スカ」の発生率を高くする (例: 50%)
             if (Random.value < 0.5f) return BlockType.Ska;
-            return (BlockType)Random.Range(0, 6);
+            return GetWeightedRandomType();
         }
         else
         {
             // マッチ時の補充では効果のあるブロックだけが登場する
-            return (BlockType)Random.Range(0, 6);
+            return GetWeightedRandomType();
         }
     }
 
