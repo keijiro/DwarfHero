@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridManager
   whiteSprite: {fileID: 21300000, guid: d644ea2722d84406b80cf41f4902960d, type: 3}
-  uiDocument: {fileID: 0}
+  uiDocument: {fileID: 1879991500}
 --- !u!4 &1352790799
 Transform:
   m_ObjectHideFlags: 0

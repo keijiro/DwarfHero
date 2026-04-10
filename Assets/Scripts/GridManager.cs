@@ -275,15 +275,26 @@ public class GridManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        if (uiDocument == null) return;
+        if (uiDocument == null) uiDocument = FindFirstObjectByType<UIDocument>();
+        if (uiDocument == null || uiDocument.rootVisualElement == null) return;
+
         var root = uiDocument.rootVisualElement;
         
-        root.Q<Label>("SwordCount").text = matchCounts[0].ToString();
-        root.Q<Label>("ShieldCount").text = matchCounts[1].ToString();
-        root.Q<Label>("MagicCount").text = matchCounts[2].ToString();
-        root.Q<Label>("HealCount").text = matchCounts[3].ToString();
-        root.Q<Label>("GemCount").text = matchCounts[4].ToString();
-        root.Q<Label>("KeyCount").text = matchCounts[5].ToString();
-        root.Q<Label>("EmptyCount").text = matchCounts[6].ToString();
+        UpdateLabel(root, "SwordCount", matchCounts[0]);
+        UpdateLabel(root, "ShieldCount", matchCounts[1]);
+        UpdateLabel(root, "MagicCount", matchCounts[2]);
+        UpdateLabel(root, "HealCount", matchCounts[3]);
+        UpdateLabel(root, "GemCount", matchCounts[4]);
+        UpdateLabel(root, "KeyCount", matchCounts[5]);
+        UpdateLabel(root, "EmptyCount", matchCounts[6]);
     }
-}
+
+    private void UpdateLabel(VisualElement root, string name, int value)
+    {
+        var label = root.Q<Label>(name);
+        if (label != null)
+        {
+            label.text = value.ToString();
+        }
+    }
+    }
