@@ -293,13 +293,16 @@ public class GridManager : MonoBehaviour
                 foreach (var c in cluster) finalMatchedSet.Add(c);
             }
 
-            HashSet<(int, int)> skaToDestroy = new HashSet<(int, int)>();
+            HashSet<(int, int)> alreadyDestroyedSka = new HashSet<(int, int)>();
             int[] dx = { 1, -1, 0, 0 };
             int[] dy = { 0, 0, 1, -1 };
 
             foreach (var pos in finalMatchedSet)
             {
-                // マッチしたブロックの周囲4方向をチェック
+                BlockType triggerType = grid[pos.Item1, pos.Item2];
+                matchCounts[(int)triggerType]++; // マッチしたブロック自身のポイント
+
+                // 周囲のスカブロックを誘爆
                 for (int i = 0; i < 4; i++)
                 {
                     int nx = pos.Item1 + dx[i];
@@ -307,32 +310,27 @@ public class GridManager : MonoBehaviour
 
                     if (nx >= 0 && nx < GridWidth && ny >= 0 && ny < GridHeight)
                     {
-                        if (grid[nx, ny] == BlockType.Ska)
+                        if (grid[nx, ny] == BlockType.Ska && !alreadyDestroyedSka.Contains((nx, ny)))
                         {
-                            skaToDestroy.Add((nx, ny));
+                            // 誘爆元となったブロック種別のポイントに加算
+                            matchCounts[(int)triggerType]++;
+                            alreadyDestroyedSka.Add((nx, ny));
                         }
                     }
                 }
             }
 
-            // スカブロックも破壊リストに加える（カウントは更新する）
-            foreach (var pos in skaToDestroy)
-            {
-                finalMatchedSet.Add(pos);
-            }
+            // 論理・物理的な破壊の実行
+            foreach (var pos in finalMatchedSet) DestroyBlock(pos.Item1, pos.Item2);
+            foreach (var pos in alreadyDestroyedSka) DestroyBlock(pos.Item1, pos.Item2);
 
-            foreach (var pos in finalMatchedSet)
-            {
-                matchCounts[(int)grid[pos.Item1, pos.Item2]]++;
-                DestroyBlock(pos.Item1, pos.Item2);
-            }
             return true;
-}
+        }
         return false;
-    }
+        }
 
-    private void FindCluster(int x, int y, BlockType type, List<(int, int)> cluster, HashSet<(int, int)> visited)
-    {
+        private void FindCluster(int x, int y, BlockType type, List<(int, int)> cluster, HashSet<(int, int)> visited)
+        {
         if (x < 0 || x >= GridWidth || y < 0 || y >= GridHeight) return;
         if (visited.Contains((x, y)) || grid[x, y] != type) return;
 
@@ -344,26 +342,22 @@ public class GridManager : MonoBehaviour
         FindCluster(x - 1, y, type, cluster, visited);
         FindCluster(x, y + 1, type, cluster, visited);
         FindCluster(x, y - 1, type, cluster, visited);
-    }
+        }
 
-    private void UpdateUI()
-    {
+        private void UpdateUI()
+        {
         if (uiDocument == null) uiDocument = FindFirstObjectByType<UIDocument>();
         if (uiDocument == null || uiDocument.rootVisualElement == null) return;
 
         var root = uiDocument.rootVisualElement;
         
-        int found = 0;
-        if (UpdateLabel(root, "SwordCount", matchCounts[0])) found++;
-        if (UpdateLabel(root, "ShieldCount", matchCounts[1])) found++;
-        if (UpdateLabel(root, "MagicCount", matchCounts[2])) found++;
-        if (UpdateLabel(root, "HealCount", matchCounts[3])) found++;
-        if (UpdateLabel(root, "GemCount", matchCounts[4])) found++;
-        if (UpdateLabel(root, "KeyCount", matchCounts[5])) found++;
-        if (UpdateLabel(root, "EmptyCount", matchCounts[6])) found++;
-        
-        //Debug.Log($"UpdateUI found {found} labels out of 7.");
-    }
+        UpdateLabel(root, "SwordCount", matchCounts[0]);
+        UpdateLabel(root, "ShieldCount", matchCounts[1]);
+        UpdateLabel(root, "MagicCount", matchCounts[2]);
+        UpdateLabel(root, "HealCount", matchCounts[3]);
+        UpdateLabel(root, "GemCount", matchCounts[4]);
+        UpdateLabel(root, "KeyCount", matchCounts[5]);
+        }
 
     private bool UpdateLabel(VisualElement root, string name, int value)
     {

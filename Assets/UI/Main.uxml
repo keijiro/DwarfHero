@@ -26,10 +26,6 @@
                 <ui:Label text="KEY" class="count-label" />
                 <ui:Label name="KeyCount" text="0" class="count-value" />
             </ui:VisualElement>
-            <ui:VisualElement class="count-item ska">
-                <ui:Label text="SKA" class="count-label" />
-                <ui:Label name="EmptyCount" text="0" class="count-value" />
             </ui:VisualElement>
-        </ui:VisualElement>
-    </ui:VisualElement>
-</ui:UXML>
+            </ui:VisualElement>
+            </ui:UXML>
