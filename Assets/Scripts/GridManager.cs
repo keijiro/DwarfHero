@@ -244,9 +244,9 @@ public class GridManager : MonoBehaviour
 
     private bool CheckAndApplyMatches()
     {
-        HashSet<(int, int)> matchedSet = new HashSet<(int, int)>();
+        HashSet<(int, int)> triggerSet = new HashSet<(int, int)>();
 
-        // 横
+        // 横のマッチ判定（トリガーとなる3列以上の並びを探す）
         for (int y = 0; y < GridHeight; y++)
         {
             for (int x = 0; x < GridWidth - 2; x++)
@@ -255,14 +255,14 @@ public class GridManager : MonoBehaviour
                 if ((int)type == -1 || type == BlockType.Ska) continue;
                 if (grid[x + 1, y] == type && grid[x + 2, y] == type)
                 {
-                    matchedSet.Add((x, y));
-                    matchedSet.Add((x + 1, y));
-                    matchedSet.Add((x + 2, y));
+                    triggerSet.Add((x, y));
+                    triggerSet.Add((x + 1, y));
+                    triggerSet.Add((x + 2, y));
                 }
             }
         }
 
-        // 縦
+        // 縦のマッチ判定
         for (int x = 0; x < GridWidth; x++)
         {
             for (int y = 0; y < GridHeight - 2; y++)
@@ -271,16 +271,29 @@ public class GridManager : MonoBehaviour
                 if ((int)type == -1 || type == BlockType.Ska) continue;
                 if (grid[x, y + 1] == type && grid[x, y + 2] == type)
                 {
-                    matchedSet.Add((x, y));
-                    matchedSet.Add((x, y + 1));
-                    matchedSet.Add((x, y + 2));
+                    triggerSet.Add((x, y));
+                    triggerSet.Add((x, y + 1));
+                    triggerSet.Add((x, y + 2));
                 }
             }
         }
 
-        if (matchedSet.Count > 0)
+        if (triggerSet.Count > 0)
         {
-            foreach (var pos in matchedSet)
+            HashSet<(int, int)> finalMatchedSet = new HashSet<(int, int)>();
+            HashSet<(int, int)> visited = new HashSet<(int, int)>();
+
+            foreach (var pos in triggerSet)
+            {
+                if (visited.Contains(pos)) continue;
+
+                // このブロックを含む、同色の隣接した全ブロックを抽出
+                List<(int, int)> cluster = new List<(int, int)>();
+                FindCluster(pos.Item1, pos.Item2, grid[pos.Item1, pos.Item2], cluster, visited);
+                foreach (var c in cluster) finalMatchedSet.Add(c);
+            }
+
+            foreach (var pos in finalMatchedSet)
             {
                 matchCounts[(int)grid[pos.Item1, pos.Item2]]++;
                 DestroyBlock(pos.Item1, pos.Item2);
@@ -288,6 +301,21 @@ public class GridManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    private void FindCluster(int x, int y, BlockType type, List<(int, int)> cluster, HashSet<(int, int)> visited)
+    {
+        if (x < 0 || x >= GridWidth || y < 0 || y >= GridHeight) return;
+        if (visited.Contains((x, y)) || grid[x, y] != type) return;
+
+        visited.Add((x, y));
+        cluster.Add((x, y));
+
+        // 4方向を再帰的に探索
+        FindCluster(x + 1, y, type, cluster, visited);
+        FindCluster(x - 1, y, type, cluster, visited);
+        FindCluster(x, y + 1, type, cluster, visited);
+        FindCluster(x, y - 1, type, cluster, visited);
     }
 
     private void UpdateUI()
