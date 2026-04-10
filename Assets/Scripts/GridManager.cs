@@ -33,6 +33,11 @@ public class GridManager : MonoBehaviour
 
     private bool isProcessing = false;
 
+    private void Awake()
+    {
+        Debug.Log("GridManager.Awake() called.");
+    }
+
     private void Start()
     {
         Debug.Log("GridManager.Start() called.");
@@ -41,11 +46,20 @@ public class GridManager : MonoBehaviour
         
         InitializeGrid();
         UpdateUI();
-        Debug.Log($"Grid initialized. Blocks created.");
+        
+        int count = 0;
+        foreach (var r in renderers) if (r != null) count++;
+        Debug.Log($"Grid initialized. {count} blocks created as children of {name}.");
     }
 
     private void InitializeGrid()
     {
+        // Clear existing children first to avoid duplicates
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(transform.GetChild(i).gameObject);
+        }
+
         for (int x = 0; x < GridWidth; x++)
         {
             for (int y = 0; y < GridHeight; y++)

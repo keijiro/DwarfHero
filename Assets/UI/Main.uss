@@ -2,39 +2,47 @@
     flex-grow: 1;
     width: 100%;
     height: 100%;
+    background-color: rgba(255, 0, 0, 0.2); /* Semi-transparent red for confirmation */
 }
 
 .hud-panel {
-    background-color: #ffff00; /* Yellow */
+    background-color: #000000;
     border-width: 4px;
-    border-color: #000000;
-    border-radius: 10px;
-    padding: 10px;
+    border-color: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
     flex-direction: row;
     justify-content: space-around;
     align-self: center;
-    width: 95%;
-    margin-top: 10px;
+    width: 90%;
+    margin-top: 50px; /* More margin from top */
+    min-height: 150px; /* Taller panel */
+}
+
+.count-item {
+    align-items: center;
+    min-width: 120px;
 }
 
 Label {
-    color: #ff0000; /* Red */
-    font-size: 20px;
+    color: #ffffff;
     -unity-font-style: bold;
 }
 
 .count-label {
-    font-size: 14px;
+    font-size: 24px;
 }
 
 .count-value {
-    font-size: 32px;
+    font-size: 48px;
+    margin-top: 10px;
 }
 
-.sword { border-bottom-width: 6px; border-bottom-color: #ff0000; }
-.shield { border-bottom-width: 6px; border-bottom-color: #0000ff; }
-.magic { border-bottom-width: 6px; border-bottom-color: #a000ff; }
-.heal { border-bottom-width: 6px; border-bottom-color: #00ff00; }
-.gem { border-bottom-width: 6px; border-bottom-color: #00ffff; }
-.key { border-bottom-width: 6px; border-bottom-color: #ffff00; }
-.ska { border-bottom-width: 6px; border-bottom-color: #808080; }
+/* Indicators */
+.sword { border-bottom-width: 10px; border-bottom-color: #ff0000; }
+.shield { border-bottom-width: 10px; border-bottom-color: #0000ff; }
+.magic { border-bottom-width: 10px; border-bottom-color: #a000ff; }
+.heal { border-bottom-width: 10px; border-bottom-color: #00ff00; }
+.gem { border-bottom-width: 10px; border-bottom-color: #00ffff; }
+.key { border-bottom-width: 10px; border-bottom-color: #ffff00; }
+.ska { border-bottom-width: 10px; border-bottom-color: #808080; }
