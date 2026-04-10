@@ -167,6 +167,12 @@
       "conversation_id": "230833d9-7bef-4d22-91cf-05adacd2f430",
       "content": "「手動補充」について発生率を inspector 上で調整できるようにして下さい。なお、デフォルト値は 100% として下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "235e23da-9c70-446c-b711-f26daedfbc9d",
+      "conversation_id": "230833d9-7bef-4d22-91cf-05adacd2f430",
+      "content": "手動補充時の「スカ」ブロックの発生率を Inspector から調整できるようにし、デフォルト値を 100% に設定しました。\n\n### 変更点\n1.  **Inspector 設定の追加**:\n    *   `GridManager` コンポーネントに `Manual Ska Rate` という項目を追加しました。\n    *   `[Range(0f, 1f)]` 属性により、スライダーで 0%（0.0）から 100%（1.0）まで調整可能です。\n2.  **デフォルト値の設定**:\n    *   初期値を `1.0f`（100%）に設定しました。これにより、初期状態では手動でブロックを壊すと必ず「スカ」が降ってくるようになります。\n3.  **ロジックの更新**:\n    *   `DecideNewBlockType` 内のハードコードされていた 50% の判定を、この `manualSkaRate` 変数を参照するように書き換えました。\n\n### 修正されたファイル\n*   `Assets/Scripts/GridManager.cs`\n\nこれで、「手動で壊すと必ずスカが降ってくるが、連鎖を組めば有用なブロックが降ってくる」という、よりメリハリのあるゲームバランスに調整しやすくなりました。Inspector から自由に数値を変更してテストしてみてください。",
+      "snapshot_message_type": 1
     }
   ]
 }

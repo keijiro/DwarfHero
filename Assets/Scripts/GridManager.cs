@@ -30,6 +30,8 @@ public class GridManager : MonoBehaviour
     [Header("Generation Settings")]
     [Tooltip("Weights for Sword, Shield, Magic, Heal, Gem, Key (Ska is handled separately)")]
     [SerializeField] private float[] typeWeights = new float[6] { 1.0f, 1.0f, 0.5f, 0.5f, 0.2f, 0.2f };
+    [Range(0f, 1f)]
+    [SerializeField] private float manualSkaRate = 1.0f; // Default 100%
 
     private BlockType[,] grid = new BlockType[GridWidth, GridHeight];
     private SpriteRenderer[,] renderers = new SpriteRenderer[GridWidth, GridHeight];
@@ -252,8 +254,8 @@ public class GridManager : MonoBehaviour
     {
         if (isManualRefill)
         {
-            // 手動破壊時の補充は「スカ」の発生率を高くする (例: 50%)
-            if (Random.value < 0.5f) return BlockType.Ska;
+            // 手動破壊時の補充は「スカ」の発生率を調整可能にする
+            if (Random.value < manualSkaRate) return BlockType.Ska;
             return GetWeightedRandomType();
         }
         else
