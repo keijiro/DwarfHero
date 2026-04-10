@@ -293,13 +293,41 @@ public class GridManager : MonoBehaviour
                 foreach (var c in cluster) finalMatchedSet.Add(c);
             }
 
+            HashSet<(int, int)> skaToDestroy = new HashSet<(int, int)>();
+            int[] dx = { 1, -1, 0, 0 };
+            int[] dy = { 0, 0, 1, -1 };
+
+            foreach (var pos in finalMatchedSet)
+            {
+                // マッチしたブロックの周囲4方向をチェック
+                for (int i = 0; i < 4; i++)
+                {
+                    int nx = pos.Item1 + dx[i];
+                    int ny = pos.Item2 + dy[i];
+
+                    if (nx >= 0 && nx < GridWidth && ny >= 0 && ny < GridHeight)
+                    {
+                        if (grid[nx, ny] == BlockType.Ska)
+                        {
+                            skaToDestroy.Add((nx, ny));
+                        }
+                    }
+                }
+            }
+
+            // スカブロックも破壊リストに加える（カウントは更新する）
+            foreach (var pos in skaToDestroy)
+            {
+                finalMatchedSet.Add(pos);
+            }
+
             foreach (var pos in finalMatchedSet)
             {
                 matchCounts[(int)grid[pos.Item1, pos.Item2]]++;
                 DestroyBlock(pos.Item1, pos.Item2);
             }
             return true;
-        }
+}
         return false;
     }
 
