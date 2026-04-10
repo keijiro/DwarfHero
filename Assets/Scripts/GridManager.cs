@@ -96,8 +96,8 @@ public class GridManager : MonoBehaviour
             BlockType.Shield => Color.blue,
             BlockType.Magic => new Color(0.6f, 0f, 0.8f), // Purple
             BlockType.Heal => Color.green,
-            BlockType.Gem => Color.yellow,
-            BlockType.Key => Color.white,
+            BlockType.Gem => Color.cyan,   // Light Blue (Updated)
+            BlockType.Key => Color.yellow, // Yellow (Updated)
             BlockType.Ska => Color.gray,
             _ => Color.white
         };

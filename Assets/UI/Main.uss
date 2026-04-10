@@ -44,6 +44,6 @@
 .shield { border-bottom-width: 3px; border-bottom-color: blue; }
 .magic { border-bottom-width: 3px; border-bottom-color: purple; }
 .heal { border-bottom-width: 3px; border-bottom-color: green; }
-.gem { border-bottom-width: 3px; border-bottom-color: yellow; }
-.key { border-bottom-width: 3px; border-bottom-color: white; }
+.gem { border-bottom-width: 3px; border-bottom-color: cyan; }
+.key { border-bottom-width: 3px; border-bottom-color: yellow; }
 .ska { border-bottom-width: 3px; border-bottom-color: gray; }
