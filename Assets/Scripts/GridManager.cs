@@ -117,8 +117,9 @@ public class GridManager : MonoBehaviour
         // Base Layer
         var baseRenderer = root.AddComponent<SpriteRenderer>();
         baseRenderer.sprite = blockBaseSprite;
+        baseRenderer.color = GetColor(type);
         baseRenderer.sortingOrder = 0;
-        
+
         // Icon Layer
         GameObject iconObj = new GameObject("Icon");
         iconObj.transform.parent = root.transform;
