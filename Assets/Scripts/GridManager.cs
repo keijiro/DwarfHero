@@ -24,11 +24,12 @@ public class GridManager : MonoBehaviour
     private const float BlockSpacing = 1.1f;
 
     [Header("Assets")]
-    [SerializeField] private Sprite whiteSprite;
+    [SerializeField] private Sprite blockBaseSprite;
+    [SerializeField] private Sprite[] iconSprites = new Sprite[7];
     [SerializeField] private UIDocument uiDocument;
 
     [Header("Generation Settings")]
-    [Tooltip("Weights for Sword, Shield, Magic, Heal, Gem, Key (Ska is handled separately)")]
+[Tooltip("Weights for Sword, Shield, Magic, Heal, Gem, Key (Ska is handled separately)")]
     [SerializeField] private float[] typeWeights = new float[6] { 1.0f, 1.0f, 0.5f, 0.5f, 0.2f, 0.2f };
     [Range(0f, 1f)]
     [SerializeField] private float manualSkaRate = 1.0f; // Default 100%
@@ -48,11 +49,11 @@ public class GridManager : MonoBehaviour
     {
         Debug.Log("GridManager.Start() called.");
         if (uiDocument == null) uiDocument = FindFirstObjectByType<UIDocument>();
-        if (whiteSprite == null) Debug.LogError("whiteSprite is NULL in GridManager!");
+        if (blockBaseSprite == null) Debug.LogWarning("blockBaseSprite is NULL in GridManager!");
         
         InitializeGrid();
         UpdateUI();
-        
+
         int count = 0;
         foreach (var r in renderers) if (r != null) count++;
         Debug.Log($"Grid initialized. {count} blocks created as children of {name}.");
@@ -108,19 +109,32 @@ public class GridManager : MonoBehaviour
 
     private SpriteRenderer CreateBlockObject(int x, int y, BlockType type)
     {
-        GameObject obj = new GameObject($"Block_{x}_{y}");
-        obj.transform.parent = this.transform;
-        obj.transform.position = GetWorldPosition(x, y);
+        GameObject root = new GameObject($"Block_{x}_{y}");
+        root.transform.parent = this.transform;
+        root.transform.position = GetWorldPosition(x, y);
         
-        var renderer = obj.AddComponent<SpriteRenderer>();
-        renderer.sprite = whiteSprite;
-        renderer.color = GetColor(type);
+        // Base Layer
+        var baseRenderer = root.AddComponent<SpriteRenderer>();
+        baseRenderer.sprite = blockBaseSprite;
+        baseRenderer.sortingOrder = 0;
         
-        // Add a collider for click detection
-        var col = obj.AddComponent<BoxCollider2D>();
+        // Icon Layer
+        GameObject iconObj = new GameObject("Icon");
+        iconObj.transform.parent = root.transform;
+        iconObj.transform.localPosition = Vector3.zero;
+
+        var iconRenderer = iconObj.AddComponent<SpriteRenderer>();
+        if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] != null)
+        {
+            iconRenderer.sprite = iconSprites[(int)type];
+        }
+        iconRenderer.sortingOrder = 1;
+        
+        // Add a collider for click detection to the root
+        var col = root.AddComponent<BoxCollider2D>();
         col.size = Vector2.one;
 
-        return renderer;
+        return baseRenderer;
     }
 
     private Vector3 GetWorldPosition(int x, int y)
