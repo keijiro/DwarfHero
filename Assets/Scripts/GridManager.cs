@@ -35,9 +35,13 @@ public class GridManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("GridManager.Start() called.");
         if (uiDocument == null) uiDocument = FindFirstObjectByType<UIDocument>();
+        if (whiteSprite == null) Debug.LogError("whiteSprite is NULL in GridManager!");
+        
         InitializeGrid();
         UpdateUI();
+        Debug.Log($"Grid initialized. Blocks created.");
     }
 
     private void InitializeGrid()
@@ -49,7 +53,6 @@ public class GridManager : MonoBehaviour
                 BlockType type;
                 do
                 {
-                    // 初期配置では「スカ」を除き、マッチが発生しないようにする
                     type = (BlockType)Random.Range(0, 6);
                 } while (WouldMatch(x, y, type));
                 
@@ -280,21 +283,26 @@ public class GridManager : MonoBehaviour
 
         var root = uiDocument.rootVisualElement;
         
-        UpdateLabel(root, "SwordCount", matchCounts[0]);
-        UpdateLabel(root, "ShieldCount", matchCounts[1]);
-        UpdateLabel(root, "MagicCount", matchCounts[2]);
-        UpdateLabel(root, "HealCount", matchCounts[3]);
-        UpdateLabel(root, "GemCount", matchCounts[4]);
-        UpdateLabel(root, "KeyCount", matchCounts[5]);
-        UpdateLabel(root, "EmptyCount", matchCounts[6]);
+        int found = 0;
+        if (UpdateLabel(root, "SwordCount", matchCounts[0])) found++;
+        if (UpdateLabel(root, "ShieldCount", matchCounts[1])) found++;
+        if (UpdateLabel(root, "MagicCount", matchCounts[2])) found++;
+        if (UpdateLabel(root, "HealCount", matchCounts[3])) found++;
+        if (UpdateLabel(root, "GemCount", matchCounts[4])) found++;
+        if (UpdateLabel(root, "KeyCount", matchCounts[5])) found++;
+        if (UpdateLabel(root, "EmptyCount", matchCounts[6])) found++;
+        
+        //Debug.Log($"UpdateUI found {found} labels out of 7.");
     }
 
-    private void UpdateLabel(VisualElement root, string name, int value)
+    private bool UpdateLabel(VisualElement root, string name, int value)
     {
         var label = root.Q<Label>(name);
         if (label != null)
         {
             label.text = value.ToString();
+            return true;
         }
+        return false;
     }
     }

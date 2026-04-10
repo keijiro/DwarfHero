@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &1352790797
+--- !u!1 &1147836620
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,8 +127,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1352790799}
-  - component: {fileID: 1352790798}
+  - component: {fileID: 1147836622}
+  - component: {fileID: 1147836621}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -136,13 +136,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1352790798
+--- !u!114 &1147836621
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1352790797}
+  m_GameObject: {fileID: 1147836620}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9db4297473044a73acd1b0f03fd51ab, type: 3}
@@ -150,13 +150,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GridManager
   whiteSprite: {fileID: 21300000, guid: d644ea2722d84406b80cf41f4902960d, type: 3}
   uiDocument: {fileID: 1879991500}
---- !u!4 &1352790799
+--- !u!4 &1147836622
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1352790797}
+  m_GameObject: {fileID: 1147836620}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -238,7 +238,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+  m_BackGroundColor: {r: 0.1, g: 0.1, b: 0.2, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -263,7 +263,7 @@ Camera:
   far clip plane: 100
   field of view: 60
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 5.5
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -288,7 +288,7 @@ Transform:
   m_GameObject: {fileID: 1739684467}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: -0.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -349,7 +349,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: 5ea37cff9a5494822832be7398b8baaa, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 8624b9631359a421e9bd7a8296c3aa82, type: 3}
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_Position: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
@@ -363,4 +363,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 1879991499}
   - {fileID: 1739684470}
-  - {fileID: 1352790799}
+  - {fileID: 1147836622}
