@@ -185,6 +185,12 @@
       "conversation_id": "230833d9-7bef-4d22-91cf-05adacd2f430",
       "content": "`Assets/Guidance.txt` に「コードのコメントは英語で記述して下さい」という指示を追加しました。\n\nこれで、プロジェクト全体および今後のコード記述に関するガイダンスが更新されました。プロトタイプの調整についても完了しておりますが、他に何かお手伝いできることはありますか？",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_3",
+      "conversation_id": "230833d9-7bef-4d22-91cf-05adacd2f430",
+      "content": "そして、現状のコードのコメントを英語にしておいて下さい。",
+      "snapshot_message_type": 0
     }
   ]
 }
