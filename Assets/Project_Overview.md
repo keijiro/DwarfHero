@@ -1,76 +1,73 @@
-# Project Overview: 3-Match RPG Prototype
+# Project Overview: Match-3 RPG Prototype
 
-This project is a technical prototype for a hybrid 3-match puzzle and RPG game. It focuses on validating a unique "bottom-row only" interaction mechanic combined with a cluster-based chain reaction system and a "Ska" (dud) block penalty/bonus loop.
+This document provides a technical overview of the Unity Match-3 RPG project, detailing its architecture, core systems, and asset organization.
 
 ## 1. Project Description
-The prototype implements a 7x7 grid-based puzzle where the player's influence is restricted to the bottom row. The core experience centers on strategic destruction to trigger cascades. It is designed for PC (Standalone) using Unity 6 and URP's 2D Renderer.
-*   **Core Pillars:**
-    *   **Bottom-Row Interaction:** Players can only manually destroy blocks on the bottom row (Y=0).
-    *   **Cluster Matching:** Beyond standard 3-match lines, matching blocks trigger "cluster" clearing of all adjacent identical types via flood-fill.
-    *   **Ska Mechanic:** Manual destructions introduce "Ska" (gray/dud) blocks, while chain reactions produce high-value blocks.
-    *   **Chain Reactions:** Gravity-fed cascades are the primary way to score and clear "Ska" blocks via proximity detonation.
+This project is a Match-3 RPG prototype developed in Unity 6, utilizing the Universal Render Pipeline (URP) for 2D visuals. It targets a "tactical puzzle" experience where players interact with a 7x7 grid to trigger combat and resource effects. The core gameplay loop focuses on clicking the bottom row of the grid to clear blocks, which causes gravity-based refills and potential chain reactions (matches) to accumulate points or trigger actions.
+
+**Core Pillars:**
+- **Tactical Match-3:** Match-3 mechanics combined with turn-based RPG resource management.
+- **Dynamic Feedback:** Heavy emphasis on visual polish through camera shakes, particles, and sprite animations.
+- **Chain Reactions:** "Ska" (empty) blocks serve as catalysts for larger detonations when adjacent matches occur.
 
 ## 2. Gameplay Flow / User Loop
-1.  **Initialization:** `GridManager` populates a 7x7 grid with weighted random blocks, ensuring no matches exist at the start.
-2.  **Player Input:** The player clicks a block in the bottom row (Y=0).
-3.  **Manual Destruction:** The clicked block is destroyed. This action is "inefficient" as it triggers a refill with a high probability of "Ska" blocks (determined by `manualSkaRate`).
-4.  **Gravity & Refill:** Blocks above fall to fill gaps. New blocks enter from the top.
-5.  **Match Detection:** The system checks for horizontal/vertical lines of 3 or more.
-6.  **Cluster & Detonation:** 
-    *   Identical adjacent blocks are grouped into a "cluster" and cleared.
-    *   Any "Ska" blocks adjacent to a clearing cluster are "detonated" and added to that cluster's score.
-7.  **Chain Reaction:** If matches occurred, steps 4-6 repeat automatically via coroutines until no matches remain.
-8.  **UI Update:** Scores (match counts) for each block type (Sword, Shield, Magic, etc.) are updated in the HUD.
+1.  **Boot/Initialization:** The `Main.unity` scene loads, and `GridManager` initializes a 7x7 grid without pre-existing matches.
+2.  **Input Phase:** The player clicks a block specifically in the **bottom row** (y=0).
+3.  **Destruction Phase:** The clicked block is destroyed, triggering a "Ska" block refill to descend.
+4.  **Gravity & Refill:** Blocks fall to fill gaps. New blocks are spawned at the top.
+5.  **Match Detection:** The system checks for clusters of 3 or more identical blocks (Sword, Shield, Magic, etc.).
+6.  **Detonation:** Matches trigger visual effects. If a match is adjacent to a "Ska" (Gray) block, the Ska block also detonates, increasing the match count.
+7.  **Resolution:** The loop repeats if new matches are formed from the refill; otherwise, control returns to the player.
 
 ## 3. Architecture
-The project uses a centralized manager pattern to handle the grid logic, with the UI decoupled via UI Toolkit (UITK).
-*   **Grid Management:** `GridManager` acts as the "Brain," handling state (logical grid), representation (SpriteRenderers), and the game loop (Coroutines).
-*   **Input Handling:** Uses the New Input System to perform screen-to-world raycasts, filtered by the Y-coordinate of the hit object.
-*   **UI Binding:** The `GridManager` queries the `UIDocument` to update labels by name string, following a simple View-Controller relationship.
-*   **Rendering:** Powered by URP 2D Renderer using sprite-based visuals with a layered approach (Base + Icon).
+The project follows a centralized manager pattern with a focus on Coroutine-based sequencing for animations and state transitions.
 
-`Location: Assets/Scripts/` (Logic)
-`Location: Assets/URP/` (Pipeline)
+### Grid & Match Management
+- `GridManager`: The central brain. It handles the 2D array representation of the board, physical spawning of block GameObjects, input raycasting, and the logic for gravity and match-3 detection.
+- **State Management:** Uses a simple `isProcessing` boolean to lock input during animations.
+- **Data Flow:** Logic uses a `BlockType` enum; visuals are updated via `SpriteRenderer` references stored in a parallel 2D array.
+- **Location:** `Assets/Scripts/`
+
+### Visual Feedback System
+- `CameraShake`: A utility component attached to the Main Camera. It provides micro-shaking effects for impacts like block destruction and landing.
+- **Pattern:** Command-based. `GridManager` calls `Shake()` on the camera instance when specific events occur.
+- **Location:** `Assets/Scripts/`
 
 ## 4. Game Systems & Domain Concepts
 
-### Grid & Match System
-*   `GridManager`: The core class managing a 2D array of `BlockType` enums and a parallel array of `SpriteRenderer` references.
-*   `BlockType`: Enum defining `Sword`, `Shield`, `Magic`, `Heal`, `Gem`, `Key`, and `Ska`.
-*   **Matching Logic:** Uses a two-pass approach: first identifying 3-in-a-row triggers, then performing a recursive flood-fill (`FindCluster`) to identify the full connected group.
-*   **Extension:** To add new match rules (e.g., T-shapes), modify `CheckAndApplyMatches`. To add new block behaviors, expand the `BlockType` enum and the scoring logic in `CheckAndApplyMatches`.
+### Match-3 Logic
+- `GridManager.CheckMatches`: Uses a two-pass approach. First, it identifies horizontal and vertical lines of 3+. Second, it uses a recursive `FindCluster` (flood-fill) to group connected matches and detect adjacent "Ska" blocks for detonation.
+- **Extension:** New block types can be added to the `BlockType` enum and the `typeWeights` array to adjust spawn rates.
 
-### Refill & Weight System
-*   **Weighted Random:** `GetWeightedRandomType` uses an array of floats to determine spawn probabilities for standard blocks.
-*   **Contextual Spawning:** `DecideNewBlockType` distinguishes between "Manual Refill" (high Ska rate) and "Match Refill" (0% Ska rate).
-*   `Location: Assets/Scripts/GridManager.cs`
+### Block Types (Domain)
+- **Sword (Red), Shield (Blue), Magic (Purple), Heal (Green), Gem (Cyan), Key (Yellow):** Standard matching blocks.
+- **Ska (Gray):** A special "Empty" or "Catalyst" block. It cannot be matched with itself but detonates when a match occurs in an adjacent cell.
+- **Location:** `GridManager.cs` (Enum `BlockType`)
 
 ## 5. Scene Overview
-*   **Main.unity:** The sole functional scene.
-    *   **Camera:** Orthographic, configured for URP 2D.
-    *   **UI Object:** Contains `UIDocument` and references the `Main.uxml` and `PanelSettings`.
-    *   **GridManager Object:** The root for all dynamically generated block GameObjects. Blocks are instantiated as children of this object at runtime with `BoxCollider2D` for click detection.
+- **Main.unity:** The primary gameplay scene. It contains the `GridManager` entity, the main camera with `CameraShake`, and the `UIDocument` for the interface.
+- **Scene Flow:** Currently a single-scene prototype. The grid is procedural, generated on `Start()`.
 
 ## 6. UI System
-The project utilizes **UI Toolkit (UITK)** for its HUD.
-*   **Structure:** `Main.uxml` defines the layout with specific `Label` names (`SwordCount`, `ShieldCount`, etc.).
-*   **Styling:** `Main.uss` handles positioning and visual style.
-*   **Logic:** `GridManager.UpdateUI()` finds labels using `rootVisualElement.Q<Label>("Name")` and updates their text property based on the `matchCounts` array.
-*   **How to Modify:** Open `Main.uxml` in the UI Builder. Adding a new resource requires adding a Label with a unique name and updating the `matchCounts` array indexing in `GridManager.cs`.
-
-`Location: Assets/UI/`
+- **Framework:** Unity UI Toolkit (UITK).
+- **Structure:**
+    - `Main.uxml`: Defines the visual hierarchy (currently a container for future RPG elements).
+    - `Main.uss`: Contains styling for the UI elements.
+    - `DefaultPanel.asset`: UI Toolkit panel settings for resolution scaling.
+- **Binding:** The UI is currently a layout shell (`root` element) meant to be populated with RPG stats (Health, Mana, etc.) as the prototype evolves.
+- **Location:** `Assets/UI/`
 
 ## 7. Asset & Data Model
-*   **Sprites:** Uses a layered approach with `Block_Base.png` for the background and various `Icon_*.png` for the block type indicators.
-*   **Configurables:**
-    *   `typeWeights`: Inspector-editable array in `GridManager` for balancing drop rates.
-    *   `manualSkaRate`: Slider (0-1) in `GridManager` to tune the penalty for manual clicks.
-    *   `iconSprites`: Array of sprites mapped to the `BlockType` enum index.
-*   **Block Colors:** Hardcoded mapping within `GridManager.GetColor(BlockType)` used to tint the base sprite.
+- **Prefabs:**
+    - `ShockwaveFX`, `MatchDestroyFX`, `ManualDestroyFX`: Particle-based visual feedback triggered by the `GridManager`.
+- **Sprites:**
+    - Organized by `Blocks` (base frames and icons) and `FX` (textures for particles).
+    - Icons use a layered approach: A `Block_Base` sprite for the color background and an `Icon_X` sprite for the symbol.
+- **Rendering:** Uses URP 2D Renderer. Materials for FX use specialized shaders (Shockwave, Sparkle).
+- **Location:** `Assets/Prefabs/FX/`, `Assets/Sprites/Blocks/`
 
 ## 8. Notes, Caveats & Gotchas
-*   **Bottom Row Restriction:** Input is strictly ignored if the clicked block is not in the bottom row (index 0).
-*   **Ska Scoring:** "Ska" blocks do not have their own counter. Instead, they act as score multipliers for whatever cluster triggered their destruction.
-*   **Physics Dependency:** Click detection relies on `BoxCollider2D` and `Physics2D.GetRayIntersection`. If blocks are moved or scaled, ensure the colliders remain reachable by the raycast.
-*   **Coroutine Safety:** The `isProcessing` flag prevents multiple simultaneous click inputs while the grid is animating or calculating chains.
-*   **Coordinate System:** The grid's logical (0,0) is the bottom-left. World positions are calculated centered around the `GridManager`'s transform.
+- **Input Constraint:** Interaction is hardcoded to only allow clicks on the **bottom row** (`y = 0`). This is a design choice for the specific prototype mechanic and not a bug.
+- **Ska Generation:** When a player manually destroys a block, the refill logic is weighted heavily toward spawning "Ska" blocks (`manualSkaRate`). Match-triggered refills do not spawn Ska blocks by default.
+- **No Object Pooling:** Currently, blocks are `Destroy()`ed and `Instantiate()`d dynamically. For mobile optimization or larger grids, an object pooler should be implemented within `GridManager`.
+- **Scaling:** Block spacing and grid size are constants (`7x7`, `1.1f` spacing). Changing these requires updating both the logic and the camera view.
