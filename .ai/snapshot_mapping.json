@@ -863,6 +863,12 @@
       "conversation_id": "d014e9a2-50de-46a1-a117-0fe614d47ff2",
       "content": "Agent mode にしました。やって下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "INT_5",
+      "conversation_id": "d014e9a2-50de-46a1-a117-0fe614d47ff2",
+      "content": "そろそろRPGパートの制作に入りますので、現在の UI 要素（デバッグ用のカウント）は一旦全て削除して下さい。",
+      "snapshot_message_type": 0
     }
   ]
 }
