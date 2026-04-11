@@ -815,6 +815,12 @@
       "conversation_id": "bdf62358-d7c8-451e-ae5e-7350cc9e15f8",
       "content": "Size over Lifetime について、 0.2 から 1 への直線的な増加にして下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "49941b90-846c-4964-a380-7426acc1ed59",
+      "conversation_id": "bdf62358-d7c8-451e-ae5e-7350cc9e15f8",
+      "content": "`ShockwaveFX` パーティクルシステムの `Size over Lifetime` を、**0.2 から 1 への直線的な増加** に更新しました。\n\nこれにより、パーティクルが生成された瞬間に最小サイズ（0.24、つまり 1.2 × 0.2）で現れ、消滅する 0.18秒後までに 1.2 まで拡大するようになります。\n\n### **変更内容:**\n*   **0秒時点 (Time 0):** 値を `0` から `0.2` に変更\n*   **1秒相当 (Time 1):** 値を `1.0` のまま維持\n*   **変化形式:** 直線的 (Linear) な補間\n\n必要に応じて、さらに微調整が必要であればお知らせください。",
+      "snapshot_message_type": 1
     }
   ]
 }
