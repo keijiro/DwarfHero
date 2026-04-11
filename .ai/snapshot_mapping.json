@@ -659,6 +659,12 @@
       "conversation_id": "b369705f-fc38-4937-b0ea-fb1b316a5262",
       "content": "ManualDestroy の方のパーティクルについて、サイズを今の２倍にして下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "6be14d34-2011-4e63-bfe8-babb5e9f9c22",
+      "conversation_id": "b369705f-fc38-4937-b0ea-fb1b316a5262",
+      "content": "ManualDestroy のパーティクルサイズを 2倍（0.4 → 0.8）に拡張しました。\n\nこれにより、石の破片がより大きくはっきりと飛び散り、手動破壊のインパクトがさらに際立つようになっています。\n\n動作を確認していただき、さらに調整が必要な点があればお知らせください。",
+      "snapshot_message_type": 1
     }
   ]
 }
