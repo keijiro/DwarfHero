@@ -262,21 +262,11 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
         // 3. Shrink and Glow before final pop
         elapsed = 0f;
         Vector3 originalScale = block.transform.localScale;
-        SpriteRenderer[] renderers = block.GetComponentsInChildren<SpriteRenderer>();
-        Color[] initialColors = new Color[renderers.Length];
-        for (int i = 0; i < renderers.Length; i++) initialColors[i] = renderers[i].color;
-
         while (elapsed < 0.08f)
         {
             float t = elapsed / 0.08f;
             block.transform.localScale = Vector3.Lerp(originalScale, originalScale * 0.7f, t);
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                if (renderers[i] != null)
-                {
-                    renderers[i].color = Color.Lerp(initialColors[i], Color.white, t);
-                }
-            }
+            if (sr != null) sr.color = Color.Lerp(sr.color, Color.white, t);
             elapsed += Time.deltaTime;
             yield return null;
         }
