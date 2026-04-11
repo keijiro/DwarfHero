@@ -240,6 +240,12 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
     {
         if (block == null) yield break;
 
+        // 0. Shockwave immediately upon click
+        if (shockwaveFX != null)
+        {
+            Instantiate(shockwaveFX, block.transform.position, Quaternion.identity);
+        }
+
         // 1. Swap sprite to cracked
         SpriteRenderer sr = block.GetComponent<SpriteRenderer>();
         if (sr != null && blockCrackedSprite != null)
@@ -278,15 +284,10 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
             Instantiate(manualDestroyFX, block.transform.position, Quaternion.identity);
         }
 
-        if (shockwaveFX != null)
-        {
-            Instantiate(shockwaveFX, block.transform.position, Quaternion.identity);
-        }
-
         // Hide visuals before physical destroy to avoid "pop"
         block.SetActive(false);
         block.transform.localScale = originalScale; // Reset for potential pool/reuse though not using pool
-        }
+    }
 
     private void DestroyBlock(int x, int y)
     {
