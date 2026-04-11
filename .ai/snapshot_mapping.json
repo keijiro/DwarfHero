@@ -593,6 +593,12 @@
       "conversation_id": "b369705f-fc38-4937-b0ea-fb1b316a5262",
       "content": "プランが承認されました。\n\n以下の手順で、`Assets/Plans/visual-feedback-polish.md` に記載された全ての演出（破壊、落下、マッチング、操作ロック）の実装を進めてもよろしいでしょうか？",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_3",
+      "conversation_id": "b369705f-fc38-4937-b0ea-fb1b316a5262",
+      "content": "はい、進めて下さい。",
+      "snapshot_message_type": 0
     }
   ]
 }
