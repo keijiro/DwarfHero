@@ -707,6 +707,12 @@
       "conversation_id": "b369705f-fc38-4937-b0ea-fb1b316a5262",
       "content": "アイコン（子オブジェクト）の `SpriteRenderer` も取得し、土台のブロックと同時に白く発光するように修正しました。\n\n### 修正内容 (`GridManager.cs`)\n*   `AnimateManualDestroy` 内で、`GetComponentsInChildren<SpriteRenderer>()` を使用してブロックとアイコンの両方のレンダラーを取得するように変更しました。\n*   縮小フェーズ（Glow）において、すべてのレンダラーに対して `Color.Lerp` を実行し、両方が同時に白く光りながら縮退するように調整しました。\n\nこれで、消滅直前の「タメ」の瞬間に、ブロック全体（アイコンを含む）が真っ白に光ってから弾けるような演出になります。動作を確認してみて下さい！",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "1be54d5b-97d5-4cf3-9b73-3cce65004796",
+      "conversation_id": "b369705f-fc38-4937-b0ea-fb1b316a5262",
+      "content": "パーティクルの生存期間（`startLifetime`）を **「2つの定数の間（Random Between Two Constants）」** に変更しました。\n\nこれにより、同じタイミングで発生したパーティクルでも、早く消えるものと少し長く残るものが混ざり合い、消滅時の「一斉に消える不自然さ」が解消され、より自然な散らばりになります。\n\n*   **ManualDestroyFX (破片)**: 約 `0.28` 〜 `0.52` 秒の間でランダム。\n*   **MatchDestroyFX (キラキラ)**: 約 `0.35` 〜 `0.65` 秒の間でランダム。\n\n動作を確認してみて下さい！",
+      "snapshot_message_type": 1
     }
   ]
 }
