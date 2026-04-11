@@ -162,6 +162,7 @@ MonoBehaviour:
   uiDocument: {fileID: 1879991500}
   manualDestroyFX: {fileID: 1637140914699121571, guid: 0a4a84681a4dd46ae88cb0e566b6c731, type: 3}
   matchDestroyFX: {fileID: 4303154845638419426, guid: a769b054cc5f94d24826ded3204a646b, type: 3}
+  shockwaveFX: {fileID: 562672158584503863, guid: 61eb18acbeb2146d3860b28106c51c83, type: 3}
   blockColors:
   - {r: 1, g: 0.3482667, b: 0.24800003, a: 1}
   - {r: 0.291, g: 0.50369996, b: 1, a: 1}

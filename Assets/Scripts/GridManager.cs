@@ -31,6 +31,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private UIDocument uiDocument;
     [SerializeField] private ParticleSystem manualDestroyFX;
     [SerializeField] private ParticleSystem matchDestroyFX;
+    [SerializeField] private ParticleSystem shockwaveFX;
 
     [Header("Visual Settings")]
     [SerializeField] private Color[] blockColors = new Color[7] {
@@ -275,6 +276,11 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
         if (manualDestroyFX != null)
         {
             Instantiate(manualDestroyFX, block.transform.position, Quaternion.identity);
+        }
+
+        if (shockwaveFX != null)
+        {
+            Instantiate(shockwaveFX, block.transform.position, Quaternion.identity);
         }
 
         // Hide visuals before physical destroy to avoid "pop"
