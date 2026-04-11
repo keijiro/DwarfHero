@@ -259,7 +259,19 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
         }
         block.transform.localPosition = originalLocalPos;
 
-        // 3. Particles
+        // 3. Shrink and Glow before final pop
+        elapsed = 0f;
+        Vector3 originalScale = block.transform.localScale;
+        while (elapsed < 0.08f)
+        {
+            float t = elapsed / 0.08f;
+            block.transform.localScale = Vector3.Lerp(originalScale, originalScale * 0.7f, t);
+            if (sr != null) sr.color = Color.Lerp(sr.color, Color.white, t);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // 4. Particles
         if (manualDestroyFX != null)
         {
             Instantiate(manualDestroyFX, block.transform.position, Quaternion.identity);
@@ -267,7 +279,8 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
 
         // Hide visuals before physical destroy to avoid "pop"
         block.SetActive(false);
-    }
+        block.transform.localScale = originalScale; // Reset for potential pool/reuse though not using pool
+        }
 
     private void DestroyBlock(int x, int y)
     {
