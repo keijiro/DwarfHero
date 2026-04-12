@@ -1,12 +1,12 @@
 .container {
     flex-grow: 1;
     padding: 20px;
-    justify-content: flex-end;
-    align-items: flex-end;
+    justify-content: flex-end; /* Bottom */
+    align-items: flex-end;    /* Right */
 }
 
 .hud-bottom {
-    flex-direction: column;
+    flex-direction: row;      /* Horizontal layout */
     align-items: flex-end;
 }
 
@@ -17,7 +17,7 @@
     border-width: 2px;
     border-color: rgba(255, 255, 255, 0.3);
     min-width: 250px;
-    margin-top: 10px;
+    margin-left: 10px;        /* Space between containers */
 }
 
 .stat-row {
