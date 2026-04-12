@@ -1175,6 +1175,12 @@
       "conversation_id": "05beec53-b0d9-4bf3-bf33-51f0770384cb",
       "content": "戦闘プラン文書（`Assets/Plans/combat-prototype.md`）に、各ブロックのマッチによる効果と、Magicブロックによる**「敵全体への魔法攻撃（AOE）」**の記述を追記しました。\n\n「アクションの計算と効果」のセクションに、Sword（単体攻撃）、Magic（全体攻撃）、Shield、Heal などの具体的な役割を整理してまとめてあります。これで後で仕様を振り返る際にもスムーズに確認いただけます。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_1",
+      "conversation_id": "fe92f964-d08e-4722-b3b1-52b075c71e7b",
+      "content": "プロジェクト内の txt や md から状況を把握して下さい",
+      "snapshot_message_type": 0
     }
   ]
 }
