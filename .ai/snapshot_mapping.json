@@ -1049,6 +1049,12 @@
       "conversation_id": "4ff279ca-1369-4317-aed0-4feadc0a71ac",
       "content": "各モンスターのアニメーターコントローラー（`Golem_Controller`, `Orc_Controller` など）の `Idle` ステートの再生速度（Speed）を `0.5` に設定しました。これにより、アニメーションの再生速度が半分になります。\n\nPlay モードで再生して、動きが希望通りになったかご確認ください。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "e9c0db49-8be5-4575-9c9b-68d31a9fa2d7",
+      "conversation_id": "4ff279ca-1369-4317-aed0-4feadc0a71ac",
+      "content": "これらのスプライトの足元にも主人公たちと同様の影を配置して下さい。",
+      "snapshot_message_type": 0
     }
   ]
 }
