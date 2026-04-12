@@ -1109,6 +1109,12 @@
       "conversation_id": "05beec53-b0d9-4bf3-bf33-51f0770384cb",
       "content": "プランが承認されました。ありがとうございます。\nこれより、プランに沿って「戦闘プロトタイプ」の実装（Phase 1からPhase 4）を開始してもよろしいでしょうか？\n\n**実装の主な流れ：**\n1.  **戦闘システム構築**: `CombatManager`（イベントキュー、パーティー・敵ステータス管理）の作成。\n2.  **敵ロジック**: `EnemyUnit` の作成と Zombie Mage の特殊攻撃判定。\n3.  **パズル連動**: `GridManager` からの攻撃・防御・回復イベントの発火と「スカ」効力計算の統合。\n4.  **UI統合**: UI Toolkit でのHPバー、Shield、EXP表示の実装。\n\n準備が整いましたら、一括して実装を進めます。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_12",
+      "conversation_id": "05beec53-b0d9-4bf3-bf33-51f0770384cb",
+      "content": "はい、開始して下さい。",
+      "snapshot_message_type": 0
     }
   ]
 }
