@@ -13,10 +13,14 @@ public class EnemyUnit : MonoBehaviour
     public float AttackInterval = 4.0f;
     private float timer;
 
+    private Animator animator;
+
     private void Start()
     {
         HP = MaxHP;
         timer = Random.Range(1.0f, AttackInterval); // Random start offset
+
+        animator = GetComponent<Animator>();
 
         // Detect if I am a ZombieMage based on name
         if (gameObject.name.Contains("ZombieMage"))
@@ -35,6 +39,14 @@ public class EnemyUnit : MonoBehaviour
         {
             CombatManager.Instance.AddEnemyAction(this, AttackPower, IsMagic);
             timer = AttackInterval;
+        }
+    }
+
+    public void Attack()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
         }
     }
 

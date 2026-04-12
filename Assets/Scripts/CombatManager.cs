@@ -57,6 +57,10 @@ public class CombatManager : MonoBehaviour
     private Label expText;
     private Label keyLabel;
 
+    [Header("Player Animators")]
+    public Animator FighterAnimator;
+    public Animator MageAnimator;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -64,6 +68,18 @@ public class CombatManager : MonoBehaviour
 
         CurrentHP = MaxHP;
         SetupUI();
+
+        // Assign player animators if not assigned in inspector
+        if (FighterAnimator == null)
+        {
+            GameObject f = GameObject.Find("Fighter");
+            if (f != null) FighterAnimator = f.GetComponent<Animator>();
+        }
+        if (MageAnimator == null)
+        {
+            GameObject m = GameObject.Find("Mage");
+            if (m != null) MageAnimator = m.GetComponent<Animator>();
+        }
     }
 
     private void SetupUI()
@@ -215,13 +231,15 @@ case CombatActionType.PlayerShield:
     {
         if (ActiveEnemies.Count == 0) yield break;
 
+        if (FighterAnimator != null) FighterAnimator.SetTrigger("Attack");
+
         // Simple target selection: attack the first enemy
         EnemyUnit target = ActiveEnemies[0];
         if (target != null)
         {
             Debug.Log($"Player attacks {target.name} for {damage} damage.");
             target.TakeDamage(damage);
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.6f); // Wait for animation
         }
 
         CleanupEnemies();
@@ -230,6 +248,8 @@ case CombatActionType.PlayerShield:
     private IEnumerator HandlePlayerMagicAttack(int damage)
     {
         if (ActiveEnemies.Count == 0) yield break;
+
+        if (MageAnimator != null) MageAnimator.SetTrigger("Magic");
 
         Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         
@@ -243,7 +263,7 @@ case CombatActionType.PlayerShield:
             }
         }
         
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.8f); // Wait for magic animation
         CleanupEnemies();
     }
 
@@ -267,6 +287,9 @@ case CombatActionType.PlayerShield:
     private IEnumerator HandleEnemyAttack(CombatAction action)
     {
         if (action.SourceEnemy == null || action.SourceEnemy.IsDead) yield break;
+
+        action.SourceEnemy.Attack();
+        yield return new WaitForSeconds(0.4f); // Wait for attack animation start before damage impact
 
         int finalDamage = action.Value;
         if (action.IsMagic)
@@ -301,7 +324,7 @@ case CombatActionType.PlayerShield:
             SpawnWave(); // Refresh wave for prototype
         }
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.6f); // Total delay for enemy attack
     }
 
     public void SpawnWave()
