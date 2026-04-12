@@ -1259,6 +1259,12 @@
       "conversation_id": "2d4d93a5-b1f9-414e-ae7f-398bef52b9a2",
       "content": "今はそれぞれの行動アニメーションが再生されると最終フレームで止まってしまっていますが、これを Idle へ戻すようにして下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "580b750b-7837-4a42-978c-2c28c2b58217",
+      "conversation_id": "2d4d93a5-b1f9-414e-ae7f-398bef52b9a2",
+      "content": "各キャラクターの Animator Controller を修正し、攻撃や魔法のアニメーションが終了した後に自動的に **Idle (待機)** 状態へ戻るように設定しました。\n\n### 修正内容\n- `Attack` または `Magic` 状態から `Idle` 状態へのトランジション（遷移）の設定を以下のように変更しました。\n  - **Has Exit Time**: `True` に設定（アニメーションの終了を待つ）。\n  - **Exit Time**: `1.0` に設定（アニメーションが 100% 完了した時点で遷移する）。\n  - **Transition Duration**: `0.1` に設定（スムーズに待機モーションへ戻るように調整）。\n- また、遷移に余計な条件（Conditions）が含まれていた場合は削除し、時間が経過すれば必ず戻るようにしました。\n\nこれで、キャラクターが攻撃した後は自然に待機ポーズに戻るようになります。",
+      "snapshot_message_type": 1
     }
   ]
 }
