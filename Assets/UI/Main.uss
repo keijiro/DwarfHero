@@ -1,24 +1,23 @@
 .container {
     flex-grow: 1;
     padding: 20px;
+    justify-content: flex-end;
+    align-items: flex-end;
 }
 
-.hud-top {
-    flex-direction: row;
-    justify-content: space-between;
+.hud-bottom {
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 .stats-group {
     padding: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     border-radius: 5px;
     border-width: 2px;
-    border-color: rgba(255, 255, 255, 0.2);
-    min-width: 200px;
-}
-
-.stats-right {
-    align-items: flex-end;
+    border-color: rgba(255, 255, 255, 0.3);
+    min-width: 250px;
+    margin-top: 10px;
 }
 
 .stat-row {
@@ -50,7 +49,7 @@
 
 .progress-bar-fill {
     height: 100%;
-    width: 100%; /* Target for script */
+    width: 100%;
 }
 
 .hp-fill {
