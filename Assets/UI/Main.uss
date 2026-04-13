@@ -64,3 +64,24 @@
 .exp-text {
     color: #B10DC9; /* Purple */
 }
+
+/* Notification Styles */
+.notification-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.notification-label {
+    position: absolute;
+    left: 25%;
+    top: 50%;
+    translate: -50% -50%;
+    font-size: 40px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+}

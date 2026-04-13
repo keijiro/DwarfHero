@@ -56,6 +56,7 @@ public class CombatManager : MonoBehaviour
     private Label shieldText;
     private Label expText;
     private Label keyLabel;
+    private VisualElement notificationLayer;
 
     [Header("Player Animators")]
     public Animator FighterAnimator;
@@ -93,6 +94,7 @@ public class CombatManager : MonoBehaviour
         shieldText = root.Q<Label>("shield-text");
         expText = root.Q<Label>("exp-text");
         keyLabel = root.Q<Label>("key-label");
+        notificationLayer = root.Q<VisualElement>("notification-layer");
         
         UpdateUI();
     }
@@ -133,7 +135,7 @@ public class CombatManager : MonoBehaviour
                 action.Value = effectiveCount * BaseMagicAttack;
                 break;
             case GridManager.BlockType.Heal:
-action.Type = CombatActionType.PlayerHeal;
+                action.Type = CombatActionType.PlayerHeal;
                 action.Value = effectiveCount * BaseHeal;
                 break;
             case GridManager.BlockType.Shield:
@@ -146,13 +148,97 @@ action.Type = CombatActionType.PlayerHeal;
                 break;
             case GridManager.BlockType.Key:
                 action.Type = CombatActionType.PlayerKey;
-                action.Value = KeyBonusExp; // Constant bonus for key match
+                action.Value = KeyBonusExp; 
                 break;
         }
+
+        // Show UI notification
+        ShowActionNotification(action.Type, action.Value);
 
         // Priority: Insert player actions at the head
         eventQueue.AddFirst(action);
         Debug.Log($"Added Player Action: {action.Type} Value: {action.Value}. Interrupting queue.");
+    }
+
+    private void ShowActionNotification(CombatActionType type, int value)
+    {
+        if (notificationLayer == null) return;
+
+        Label label = new Label();
+        label.AddToClassList("notification-label");
+        
+        string text = "";
+        Color color = Color.white;
+
+        switch (type)
+        {
+            case CombatActionType.PlayerAttack:
+                text = $"Attack! {value} pts.";
+                color = Color.red;
+                break;
+            case CombatActionType.PlayerMagicAttack:
+                text = $"Magic! {value} pts.";
+                color = new Color(0.6f, 0f, 0.8f);
+                break;
+            case CombatActionType.PlayerHeal:
+                text = $"Heal! {value} pts.";
+                color = Color.green;
+                break;
+            case CombatActionType.PlayerShield:
+                text = $"Shield! {value} pts.";
+                color = new Color(0.5f, 0.8f, 1f); 
+                break;
+            case CombatActionType.PlayerExp:
+                text = $"EXP! +{value}";
+                color = Color.cyan;
+                break;
+            case CombatActionType.PlayerKey:
+                text = $"Key! +{value} EXP";
+                color = Color.yellow;
+                break;
+        }
+
+        label.text = text;
+        label.style.color = color;
+        notificationLayer.Add(label);
+
+        StartCoroutine(AnimateNotification(label));
+    }
+
+    private IEnumerator AnimateNotification(Label label)
+    {
+        // Initial state: Slightly below center, invisible
+        label.style.opacity = 0;
+        label.style.translate = new Translate(Length.Percent(-50), Length.Percent(0));
+
+        // Phase 1: Emergence (Ease Out)
+        float elapsed = 0f;
+        float duration = 0.3f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            float easedT = 1 - Mathf.Pow(1 - t, 3); // Ease Out Cubic
+            
+            label.style.opacity = t;
+            label.style.translate = new Translate(Length.Percent(-50), Length.Percent(Mathf.Lerp(0, -50, easedT)));
+            yield return null;
+        }
+
+        // Phase 2: Float and Fade (Slow)
+        elapsed = 0f;
+        duration = 1.0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            
+            label.style.opacity = 1 - t;
+            label.style.translate = new Translate(Length.Percent(-50), Length.Percent(Mathf.Lerp(-50, -150, t)));
+            yield return null;
+        }
+
+        label.RemoveFromHierarchy();
     }
 
     public void AddEnemyAction(EnemyUnit enemy, int damage, bool isMagic)
@@ -199,7 +285,7 @@ action.Type = CombatActionType.PlayerHeal;
                 Debug.Log($"Healed {action.Value}. HP: {CurrentHP}");
                 yield return new WaitForSeconds(0.2f);
                 break;
-case CombatActionType.PlayerShield:
+            case CombatActionType.PlayerShield:
                 Shield += action.Value;
                 Debug.Log($"Gained {action.Value} Shield. Total: {Shield}");
                 yield return new WaitForSeconds(0.2f);
@@ -215,7 +301,7 @@ case CombatActionType.PlayerShield:
                     HasKey = true;
                     Debug.Log("Key Obtained!");
                 }
-                Experience += action.Value; // Key match always adds bonus exp
+                Experience += action.Value; 
                 yield return new WaitForSeconds(0.3f);
                 break;
             case CombatActionType.EnemyAttack:
@@ -233,13 +319,12 @@ case CombatActionType.PlayerShield:
 
         if (FighterAnimator != null) FighterAnimator.SetTrigger("Attack");
 
-        // Simple target selection: attack the first enemy
         EnemyUnit target = ActiveEnemies[0];
         if (target != null)
         {
             Debug.Log($"Player attacks {target.name} for {damage} damage.");
             target.TakeDamage(damage);
-            yield return new WaitForSeconds(0.6f); // Wait for animation
+            yield return new WaitForSeconds(0.6f); 
         }
 
         CleanupEnemies();
@@ -253,7 +338,6 @@ case CombatActionType.PlayerShield:
 
         Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         
-        // Attack all currently active enemies
         List<EnemyUnit> targets = new List<EnemyUnit>(ActiveEnemies);
         foreach (var enemy in targets)
         {
@@ -263,13 +347,12 @@ case CombatActionType.PlayerShield:
             }
         }
         
-        yield return new WaitForSeconds(0.8f); // Wait for magic animation
+        yield return new WaitForSeconds(0.8f); 
         CleanupEnemies();
     }
 
     private void CleanupEnemies()
     {
-        // Cleanup dead enemies
         ActiveEnemies.RemoveAll(e => e == null || e.IsDead);
         
         if (ActiveEnemies.Count == 0)
@@ -289,7 +372,7 @@ case CombatActionType.PlayerShield:
         if (action.SourceEnemy == null || action.SourceEnemy.IsDead) yield break;
 
         action.SourceEnemy.Attack();
-        yield return new WaitForSeconds(0.4f); // Wait for attack animation start before damage impact
+        yield return new WaitForSeconds(0.4f); 
 
         int finalDamage = action.Value;
         if (action.IsMagic)
@@ -299,7 +382,6 @@ case CombatActionType.PlayerShield:
         }
         else
         {
-            // Shield absorption
             if (Shield >= finalDamage)
             {
                 Shield -= finalDamage;
@@ -321,19 +403,18 @@ case CombatActionType.PlayerShield:
             yield return new WaitForSeconds(2.0f);
             CurrentHP = MaxHP;
             Shield = 0;
-            SpawnWave(); // Refresh wave for prototype
+            SpawnWave(); 
         }
 
-        yield return new WaitForSeconds(0.6f); // Total delay for enemy attack
+        yield return new WaitForSeconds(0.6f); 
     }
 
     public void SpawnWave()
     {
-        // Clear old ones
         foreach (var enemy in ActiveEnemies) if (enemy != null) Destroy(enemy.gameObject);
         ActiveEnemies.Clear();
 
-        int count = Random.Range(2, 6); // 2 to 5 enemies
+        int count = Random.Range(2, 6); 
         for (int i = 0; i < count; i++)
         {
             if (EnemyPrefabs.Length == 0) break;
