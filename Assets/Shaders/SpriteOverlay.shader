@@ -7,8 +7,6 @@ Shader "Custom/SpriteOverlay"
         _OverlayColor("Overlay Color", Color) = (0,0,0,0)
         [HideInInspector] _RendererColor("RendererColor", Color) = (1,1,1,1)
         [HideInInspector] _Flip("Flip", Vector) = (1,1,1,1)
-        [PerRendererData] _AlphaTex("External Alpha", 2D) = "white" {}
-        [PerRendererData] _EnableExternalAlpha("Enable External Alpha", Float) = 0
     }
 
     SubShader
@@ -33,7 +31,9 @@ Shader "Custom/SpriteOverlay"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile_instancing
             #pragma multi_compile _ ETC1_EXTERNAL_ALPHA
+            
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             struct Attributes
@@ -57,11 +57,14 @@ Shader "Custom/SpriteOverlay"
 
             CBUFFER_START(UnityPerMaterial)
                 float4 _MainTex_ST;
-                float4 _Color;
-                float4 _OverlayColor;
-                float4 _RendererColor;
-                float2 _Flip;
             CBUFFER_END
+
+            UNITY_INSTANCING_BUFFER_START(Props)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _OverlayColor)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _RendererColor)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _Flip)
+            UNITY_INSTANCING_BUFFER_END(Props)
 
             Varyings vert(Attributes input)
             {
@@ -69,9 +72,16 @@ Shader "Custom/SpriteOverlay"
                 UNITY_SETUP_INSTANCE_ID(input);
                 UNITY_TRANSFER_INSTANCE_ID(input, output);
 
-                output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
+                float4 flip = UNITY_ACCESS_INSTANCED_PROP(Props, _Flip);
+                float4 pos = input.positionOS;
+                pos.xy = pos.xy * flip.xy;
+
+                output.positionCS = TransformObjectToHClip(pos.xyz);
                 output.uv = TRANSFORM_TEX(input.uv, _MainTex);
-                output.color = input.color * _Color * _RendererColor;
+                
+                float4 tint = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
+                float4 rendererColor = UNITY_ACCESS_INSTANCED_PROP(Props, _RendererColor);
+                output.color = input.color * tint * rendererColor;
 
                 return output;
             }
@@ -83,11 +93,12 @@ Shader "Custom/SpriteOverlay"
                 float4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv);
                 float4 color = texColor * input.color;
                 
-                // Apply overlay color (lerp on RGB based on overlay alpha)
-                // This happens before final alpha premultiplication to ensure consistent color fill.
-                color.rgb = lerp(color.rgb, _OverlayColor.rgb, _OverlayColor.a);
+                float4 overlayColor = UNITY_ACCESS_INSTANCED_PROP(Props, _OverlayColor);
                 
-                // Final Premultiply alpha for "Blend One OneMinusSrcAlpha"
+                // Apply overlay color
+                color.rgb = lerp(color.rgb, overlayColor.rgb, overlayColor.a);
+                
+                // Final Premultiply alpha
                 color.rgb *= color.a;
                 
                 return color;

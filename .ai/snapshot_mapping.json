@@ -1409,6 +1409,12 @@
       "conversation_id": "b35a4c9e-fa70-4ba8-b550-369a3f325902",
       "content": "シェーダーを修正しました。\n\n### 修正点\n以前のコードでは、`color.rgb *= color.a` のプレマルチプライド・アルファ処理を明示的に行っていなかったため、透明領域にカラーが残ってしまい、ブレンド設定（`One OneMinusSrcAlpha`）によりその色が加算されて「ゴミ」となって表示されていました。\n\n修正後のフラグメントシェーダーは以下の通りです。\n1.  テクスチャカラーと頂点カラーを掛け合わせる。\n2.  その RGB に対して `_OverlayColor.rgb` を `_OverlayColor.a` に基づいて `lerp` する（この時点ではアルファ未乗算）。\n3.  **最終的な `color.rgb` に `color.a` を掛ける。** これにより、アルファが 0 の部分は確実に黒（透明）になります。\n\nこれで、スプライト周囲の枠状のノイズが消え、キャラクターのシルエットのみが正しく表示・フラッシュされるはずです。再度シーンをご確認いただけますでしょうか。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "e303011e-7e1d-45c5-a492-d9d55df885a7",
+      "conversation_id": "b35a4c9e-fa70-4ba8-b550-369a3f325902",
+      "content": "GPU Instancing を利用したアプローチを適用しました。\n\n### 変更内容\n1.  **シェーダー (`SpriteOverlay.shader`) の更新**:\n    -   `#pragma multi_compile_instancing` を追加しました。\n    -   `_OverlayColor` を含む各プロパティを `UNITY_INSTANCING_BUFFER` 内で定義するように変更しました。\n    -   バーテックスシェーダーとフラグメントシェーダーの両方で `UNITY_SETUP_INSTANCE_ID` を呼び出し、プロパティへのアクセスを `UNITY_ACCESS_INSTANCED_PROP` を経由するように修正しました。\n    -   `SpriteRenderer` の「Flip」機能が正しく動作するよう、`_Flip` プロパティを頂点計算に含めました。\n\nこれにより、各敵キャラクターが `MaterialPropertyBlock` を介して異なる `_OverlayColor`（ダメージ時の赤フラッシュなど）を設定していても、**GPU Instancing によって描画がバッチング（一括処理）される** ようになります。\n\n### パフォーマンスへの影響\n-   **SRP Batcher**: `MaterialPropertyBlock` を使用すると SRP Batcher は無効になりますが、代わりに GPU Instancing が機能するため、Draw Call 数を低く抑えることができます。\n-   **描画の整合性**: 前回の修正どおり、プレマルチプライド・アルファ処理を最後に行っているため、スプライト周囲にゴミが出る問題も解決された状態を維持しています。\n\nこれで、パフォーマンスとビジュアルの両面で最適化されたダメージ演出が実装されました。",
+      "snapshot_message_type": 1
     }
   ]
 }
