@@ -22,43 +22,36 @@
 # UI
 - **HUD**: UI Toolkit を使用し、HPバー、Shield、EXP、鍵の所持状態を画面下部/端に表示。
 - **アクション通知 (新機能)**: アクションがキューに追加された際に表示される動的なフローティングテキスト。
-    - 表示位置: 画面左端から 25%、上端から 50% の位置を基準に、中央寄せで表示。
-    - アニメーション: 少し下から ease-out で出現し、ゆっくり上に移動しながらフェードアウトして消える。
-    - スタイル: Pirata One フォントを使用。アクションごとに異なる色を適用（例：攻撃は赤）。
+    - **表示位置**: マッチして消滅するブロック群（クラスター）の**中心位置**を基準に表示。
+    - **アニメーション**: クラスター位置の少し下から ease-out で出現し、ゆっくり上に移動しながらフェードアウトして消える。
+    - **スタイル**: Pirata One フォントを使用。アクションごとに異なる色を適用。
 
 # 主要アセットと文脈
 - `Assets/UI/Main.uxml`: UI 構造定義。
 - `Assets/UI/Main.uss`: UI スタイル定義。
-- `Assets/Scripts/CombatManager.cs`: ステータス管理、イベントキューの処理、および通知の生成。
+- `Assets/Scripts/GridManager.cs`: マッチ検出とクラスター座標の計算。
+- `Assets/Scripts/CombatManager.cs`: 通知の生成とワールド座標から UI 座標への変換。
 - `Assets/UI/Pirata_One/PirataOne-Regular SDF.asset`: 使用するフォント。
 
 # 実装ステップ
-1. **`Main.uxml` の更新**:
-    - `root` コンテナ内に、通知ラベルの親となる `notification-layer` という名前の `VisualElement` を追加。
-    - クリックを阻害しないよう `picking-mode="Ignore"` を設定。
-2. **`Main.uss` の更新**:
-    - `.notification-layer`: 画面全体を覆う絶対配置を設定 (`position: absolute; width: 100%; height: 100%;`)。
-    - `.notification-label`: フローティングテキストの基本スタイルを定義。
-        - `position: absolute; left: 25%; top: 50%;`
-        - `translate: -50% -50%;` (基準位置で中央寄せ)
-        - `-unity-text-align: middle-center;`
-        - `font-size: 36px;`
-        - `-unity-font-style: bold;`
-        - `color: white;` (ベース色)
-        - `text-shadow: 1px 1px 2px rgba(0,0,0,0.8);`
-3. **`CombatManager.cs` の更新**:
-    - `VisualElement notificationLayer` フィールドを追加し、`SetupUI()` 内で初期化。
-    - 通知の出現とフェードアウトのアニメーションを制御する `IEnumerator AnimateNotification(Label label, Color color)` を実装。
-    - アクションの種類と値を基にラベルを生成・初期化し、アニメーションを開始する `ShowActionNotification(CombatActionType type, int value)` メソッドを実装。
-    - アクションタイプごとのカラーマッピングを定義（例：Attack=赤、Shield=水色、Heal=緑、Magic=紫、Exp=シアン、Key=黄色）。
-    - `AddPlayerAction(...)` 内で `ShowActionNotification` を呼び出し、アクションがキューに積まれる瞬間に通知が表示されるように統合。
+1. **`GridManager.cs` の更新**:
+    - `CheckMatches` メソッド内で、見つかった各クラスター（および隣接する Ska ブロック）に属するすべてのブロックのワールド座標の平均値を計算する。
+    - `CombatManager.Instance.AddPlayerAction` の引数に、計算した中心座標 (`Vector3 centerWorldPos`) を追加する。
+2. **`CombatManager.cs` の更新**:
+    - `AddPlayerAction` メソッドのシグネチャを更新し、`Vector3 worldPos` を受け取れるようにする。
+    - `ShowActionNotification` メソッドを更新し、`worldPos` を基にラベルの位置を動的に設定する。
+        - `RuntimePanelUtils.CameraWorldToPanel` を使用してワールド座標を UI パネル座標に変換する。
+        - `label.style.left` および `label.style.top` にピクセル単位で値を設定する。
+    - 通知の浮遊・フェードアニメーション（`AnimateNotification`）は座標指定に合わせて継続利用。
+3. **`Main.uss` の更新**:
+    - `.notification-label` クラスから固定の `left: 25%; top: 50%;` を削除し、C# からの動的配置を可能にする。
+    - 中央寄せのための `translate: -50% -50%;` は維持。
+4. **`Main.uxml` の確認**:
+    - `notification-layer` が正しく配置されていることを確認（既存実装済み）。
 
 # 検証とテスト
-1. **手動プレイ**: 最下段のブロックをクリックしてマッチを発生させる。
-2. **通知の確認**: "Attack! 10 pts." などのテキストが画面左中央付近（25%/50%）に正しく表示されるか確認。
-3. **アニメーションの確認**:
-    - 少し下から ease-out で「フワッ」と出現するか？
-    - ゆっくり上に移動しながら消えていくか？
-    - 階層から正しく削除（RemoveFromHierarchy）されているか？
-4. **色とテキストの確認**: 攻撃は赤、回復は緑など、アクションに応じた適切な表示がなされているか。
-5. **同時連鎖テスト**: 複数のマッチが連続して発生した際に、通知が重なりすぎず、読み取り可能であるかを確認。
+1. **動的位置の確認**: マッチしたブロックの位置に通知が表示されるか確認。特に画面の四隅や中央で位置がズレないか。
+2. **連鎖時の表示**: 連続してマッチが発生した際、それぞれの消滅位置から通知が立ち上がるか確認。
+3. **座標変換の精度**: 解像度を変更しても、通知の発生位置がゲーム内のブロック位置と一致しているか。
+4. **アニメーションの整合性**: 消滅した場所から「フワッ」と浮き上がる視覚効果が期待通りか。
+5. **クリーンアップ**: 通知が消えた後、メモリリークがないか（`RemoveFromHierarchy` の確認）。
