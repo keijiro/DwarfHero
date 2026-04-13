@@ -1331,6 +1331,12 @@
       "conversation_id": "7593d029-84a9-4886-839f-73756f6bd2ae",
       "content": "現在の実装（`CombatManager.cs` 内の `AnimateNotification`）では、出現時の **ease-out** アニメーションにおいて以下の 2 つのプロパティを同時に変化させています。\n\n1.  **`style.opacity`**: `0`（透明）から `1`（不透明）への**フェードイン**。\n2.  **`style.translate` (Y軸)**: 基準位置（ブロックの中心）から、要素の高さの 50% 分だけ**上方向へ移動**（`0%` から `-50%` へ変化）。\n\nこれにより、文字が透明な状態で少し下の位置から現れ、滑らかに浮き上がりながらはっきりと表示される効果を生んでいます。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_4",
+      "conversation_id": "7593d029-84a9-4886-839f-73756f6bd2ae",
+      "content": "なるほど。それでは、その移動量を今の３倍にして下さい。",
+      "snapshot_message_type": 0
     }
   ]
 }
