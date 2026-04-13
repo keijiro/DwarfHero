@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class EnemyUnit : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class EnemyUnit : MonoBehaviour
     private float timer;
 
     private Animator animator;
-    private CharacterVisuals visuals;
+    public CharacterVisuals visuals;
 
     private void Start()
     {
@@ -45,28 +46,30 @@ public class EnemyUnit : MonoBehaviour
         }
     }
 
-    public void Attack()
+    public IEnumerator Attack()
     {
+        if (visuals != null)
+        {
+            yield return StartCoroutine(visuals.TriggerAttackEffect());
+        }
+
         if (animator != null)
         {
             animator.SetTrigger("Attack");
-        }
-        if (visuals != null)
-        {
-            visuals.TriggerAttackEffect();
+            // Wait for animation is handled by CombatManager via Helper
         }
     }
 
-    public void TakeDamage(int damage)
+    public IEnumerator TakeDamage(int damage)
     {
-        if (IsDead) return;
+        if (IsDead) yield break;
 
         HP -= damage;
         Debug.Log($"{name} took {damage} damage. HP: {HP}");
         
         if (visuals != null)
         {
-            visuals.TriggerDamageEffect();
+            yield return StartCoroutine(visuals.TriggerDamageEffect());
         }
 
         if (HP <= 0)
@@ -77,8 +80,8 @@ public class EnemyUnit : MonoBehaviour
 
     private void Die()
     {
-IsDead = true;
+        IsDead = true;
         Debug.Log($"{name} died!");
-        Destroy(gameObject, 0.2f);
+        Destroy(gameObject, 0.1f);
     }
 }

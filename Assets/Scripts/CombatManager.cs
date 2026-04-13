@@ -110,7 +110,7 @@ public class CombatManager : MonoBehaviour
     }
 
     private void SetupUI()
-{
+    {
         if (HUD == null) HUD = GetComponent<UIDocument>();
         if (HUD == null) return;
 
@@ -314,11 +314,13 @@ public class CombatManager : MonoBehaviour
                 yield return StartCoroutine(HandlePlayerMagicAttack(action.Value));
                 break;
             case CombatActionType.PlayerHeal:
+                if (tankVisuals != null) yield return StartCoroutine(tankVisuals.TriggerAttackEffect());
                 CurrentHP = Mathf.Min(MaxHP, CurrentHP + action.Value);
                 Debug.Log($"Healed {action.Value}. HP: {CurrentHP}");
                 yield return new WaitForSeconds(0.2f);
                 break;
             case CombatActionType.PlayerShield:
+                if (tankVisuals != null) yield return StartCoroutine(tankVisuals.TriggerAttackEffect());
                 Shield += action.Value;
                 Debug.Log($"Gained {action.Value} Shield. Total: {Shield}");
                 yield return new WaitForSeconds(0.2f);
@@ -346,19 +348,37 @@ public class CombatManager : MonoBehaviour
         isProcessingQueue = false;
     }
 
+    private IEnumerator WaitForAnimation(Animator animator)
+    {
+        if (animator == null) yield break;
+        // Wait a frame for the trigger to start the transition
+        yield return null;
+        
+        // Wait until we're in the target state or for the state length
+        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+        yield return new WaitForSeconds(state.length);
+    }
+
     private IEnumerator HandlePlayerAttack(int damage)
     {
         if (ActiveEnemies.Count == 0) yield break;
 
-        if (FighterAnimator != null) FighterAnimator.SetTrigger("Attack");
-        if (fighterVisuals != null) fighterVisuals.TriggerAttackEffect();
+        // 1. Player Flash
+        if (fighterVisuals != null) yield return StartCoroutine(fighterVisuals.TriggerAttackEffect());
 
+        // 2. Player Attack Animation
+        if (FighterAnimator != null)
+        {
+            FighterAnimator.SetTrigger("Attack");
+            yield return StartCoroutine(WaitForAnimation(FighterAnimator));
+        }
+
+        // 3. Apply Damage and Enemy Reaction
         EnemyUnit target = ActiveEnemies[0];
         if (target != null)
         {
             Debug.Log($"Player attacks {target.name} for {damage} damage.");
-            target.TakeDamage(damage);
-            yield return new WaitForSeconds(0.6f); 
+            yield return StartCoroutine(target.TakeDamage(damage));
         }
 
         CleanupEnemies();
@@ -368,21 +388,30 @@ public class CombatManager : MonoBehaviour
     {
         if (ActiveEnemies.Count == 0) yield break;
 
-        if (MageAnimator != null) MageAnimator.SetTrigger("Magic");
-        if (mageVisuals != null) mageVisuals.TriggerAttackEffect();
+        // 1. Mage Flash
+        if (mageVisuals != null) yield return StartCoroutine(mageVisuals.TriggerAttackEffect());
 
+        // 2. Mage Magic Animation
+        if (MageAnimator != null)
+        {
+            MageAnimator.SetTrigger("Magic");
+            yield return StartCoroutine(WaitForAnimation(MageAnimator));
+        }
+
+        // 3. Apply Damage to all and Enemy Reactions
         Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
-        
         List<EnemyUnit> targets = new List<EnemyUnit>(ActiveEnemies);
+        List<Coroutine> coroutines = new List<Coroutine>();
         foreach (var enemy in targets)
         {
             if (enemy != null)
             {
-                enemy.TakeDamage(damage);
+                coroutines.Add(StartCoroutine(enemy.TakeDamage(damage)));
             }
         }
         
-        yield return new WaitForSeconds(0.8f); 
+        foreach (var c in coroutines) yield return c;
+        
         CleanupEnemies();
     }
 
@@ -406,48 +435,53 @@ public class CombatManager : MonoBehaviour
     {
         if (action.SourceEnemy == null || action.SourceEnemy.IsDead) yield break;
 
-        action.SourceEnemy.Attack();
-        yield return new WaitForSeconds(0.4f); 
+        // 1. Enemy Attack (Flash + Animation)
+        yield return StartCoroutine(action.SourceEnemy.Attack());
+        Animator enemyAnimator = action.SourceEnemy.GetComponent<Animator>();
+        if (enemyAnimator != null)
+        {
+            yield return StartCoroutine(WaitForAnimation(enemyAnimator));
+        }
 
+        // 2. Apply Damage
         int finalDamage = action.Value;
-        
-        // Trigger player damage visual
-        if (fighterVisuals != null) fighterVisuals.TriggerDamageEffect();
-        if (mageVisuals != null) mageVisuals.TriggerDamageEffect();
-        if (tankVisuals != null) tankVisuals.TriggerDamageEffect();
-
         if (action.IsMagic)
-{
+        {
             CurrentHP -= finalDamage;
-            Debug.Log($"Magic Attack! HP reduced by {finalDamage}. Current HP: {CurrentHP}");
         }
         else
         {
             if (Shield >= finalDamage)
             {
                 Shield -= finalDamage;
-                Debug.Log($"Attack fully blocked by Shield. Remaining Shield: {Shield}");
             }
             else
             {
                 finalDamage -= Shield;
                 Shield = 0;
                 CurrentHP -= finalDamage;
-                Debug.Log($"Attack partially blocked. HP reduced by {finalDamage}. Current HP: {CurrentHP}");
             }
         }
+
+        // 3. Player Damage Visual
+        List<Coroutine> coroutines = new List<Coroutine>();
+        if (fighterVisuals != null) coroutines.Add(StartCoroutine(fighterVisuals.TriggerDamageEffect()));
+        if (mageVisuals != null) coroutines.Add(StartCoroutine(mageVisuals.TriggerDamageEffect()));
+        if (tankVisuals != null) coroutines.Add(StartCoroutine(tankVisuals.TriggerDamageEffect()));
+        
+        foreach (var c in coroutines) yield return c;
 
         if (CurrentHP <= 0)
         {
             CurrentHP = 0;
             Debug.LogError("Game Over (Party Wiped) - Restarting prototype stats.");
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(1.0f);
             CurrentHP = MaxHP;
             Shield = 0;
             SpawnWave(); 
         }
 
-        yield return new WaitForSeconds(0.6f); 
+        UpdateUI();
     }
 
     public void SpawnWave()
