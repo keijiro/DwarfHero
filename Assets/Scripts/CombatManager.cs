@@ -216,7 +216,7 @@ public class CombatManager : MonoBehaviour
         label.style.opacity = 0;
         label.style.translate = new Translate(Length.Percent(-50), Length.Percent(0));
 
-        // Phase 1: Emergence (Ease Out)
+        // Phase 1: Emergence (Ease Out) - Increased travel (3x)
         float elapsed = 0f;
         float duration = 0.3f;
         while (elapsed < duration)
@@ -226,11 +226,12 @@ public class CombatManager : MonoBehaviour
             float easedT = 1 - Mathf.Pow(1 - t, 3); // Ease Out Cubic
             
             label.style.opacity = t;
-            label.style.translate = new Translate(Length.Percent(-50), Length.Percent(Mathf.Lerp(0, -50, easedT)));
+            // From 0 to -150% (was -50%)
+            label.style.translate = new Translate(Length.Percent(-50), Length.Percent(Mathf.Lerp(0, -150, easedT)));
             yield return null;
         }
 
-        // Phase 2: Float and Fade (Slow)
+        // Phase 2: Float and Fade (Slow) - Increased travel (3x)
         elapsed = 0f;
         duration = 1.0f;
         while (elapsed < duration)
@@ -239,7 +240,8 @@ public class CombatManager : MonoBehaviour
             float t = Mathf.Clamp01(elapsed / duration);
             
             label.style.opacity = 1 - t;
-            label.style.translate = new Translate(Length.Percent(-50), Length.Percent(Mathf.Lerp(-50, -150, t)));
+            // From -150% to -450% (delta 300%, was 100%)
+            label.style.translate = new Translate(Length.Percent(-50), Length.Percent(Mathf.Lerp(-150, -450, t)));
             yield return null;
         }
 
