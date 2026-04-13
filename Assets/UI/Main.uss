@@ -82,6 +82,6 @@
     -unity-text-align: middle-center;
     text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.8);
     -unity-text-outline-width: 2px;
-    -unity-text-outline-color: white;
+    -unity-text-outline-color: black;
     opacity: 0;
 }

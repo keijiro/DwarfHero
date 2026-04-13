@@ -1319,6 +1319,12 @@
       "conversation_id": "7593d029-84a9-4886-839f-73756f6bd2ae",
       "content": "通知テキストに「2px の白い縁取り（Outline）」を追加しました。\n\n### 変更内容 (`Assets/UI/Main.uss`)\n- `-unity-text-outline-width: 2px;`\n- `-unity-text-outline-color: white;`\n\nこれにより、SDF フォントの特徴を活かしたシャープな縁取りが適用され、背景やブロックの色に紛れることなく通知内容がはっきりと読み取れるようになっています。既存の黒いドロップシャドウ（`text-shadow`）も維持しているため、より立体感のある表示になります。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "7d174aae-44aa-49f7-bd2f-b30ced5fbc9f",
+      "conversation_id": "7593d029-84a9-4886-839f-73756f6bd2ae",
+      "content": "通知の縁取りを**黒色**に変更しました。\n\n### 変更点 (`Assets/UI/Main.uss`)\n- `-unity-text-outline-color: black;`\n\n黒縁にすることで、白文字や明るい色のテキストが背景に対してより引き締まって見えるようになります。白縁バージョンと見比べてみて、どちらが好ましいか確認してみてください。",
+      "snapshot_message_type": 1
     }
   ]
 }
