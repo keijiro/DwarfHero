@@ -80,20 +80,15 @@ Shader "Custom/SpriteOverlay"
             {
                 UNITY_SETUP_INSTANCE_ID(input);
 
-                float4 color = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv) * input.color;
+                float4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv);
+                float4 color = texColor * input.color;
                 
-                // Alpha-premultiplied blend of overlay color
-                // Default: _OverlayColor = (0,0,0,0) means no change.
-                // _OverlayColor = (1,1,1,1) means white.
-                // _OverlayColor = (1,0,0,1) means red.
+                // Apply overlay color (lerp on RGB based on overlay alpha)
+                // This happens before final alpha premultiplication to ensure consistent color fill.
+                color.rgb = lerp(color.rgb, _OverlayColor.rgb, _OverlayColor.a);
                 
-                // color.rgb is pre-multiplied alpha at this stage usually for Sprites.
-                // However, the standard Sprite-Unlit-Default blend is "One OneMinusSrcAlpha".
-                // We should lerp BEFORE final alpha premultiply if we want "Overlay" style.
-                // But texture sampling usually gives non-premultiplied colors unless processed.
-                
-                // Let's do a simple lerp on RGB using overlay's alpha.
-                color.rgb = lerp(color.rgb, _OverlayColor.rgb * color.a, _OverlayColor.a);
+                // Final Premultiply alpha for "Blend One OneMinusSrcAlpha"
+                color.rgb *= color.a;
                 
                 return color;
             }
