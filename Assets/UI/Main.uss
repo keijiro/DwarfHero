@@ -76,7 +76,7 @@
 
 .hint-container {
     position: absolute;
-    left: 50%;
+    left: 25%;
     bottom: 120px; /* Above HUD */
     translate: -50% 0;
     align-items: center;

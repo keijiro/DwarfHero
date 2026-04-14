@@ -7,34 +7,48 @@ public class StartHintController : MonoBehaviour
     [SerializeField] private UIDocument hudDocument;
     [SerializeField] private float displayDuration = 4.0f;
     [SerializeField] private float fadeDuration = 0.5f;
+    [SerializeField] private float oscillationAmplitude = 15.0f;
+    [SerializeField] private float oscillationSpeed = 3.0f;
+
+    private VisualElement hintContainer;
+    private bool isHiding = false;
 
     private void Start()
     {
         if (hudDocument == null) hudDocument = GetComponent<UIDocument>();
         if (hudDocument == null) return;
 
-        StartCoroutine(ShowAndHideHint());
+        var root = hudDocument.rootVisualElement;
+        hintContainer = root.Q<VisualElement>("hint-container");
+        var hintLabel = root.Q<VisualElement>("start-hint");
+
+        if (hintContainer != null && hintLabel != null)
+        {
+            hintLabel.RemoveFromClassList("start-hint--hidden");
+            StartCoroutine(HideTimer(hintLabel));
+        }
     }
 
-    private IEnumerator ShowAndHideHint()
+    private void Update()
     {
-        var root = hudDocument.rootVisualElement;
-        var hint = root.Q<VisualElement>("start-hint");
-        if (hint == null) yield break;
+        if (hintContainer == null || isHiding) return;
 
-        // Ensure visible at start
-        hint.RemoveFromClassList("start-hint--hidden");
+        // Floating effect: abs(sin(t)) to move upward
+        float offset = Mathf.Abs(Mathf.Sin(Time.time * oscillationSpeed)) * oscillationAmplitude;
+        
+        // Horizontal: -50% (centered on the 25% left anchor), Vertical: -offset pixels
+        hintContainer.style.translate = new Translate(Length.Percent(-50), new Length(-offset));
+        }
 
-        // Wait
+    private IEnumerator HideTimer(VisualElement hintLabel)
+    {
         yield return new WaitForSeconds(displayDuration);
+        
+        isHiding = true;
+        hintLabel.AddToClassList("start-hint--hidden");
 
-        // Add hidden class to trigger USS transition
-        hint.AddToClassList("start-hint--hidden");
-
-        // Wait for fade animation
         yield return new WaitForSeconds(fadeDuration);
-
-        // Optionally remove from hierarchy
-        hint.parent?.Remove(hint);
+        hintContainer?.parent?.Remove(hintContainer);
+        hintContainer = null;
     }
 }
