@@ -37,12 +37,32 @@ public class RowHighlighter : MonoBehaviour
     {
         if (gridManager == null) return;
 
-        float alpha = (Mathf.Sin(Time.time * pulseSpeed) * 0.5f + 0.5f) * maxAlpha;
+        // Custom pulse pattern: 1s wait, then two quick flashes
+        // Cycle: Wait(1.0s) -> Flash(0.2s) -> Gap(0.1s) -> Flash(0.2s) = 1.5s total
+        float cycleTime = 1.5f;
+        float timeInCycle = Time.time % cycleTime;
+        float alpha = 0;
+
+        if (timeInCycle > 1.0f)
+        {
+            float flashPhase = timeInCycle - 1.0f; // 0.0 to 0.5
+            if (flashPhase < 0.2f)
+            {
+                // First flash: 0.0 to 0.2
+                alpha = Mathf.Sin((flashPhase / 0.2f) * Mathf.PI) * maxAlpha;
+            }
+            else if (flashPhase > 0.3f && flashPhase < 0.5f)
+            {
+                // Second flash: 0.3 to 0.5
+                alpha = Mathf.Sin(((flashPhase - 0.3f) / 0.2f) * Mathf.PI) * maxAlpha;
+            }
+        }
+
         Color c = pulseColor;
         c.a = alpha;
 
         for (int x = 0; x < GridManager.GridWidth; x++)
-        {
+{
             SpriteRenderer targetRenderer = gridManager.GetRenderer(x, 0);
             SpriteRenderer highlightSR = highlightRenderers[x];
 
