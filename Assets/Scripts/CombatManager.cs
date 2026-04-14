@@ -406,13 +406,14 @@ Experience += action.Value;
         // 2. Player Attack Animation
         if (FighterAnimator != null)
         {
-            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Attack);
             FighterAnimator.SetTrigger("Attack");
             yield return StartCoroutine(WaitForAnimation(FighterAnimator, "Attack"));
         }
 
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Attack);
+
         // 3. Apply Damage and Enemy Reaction
-        EnemyUnit target = ActiveEnemies[0];
+EnemyUnit target = ActiveEnemies[0];
         if (target != null)
         {
             Debug.Log($"Player attacks {target.name} for {damage} damage.");
@@ -432,13 +433,14 @@ Experience += action.Value;
         // 2. Mage Magic Animation
         if (MageAnimator != null)
         {
-            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Magic);
             MageAnimator.SetTrigger("Magic");
             yield return StartCoroutine(WaitForAnimation(MageAnimator, "Magic"));
         }
 
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Magic);
+
         // 3. Apply Damage to all and Enemy Reactions
-        Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
+Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         List<EnemyUnit> targets = new List<EnemyUnit>(ActiveEnemies);
         List<Coroutine> coroutines = new List<Coroutine>();
         foreach (var enemy in targets)
