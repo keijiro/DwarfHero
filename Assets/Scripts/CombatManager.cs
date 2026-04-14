@@ -348,15 +348,39 @@ public class CombatManager : MonoBehaviour
         isProcessingQueue = false;
     }
 
-    private IEnumerator WaitForAnimation(Animator animator)
+    private IEnumerator WaitForAnimation(Animator animator, string stateName)
     {
         if (animator == null) yield break;
-        // Wait a frame for the trigger to start the transition
-        yield return null;
-        
-        // Wait until we're in the target state or for the state length
-        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
-        yield return new WaitForSeconds(state.length);
+
+        // 1. Wait until the animator begins to enter the target state
+        // We check for transition or the state name itself
+        bool started = false;
+        float timeout = 2.0f; // Safety timeout
+        while (!started && timeout > 0)
+        {
+            AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+            if (state.IsName(stateName))
+            {
+                started = true;
+            }
+            else
+            {
+                timeout -= Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        // 2. Wait until the state reaches at least 95% completion
+        // (Using 0.95 instead of 1.0 for snappier feel, as transitions back to Idle usually start before 1.0)
+        while (started)
+        {
+            AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+            if (!state.IsName(stateName) || state.normalizedTime >= 0.95f)
+            {
+                break;
+            }
+            yield return null;
+        }
     }
 
     private IEnumerator HandlePlayerAttack(int damage)
@@ -370,7 +394,7 @@ public class CombatManager : MonoBehaviour
         if (FighterAnimator != null)
         {
             FighterAnimator.SetTrigger("Attack");
-            yield return StartCoroutine(WaitForAnimation(FighterAnimator));
+            yield return StartCoroutine(WaitForAnimation(FighterAnimator, "Attack"));
         }
 
         // 3. Apply Damage and Enemy Reaction
@@ -395,7 +419,7 @@ public class CombatManager : MonoBehaviour
         if (MageAnimator != null)
         {
             MageAnimator.SetTrigger("Magic");
-            yield return StartCoroutine(WaitForAnimation(MageAnimator));
+            yield return StartCoroutine(WaitForAnimation(MageAnimator, "Magic"));
         }
 
         // 3. Apply Damage to all and Enemy Reactions
@@ -440,7 +464,7 @@ public class CombatManager : MonoBehaviour
         Animator enemyAnimator = action.SourceEnemy.GetComponent<Animator>();
         if (enemyAnimator != null)
         {
-            yield return StartCoroutine(WaitForAnimation(enemyAnimator));
+            yield return StartCoroutine(WaitForAnimation(enemyAnimator, "Attack"));
         }
 
         // 2. Apply Damage
