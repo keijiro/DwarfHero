@@ -1517,6 +1517,12 @@
       "conversation_id": "a795c10a-9d34-4c7e-80cb-b2e92ffd13b6",
       "content": "プランが承認されました。\n\n全項目の実装（`AudioManager` の作成から `GridManager`、`CombatManager`、`EnemyUnit` への SE 組み込みまで）を一括で実行してもよろしいでしょうか？\n\n「はい」と回答いただければ、プランに基づいた実装を開始いたします。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_2",
+      "conversation_id": "a795c10a-9d34-4c7e-80cb-b2e92ffd13b6",
+      "content": "はい、進めて下さい",
+      "snapshot_message_type": 0
     }
   ]
 }
