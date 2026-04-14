@@ -12,6 +12,8 @@ public class StartHintController : MonoBehaviour
 
     private VisualElement hintContainer;
     private bool isHiding = false;
+    private bool hasBeenClicked = false;
+    private const float MinimumDisplayTime = 10.0f;
 
     private void Start()
     {
@@ -22,15 +24,21 @@ public class StartHintController : MonoBehaviour
         hintContainer = root.Q<VisualElement>("hint-container");
         var hintLabel = root.Q<VisualElement>("start-hint");
 
+        var gridManager = Object.FindFirstObjectByType<GridManager>();
+        if (gridManager != null)
+        {
+            gridManager.OnBottomRowClicked += () => hasBeenClicked = true;
+        }
+
         if (hintContainer != null && hintLabel != null)
         {
             hintContainer.RemoveFromClassList("hint-container--hidden");
             StartCoroutine(HideTimer());
         }
-        }
+    }
 
-        private void Update()
-        {
+    private void Update()
+    {
         if (hintContainer == null || isHiding) return;
 
         // Floating effect: abs(sin(t)) to move upward
@@ -38,11 +46,15 @@ public class StartHintController : MonoBehaviour
         
         // Horizontal: -50% (centered on the 30% left anchor), Vertical: -offset pixels
         hintContainer.style.translate = new Translate(Length.Percent(-50), new Length(-offset));
-        }
+    }
 
-        private IEnumerator HideTimer()
+    private IEnumerator HideTimer()
+    {
+        // Keep showing while: (time < 10s) OR (not clicked)
+        while (Time.time < MinimumDisplayTime || !hasBeenClicked)
         {
-        yield return new WaitForSeconds(displayDuration);
+            yield return null;
+        }
         
         isHiding = true;
         hintContainer.AddToClassList("hint-container--hidden");
@@ -50,5 +62,5 @@ public class StartHintController : MonoBehaviour
         yield return new WaitForSeconds(fadeDuration);
         hintContainer?.parent?.Remove(hintContainer);
         hintContainer = null;
-        }
-        }
+    }
+    }

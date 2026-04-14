@@ -202,8 +202,9 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
             {
                 if (hit.collider.gameObject == renderers[x, 0]?.gameObject)
                 {
+                    OnBottomRowClicked?.Invoke();
                     if (AudioManager.Instance != null)
-                    {
+{
                         AudioManager.Instance.PlaySEWithRandomPitch(SEType.Click, 0.8f);
                     }
                     StartCoroutine(ProcessMove(x, 0));

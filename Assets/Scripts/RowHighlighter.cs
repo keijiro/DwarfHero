@@ -9,14 +9,22 @@ public class RowHighlighter : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float maxAlpha = 0.5f;
 
     private SpriteRenderer[] highlightRenderers = new SpriteRenderer[GridManager.GridWidth];
-    private static readonly int PulseColorID = Shader.PropertyToID("_PulseColor");
+private static readonly int PulseColorID = Shader.PropertyToID("_PulseColor");
+
+    private bool hasBeenClicked = false;
+    private const float MinimumDisplayTime = 10.0f;
 
     private void Start()
     {
         if (gridManager == null) gridManager = GetComponent<GridManager>();
+
+        if (gridManager != null)
+        {
+            gridManager.OnBottomRowClicked += () => hasBeenClicked = true;
+        }
         
         // Create a separate container that is NOT a child of this.transform (GridManager)
-        // to avoid being destroyed by GridManager.InitializeGrid()
+// to avoid being destroyed by GridManager.InitializeGrid()
         GameObject container = new GameObject("HighlightContainer");
         // No parent assignment or choose a different parent if necessary
 
@@ -37,13 +45,15 @@ public class RowHighlighter : MonoBehaviour
     {
         if (gridManager == null) return;
 
+        bool shouldPulse = (Time.time < MinimumDisplayTime) || !hasBeenClicked;
+
         // Custom pulse pattern: 1s wait, then two quick flashes
         // Cycle: Wait(1.0s) -> Flash(0.2s) -> Gap(0.1s) -> Flash(0.2s) = 1.5s total
         float cycleTime = 1.5f;
         float timeInCycle = Time.time % cycleTime;
         float alpha = 0;
 
-        if (timeInCycle > 1.0f)
+        if (shouldPulse && timeInCycle > 1.0f)
         {
             float flashPhase = timeInCycle - 1.0f; // 0.0 to 0.5
             if (flashPhase < 0.2f)
