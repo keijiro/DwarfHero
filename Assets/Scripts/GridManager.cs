@@ -194,6 +194,10 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
             {
                 if (hit.collider.gameObject == renderers[x, 0]?.gameObject)
                 {
+                    if (AudioManager.Instance != null)
+                    {
+                        AudioManager.Instance.PlaySEWithRandomPitch(SEType.Click, 0.8f);
+                    }
                     StartCoroutine(ProcessMove(x, 0));
                     break;
                 }
@@ -214,6 +218,7 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
         // Gravity and refill (high Ska rate when manually destroyed)
         bool firstRefill = true;
         bool hasMatches;
+        int comboCount = 0;
 
         do
         {
@@ -225,7 +230,8 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
             hasMatches = CheckMatches(out matchedSet);
             if (hasMatches)
             {
-                yield return StartCoroutine(AnimateMatchesAndDestroy(matchedSet));
+                comboCount++;
+                yield return StartCoroutine(AnimateMatchesAndDestroy(matchedSet, comboCount));
             }
             } while (hasMatches);
 
@@ -280,8 +286,13 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
             Instantiate(manualDestroyFX, block.transform.position, Quaternion.identity);
         }
 
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySE(SEType.Pop, 0.7f);
+        }
+
         // Hide visuals before physical destroy to avoid "pop"
-        block.SetActive(false);
+block.SetActive(false);
         block.transform.localScale = originalScale; // Reset for potential pool/reuse though not using pool
     }
 
@@ -378,8 +389,12 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
                         fb.renderer.gameObject.name = $"Block_{fb.targetX}_{fb.targetY}";
                         // Subtle camera shake on landing
                         if (cameraShake != null) cameraShake.Shake(0.01f, 0.05f);
-                    }
-                    fb.renderer.transform.position = pos;
+                        if (AudioManager.Instance != null)
+                        {
+                            AudioManager.Instance.PlaySEWithRandomPitch(SEType.Land, 0.3f);
+                        }
+                        }
+fb.renderer.transform.position = pos;
                 }
                 yield return null;
             }
@@ -493,7 +508,7 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
         return false;
     }
 
-    private System.Collections.IEnumerator AnimateMatchesAndDestroy(List<(int, int)> positions)
+    private System.Collections.IEnumerator AnimateMatchesAndDestroy(List<(int, int)> positions, int comboCount = 1)
     {
         // 1. Swell and Glow
         float elapsed = 0f;
@@ -533,10 +548,17 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
             }
             elapsed += Time.deltaTime;
             yield return null;
-        }
+            }
 
-        foreach (var pos in positions)
-        {
+            if (AudioManager.Instance != null && positions.Count > 0)
+            {
+                // Pitch increases by 0.05 per combo, max 1.5
+                float pitch = Mathf.Min(1.0f + (comboCount - 1) * 0.05f, 1.5f);
+                AudioManager.Instance.PlaySE(SEType.Match, 0.9f, pitch);
+            }
+
+            foreach (var pos in positions)
+{
             if (matchDestroyFX != null && renderers[pos.Item1, pos.Item2] != null)
             {
                 Instantiate(matchDestroyFX, renderers[pos.Item1, pos.Item2].transform.position, Quaternion.identity);

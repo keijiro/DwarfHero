@@ -315,8 +315,9 @@ public class CombatManager : MonoBehaviour
                 break;
             case CombatActionType.PlayerHeal:
                 // All players flash Green
+                if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Heal);
                 List<Coroutine> healCoroutines = new List<Coroutine>();
-                Color healColor = new Color(0f, 1f, 0f, 0.8f);
+Color healColor = new Color(0f, 1f, 0f, 0.8f);
                 if (fighterVisuals != null) healCoroutines.Add(StartCoroutine(fighterVisuals.TriggerFlash(healColor, 0.3f)));
                 if (mageVisuals != null) healCoroutines.Add(StartCoroutine(mageVisuals.TriggerFlash(healColor, 0.3f)));
                 if (tankVisuals != null) healCoroutines.Add(StartCoroutine(tankVisuals.TriggerFlash(healColor, 0.3f)));
@@ -328,24 +329,27 @@ public class CombatManager : MonoBehaviour
                 break;
             case CombatActionType.PlayerShield:
                 // Tank flashes Cyan
+                if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Shield);
                 if (tankVisuals != null) yield return StartCoroutine(tankVisuals.TriggerFlash(new Color(0f, 1f, 1f, 0.8f), 0.3f));
 
                 Shield += action.Value;
                 Debug.Log($"Gained {action.Value} Shield. Total: {Shield}");
                 yield return new WaitForSeconds(0.2f);
                 break;
-case CombatActionType.PlayerExp:
+            case CombatActionType.PlayerExp:
+                if (AudioManager.Instance != null) AudioManager.Instance.PlaySEWithRandomPitch(SEType.Exp, 0.7f);
                 Experience += action.Value;
                 Debug.Log($"Gained {action.Value} EXP. Total: {Experience}");
                 yield return new WaitForSeconds(0.1f);
                 break;
             case CombatActionType.PlayerKey:
+                if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Key);
                 if (!HasKey)
                 {
                     HasKey = true;
                     Debug.Log("Key Obtained!");
                 }
-                Experience += action.Value; 
+Experience += action.Value; 
                 yield return new WaitForSeconds(0.3f);
                 break;
             case CombatActionType.EnemyAttack:
@@ -402,6 +406,7 @@ case CombatActionType.PlayerExp:
         // 2. Player Attack Animation
         if (FighterAnimator != null)
         {
+            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Attack);
             FighterAnimator.SetTrigger("Attack");
             yield return StartCoroutine(WaitForAnimation(FighterAnimator, "Attack"));
         }
@@ -427,6 +432,7 @@ case CombatActionType.PlayerExp:
         // 2. Mage Magic Animation
         if (MageAnimator != null)
         {
+            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Magic);
             MageAnimator.SetTrigger("Magic");
             yield return StartCoroutine(WaitForAnimation(MageAnimator, "Magic"));
         }
@@ -522,9 +528,10 @@ case CombatActionType.PlayerExp:
         if (CurrentHP <= 0)
         {
             CurrentHP = 0;
+            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.GameOver);
             Debug.LogError("Game Over (Party Wiped) - Restarting prototype stats.");
             yield return new WaitForSeconds(1.0f);
-            CurrentHP = MaxHP;
+CurrentHP = MaxHP;
             Shield = 0;
             SpawnWave(); 
         }
@@ -534,8 +541,9 @@ case CombatActionType.PlayerExp:
 
     public void SpawnWave()
     {
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.WaveStart);
         foreach (var enemy in ActiveEnemies) if (enemy != null) Destroy(enemy.gameObject);
-        ActiveEnemies.Clear();
+ActiveEnemies.Clear();
 
         int count = Random.Range(2, 6); 
         for (int i = 0; i < count; i++)

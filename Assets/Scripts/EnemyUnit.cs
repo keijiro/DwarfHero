@@ -67,8 +67,13 @@ public class EnemyUnit : MonoBehaviour
         HP -= damage;
         Debug.Log($"{name} took {damage} damage. HP: {HP}");
         
-        if (visuals != null)
+        if (AudioManager.Instance != null)
         {
+            AudioManager.Instance.PlaySEWithRandomPitch(SEType.Hit, 0.8f);
+        }
+
+        if (visuals != null)
+{
             yield return StartCoroutine(visuals.TriggerDamageEffect());
         }
 
@@ -81,6 +86,10 @@ public class EnemyUnit : MonoBehaviour
     private void Die()
     {
         IsDead = true;
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySE(SEType.EnemyDie, 0.7f);
+        }
         Debug.Log($"{name} died!");
         Destroy(gameObject, 0.1f);
     }
