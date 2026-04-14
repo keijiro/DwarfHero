@@ -16,8 +16,9 @@ public enum SEType
     WaveStart,
     GameOver,
     Hit,
-    EnemyDie
-}
+    EnemyDie,
+    ShieldBlock
+    }
 
 [System.Serializable]
 public struct SEClip

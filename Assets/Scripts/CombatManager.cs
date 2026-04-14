@@ -484,6 +484,13 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             yield return StartCoroutine(WaitForAnimation(enemyAnimator, "Attack"));
         }
 
+        // Play Monster Attack SE after animation
+        if (AudioManager.Instance != null)
+        {
+            if (action.IsMagic) AudioManager.Instance.PlaySE(SEType.Magic);
+            else AudioManager.Instance.PlaySE(SEType.Attack);
+        }
+
         // 2. Apply Damage and 3. Player Response Visual
         int finalDamage = action.Value;
         bool fullBlock = false;
@@ -510,6 +517,9 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         List<Coroutine> responseCoroutines = new List<Coroutine>();
         if (fullBlock)
         {
+            // Trigger Shield Block SE
+            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.ShieldBlock);
+
             // Only Tank flashes Yellow and Shakes (same shake as damage)
             if (tankVisuals != null)
             {
@@ -518,7 +528,10 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             }
         }
         else
-{
+        {
+            // Trigger Player Hit SE
+            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Hit);
+
             // Trigger player damage visual (All characters Red Flash + Shake)
             if (fighterVisuals != null) responseCoroutines.Add(StartCoroutine(fighterVisuals.TriggerDamageEffect()));
             if (mageVisuals != null) responseCoroutines.Add(StartCoroutine(mageVisuals.TriggerDamageEffect()));
