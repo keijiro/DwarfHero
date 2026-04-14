@@ -34,7 +34,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private int poolSize = 16;
 
     private Dictionary<SEType, AudioClip> clipDictionary = new Dictionary<SEType, AudioClip>();
-private List<AudioSource> sourcePool = new List<AudioSource>();
+    private Dictionary<SEType, int> lastPlayFrame = new Dictionary<SEType, int>();
+    private List<AudioSource> sourcePool = new List<AudioSource>();
     private int nextSourceIndex = 0;
 
     private void Awake()
@@ -53,6 +54,7 @@ private List<AudioSource> sourcePool = new List<AudioSource>();
         foreach (var sc in clips)
         {
             clipDictionary[sc.Type] = sc.Clip;
+            lastPlayFrame[sc.Type] = -1;
         }
 
         for (int i = 0; i < poolSize; i++)
@@ -65,11 +67,19 @@ private List<AudioSource> sourcePool = new List<AudioSource>();
 
     public void PlaySE(SEType type, float volume = 1.0f, float pitch = 1.0f)
     {
+        if (lastPlayFrame.ContainsKey(type) && lastPlayFrame[type] == Time.frameCount)
+        {
+            // Already played this SE in this frame
+            return;
+        }
+
         if (!clipDictionary.ContainsKey(type) || clipDictionary[type] == null)
         {
             // Debug.LogWarning($"SE {type} not found or clip is null.");
             return;
         }
+
+        lastPlayFrame[type] = Time.frameCount;
 
         AudioSource source = sourcePool[nextSourceIndex];
         source.pitch = pitch;
