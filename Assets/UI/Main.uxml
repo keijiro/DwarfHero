@@ -4,8 +4,9 @@
         <ui:VisualElement name="notification-layer" picking-mode="Ignore" class="notification-layer" />
         <ui:VisualElement name="hint-container" class="hint-container" picking-mode="Ignore">
             <ui:Label name="start-hint" text="Click bottom row to destroy blocks!" class="start-hint" />
+            <ui:VisualElement name="hint-notch" class="hint-notch" />
         </ui:VisualElement>
-        <ui:VisualElement name="hud" class="hud-bottom">
+<ui:VisualElement name="hud" class="hud-bottom">
 <ui:VisualElement name="stats-left" class="stats-group">
                 <ui:VisualElement class="stat-row">
                     <ui:Label text="HP:" class="stat-label" />

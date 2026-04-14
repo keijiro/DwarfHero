@@ -24,31 +24,31 @@ public class StartHintController : MonoBehaviour
 
         if (hintContainer != null && hintLabel != null)
         {
-            hintLabel.RemoveFromClassList("start-hint--hidden");
-            StartCoroutine(HideTimer(hintLabel));
+            hintContainer.RemoveFromClassList("hint-container--hidden");
+            StartCoroutine(HideTimer());
         }
-    }
+        }
 
-    private void Update()
-    {
+        private void Update()
+        {
         if (hintContainer == null || isHiding) return;
 
         // Floating effect: abs(sin(t)) to move upward
         float offset = Mathf.Abs(Mathf.Sin(Time.time * oscillationSpeed)) * oscillationAmplitude;
         
-        // Horizontal: -50% (centered on the 25% left anchor), Vertical: -offset pixels
+        // Horizontal: -50% (centered on the 30% left anchor), Vertical: -offset pixels
         hintContainer.style.translate = new Translate(Length.Percent(-50), new Length(-offset));
         }
 
-    private IEnumerator HideTimer(VisualElement hintLabel)
-    {
+        private IEnumerator HideTimer()
+        {
         yield return new WaitForSeconds(displayDuration);
         
         isHiding = true;
-        hintLabel.AddToClassList("start-hint--hidden");
+        hintContainer.AddToClassList("hint-container--hidden");
 
         yield return new WaitForSeconds(fadeDuration);
         hintContainer?.parent?.Remove(hintContainer);
         hintContainer = null;
-    }
-}
+        }
+        }
