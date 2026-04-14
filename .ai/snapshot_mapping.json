@@ -1709,6 +1709,12 @@
       "conversation_id": "c3c04910-8847-41b9-b73b-433acd4304e3",
       "content": "ヒントの縦位置を画面下から **15%** の位置に調整しました。\n\n`Assets/UI/Main.uss` 内で `bottom: 15%;` を指定し、`StartHintController.cs` がその基準位置から `abs(sin(t))` に基づいて滑らかに浮き上がるようアニメーションを行います。\n\nこれで、横25%・縦15%の位置で浮遊するヒント表示が完成しました。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_2",
+      "conversation_id": "c3c04910-8847-41b9-b73b-433acd4304e3",
+      "content": "もうちょっと上ですね・・・ 20% にしてみて下さい",
+      "snapshot_message_type": 0
     }
   ]
 }
