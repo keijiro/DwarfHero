@@ -1727,6 +1727,12 @@
       "conversation_id": "c3c04910-8847-41b9-b73b-433acd4304e3",
       "content": "いや足りないな・・・25%にして下さい",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "26a03ff1-0805-4993-8f9f-270b744bd8d8",
+      "conversation_id": "c3c04910-8847-41b9-b73b-433acd4304e3",
+      "content": "ヒントの縦位置を画面下から **25%** の位置に調整しました。これにより、左から25%・下から25%の位置を基点として、浮遊アニメーションが表示されるようになります。",
+      "snapshot_message_type": 1
     }
   ]
 }
