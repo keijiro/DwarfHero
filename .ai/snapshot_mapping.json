@@ -1919,6 +1919,12 @@
       "conversation_id": "b3cf21e0-b687-45ed-85d4-2d1ce7b270c6",
       "content": "修正が完了しました。\n\n### 修正後の動作\n\n*   **USS**: `display: none`（エディタ用）を、`.blackout--visible`（表示中）という追加クラスで打ち消す構造にしました。これにより、アニメーションが終わるまで確実に `display: flex` が維持されます。\n*   **C#**: シーン開始時に「幕を閉じて表示（`active`+`visible`）」状態を作り、その後に幕だけを開ける（`active`削除）ことで、意図通りのアニメーションが確実に走るようになりました。\n\nPlay ボタンを押して確認してみてください。Title シーンからの暗転と、Main シーン開始時の暗転解除がスムーズに繋がるはずです。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "a57ca2c5-dc40-45bc-ac58-0924b6767aeb",
+      "conversation_id": "b3cf21e0-b687-45ed-85d4-2d1ce7b270c6",
+      "content": "暗転解除のアニメーション速度を 0.8秒から **0.4秒** に短縮しました。\n\n### 修正内容\n\n1.  **USS (`Assets/UI/Main.uss`)**: `transition-duration` を `0.4s` に変更しました。\n2.  **C# (`Assets/Scripts/SceneTransitionController.cs`)**: コルーチン内の待機時間を `0.4f` 秒に変更し、アニメーション終了と同時に要素を非表示にするよう同期させました。\n\n※ USS にて `pointer-events: none` の警告が出ていたため、この機会に UITK の標準プロパティである `picking-mode: ignore` を UXML 側で使用する形へ整理しています（USS からは該当行を削除）。\n\nこれで、よりスピーディーで気持ちの良いシーン開始演出になったはずです。お試しください。",
+      "snapshot_message_type": 1
     }
   ]
 }

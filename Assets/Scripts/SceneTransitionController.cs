@@ -35,7 +35,7 @@ public class SceneTransitionController : MonoBehaviour
             blackout.RemoveFromClassList("blackout-container--active");
 
             // 4. Wait for the transition duration
-            yield return new WaitForSeconds(0.8f);
+            yield return new WaitForSeconds(0.4f);
 
             // 5. Finally hide completely
             blackout.RemoveFromClassList("blackout-container--visible");
