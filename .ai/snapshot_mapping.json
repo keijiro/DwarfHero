@@ -1757,6 +1757,12 @@
       "conversation_id": "a5c60cd6-affb-49fe-82e8-fe0ccc64dbad",
       "content": "プランが承認されました。ありがとうございます。\n承認されたプラン（`Assets/Plans/combat-popups.md`）に基づき、実装を開始してもよろしいでしょうか？\n\n「はい」または「実装を開始して下さい」などと指示をいただければ、ステップに従って進めます。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_2",
+      "conversation_id": "a5c60cd6-affb-49fe-82e8-fe0ccc64dbad",
+      "content": "開始して下さい",
+      "snapshot_message_type": 0
     }
   ]
 }
