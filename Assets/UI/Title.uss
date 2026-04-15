@@ -28,14 +28,14 @@
     -unity-background-scale-mode: scale-to-fit;
     right: -10px;
     aspect-ratio: 1;
-    }
+}
 
-    .heros-shadow {
-    -unity-background-image-tint-color: black;
-    translate: 15px 15px;
-    }
+.heros-shadow {
+    -unity-background-image-tint-color: rgb(60, 0, 31);
+    translate: 30px 15px;
+}
 
-    .logo {
+.logo {
     position: absolute;
     top: 0%;
     height: 80%;
