@@ -18,6 +18,14 @@
     background-image: url("project://database/Assets/Sprites/UI/Title_Background.png?fileID=21300000&guid=7d38ce48c91e64bd194a747224c89fca&type=3#Title_Background");
     -unity-background-scale-mode: scale-and-crop;
     -unity-background-image-tint-color: rgb(78, 109, 209);
+    transition-property: scale;
+    transition-duration: 2s;
+    transition-timing-function: ease-out-cubic;
+    scale: 1;
+}
+
+.background--intro {
+    scale: 1.2;
 }
 
 .heros {
@@ -28,11 +36,31 @@
     -unity-background-scale-mode: scale-to-fit;
     right: -10px;
     aspect-ratio: 1;
+    transition-property: opacity, translate;
+    transition-duration: 1.5s;
+    transition-timing-function: ease-out-cubic;
+    opacity: 1;
+}
+
+.heros--intro {
+    opacity: 0;
+}
+
+#heros {
+    translate: 0 0;
+}
+
+#heros.heros--intro {
+    translate: 200px 0;
 }
 
 .heros-shadow {
     -unity-background-image-tint-color: rgb(60, 0, 31);
     translate: 30px 15px;
+}
+
+#heros-shadow.heros--intro {
+    translate: 230px 15px;
 }
 
 .logo {

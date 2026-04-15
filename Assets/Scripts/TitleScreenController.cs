@@ -26,6 +26,19 @@ public class TitleScreenController : MonoBehaviour
 
         // Start blinking effect
         StartCoroutine(BlinkMessage());
+        
+        // Trigger intro animation
+        StartCoroutine(TriggerIntro());
+    }
+
+    private IEnumerator TriggerIntro()
+    {
+        // Wait for one frame to ensure classes are applied before removal
+        yield return null;
+        
+        root.Q("background")?.RemoveFromClassList("background--intro");
+        root.Q("heros")?.RemoveFromClassList("heros--intro");
+        root.Q("heros-shadow")?.RemoveFromClassList("heros--intro");
     }
 
     private void OnDisable()

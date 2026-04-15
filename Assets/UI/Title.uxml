@@ -1,9 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Title.uss" />
     <ui:VisualElement name="root" class="screen">
-        <ui:VisualElement name="background" class="background" picking-mode="Ignore" />
-        <ui:VisualElement name="heros-shadow" class="heros heros-shadow" picking-mode="Ignore" />
-        <ui:VisualElement name="heros" class="heros" picking-mode="Ignore" />
+        <ui:VisualElement name="background" class="background background--intro" picking-mode="Ignore" />
+        <ui:VisualElement name="heros-shadow" class="heros heros-shadow heros--intro" picking-mode="Ignore" />
+        <ui:VisualElement name="heros" class="heros heros--intro" picking-mode="Ignore" />
         <ui:VisualElement name="logo" class="logo" picking-mode="Ignore" />
         <ui:VisualElement name="message-container" class="message-container" picking-mode="Ignore">
             <ui:Label name="start-message" text="CLICK TO START ADVENTURE" class="start-message" />
