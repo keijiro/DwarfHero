@@ -33,14 +33,25 @@ public class TitleScreenController : MonoBehaviour
         // Trigger intro animation
         StartCoroutine(TriggerIntro());
 
-        // Play Title SE
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlaySE(SEType.Title);
+        // Play Title SE after a short delay to ensure AudioManager is loaded
+        StartCoroutine(PlayTitleSEWithDelay());
         }
-    }
 
-    private IEnumerator TriggerIntro()
+        private IEnumerator PlayTitleSEWithDelay()
+        {
+        // Wait until AudioManager is available
+        while (AudioManager.Instance == null)
+        {
+            yield return null;
+        }
+
+        // Additional small delay to be safe
+        yield return new WaitForSeconds(0.2f);
+        
+        AudioManager.Instance.PlaySE(SEType.Title);
+        }
+
+        private IEnumerator TriggerIntro()
     {
         // Wait a bit to ensure the UI has been painted at least once in its intro state
         yield return new WaitForSeconds(0.1f);

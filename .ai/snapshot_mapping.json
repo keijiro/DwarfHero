@@ -1961,6 +1961,12 @@
       "conversation_id": "25c6ca0b-df86-418b-a55c-5f5e76d1304b",
       "content": "タイトル画面でのサウンド演出に関する追加対応を完了しました。\n\n### 実施内容\n1.  **AudioManager.cs の更新**:\n    *   `SEType` 列挙型に `Select` と `Title` を追加しました。\n2.  **AudioManager プレハブの更新**:\n    *   `Assets/Prefabs/AudioManager.prefab` に対して、`Select` タイプに `SE_Select.wav` を、`Title` タイプに `SE_Title.wav` をそれぞれ割り当てました。\n3.  **TitleScreenController.cs の更新**:\n    *   `OnEnable` メソッド（画面開始時）に `SEType.Title` を再生する処理を追加しました。\n    *   `OnRootClicked` メソッド（クリック時）に `SEType.Select` を再生する処理を追加しました。\n\nこれにより、タイトル画面が表示された際にタイトル用 SE が鳴り、画面をクリックしてゲームを開始する際に決定音が鳴るようになっています。また、先日作成した `PersistentSystemsLoader` により、どのシーンから開始してもこれらの SE が正しく機能するように構成されています。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "c545a9b9-99d1-4804-b161-c0ad896c7ac3",
+      "conversation_id": "25c6ca0b-df86-418b-a55c-5f5e76d1304b",
+      "content": "指摘の通り、`SE_Title` が鳴らなかった原因は、加算ロード（`Additive Load`）が非同期であるため、`TitleScreenController.OnEnable` が呼ばれたタイミングではまだ `AudioManager` のインスタンスが生成されていなかった可能性が高いです。\n\n対策として、`TitleScreenController.cs` を修正し、`AudioManager.Instance` が有効になるのを待機してから再生を開始するコルーチンを導入しました。\n\n### 修正内容\n*   **`PlayTitleSEWithDelay` コルーチンの追加**:\n    *   `while (AudioManager.Instance == null) yield return null;` により、インスタンスの生成を安全に待ちます。\n    *   念のため `0.2秒` のウェイトを挟んでから `SEType.Title` を再生するようにしました。\n\nこれで、タイトル画面開始時にサウンドが正常に再生されるようになっているはずです。ご確認をお願いいたします。",
+      "snapshot_message_type": 1
     }
   ]
 }
