@@ -1823,6 +1823,12 @@
       "conversation_id": "fe40d6e6-89be-4230-b55e-4eacd876494b",
       "content": "7頭身のプロポーション（頭を小さく、体型をスリムに）への変更を反映した新しいイラストを生成しました。\n背景を灰色の塗りつぶしに変更し、剣の軌跡などのエフェクトも排除しています。\n\n生成された画像：`Assets/Sprites/UI/TitleScreen_Fighter_v2.png`\n\n内容を確認いただき、さらに調整が必要であれば教えてください。一旦、生成が完了したので指示通りここで停止します。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_3",
+      "conversation_id": "fe40d6e6-89be-4230-b55e-4eacd876494b",
+      "content": "やはり頭身がまだ小さいですね。もう少し工夫をできますか？",
+      "snapshot_message_type": 0
     }
   ]
 }
