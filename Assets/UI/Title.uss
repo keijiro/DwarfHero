@@ -50,7 +50,6 @@
 
 .heros-shadow {
     -unity-background-image-tint-color: rgb(60, 0, 31);
-    /* 影のデフォルトオフセット */
     margin-right: -30px;
     margin-bottom: -15px;
 }
@@ -63,6 +62,7 @@
     -unity-background-scale-mode: scale-to-fit;
     aspect-ratio: 1;
     left: 5%;
+    filter: blur(24);
 }
 
 .message-container {
