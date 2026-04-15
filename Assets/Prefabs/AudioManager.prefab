@@ -53,7 +53,7 @@ MonoBehaviour:
     UseReverb: 0
   - Type: 2
     Clip: {fileID: 8300000, guid: 5bef9b2f2fcb2471b9202e3dfec02243, type: 3}
-    UseReverb: 0
+    UseReverb: 1
   - Type: 3
     Clip: {fileID: 8300000, guid: d0e94be887fbe46e9a45f8cbd92060c7, type: 3}
     UseReverb: 0
@@ -89,13 +89,13 @@ MonoBehaviour:
     UseReverb: 0
   - Type: 14
     Clip: {fileID: 8300000, guid: b6e9e06c265b647eaaa8c1d69c12cec5, type: 3}
-    UseReverb: 0
+    UseReverb: 1
   - Type: 15
     Clip: {fileID: 8300000, guid: e67585e9932e648c3862131c6c876b0c, type: 3}
-    UseReverb: 0
+    UseReverb: 1
   - Type: 16
     Clip: {fileID: 8300000, guid: 733bf0ff4e8ff439da0f516387b08777, type: 3}
-    UseReverb: 1
+    UseReverb: 0
   poolSize: 16
-  bypassGroup: {fileID: 0}
-  reverbGroup: {fileID: 0}
+  bypassGroup: {fileID: -8087892221537202930, guid: f38a8174a59834c24997849367770eb9, type: 2}
+  reverbGroup: {fileID: -6341384464240216204, guid: f38a8174a59834c24997849367770eb9, type: 2}
