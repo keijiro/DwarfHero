@@ -20,26 +20,25 @@ public class SceneTransitionController : MonoBehaviour
     private IEnumerator FadeIn()
     {
         var root = uiDocument.rootVisualElement;
-        var blackout = root.Q("blackout");
+        var blackout = root.Q("blackout-container");
 
         if (blackout != null)
         {
             // 1. Make visible and closed
-            blackout.AddToClassList("blackout--visible");
-            blackout.AddToClassList("blackout--active");
+            blackout.AddToClassList("blackout-container--visible");
+            blackout.AddToClassList("blackout-container--active");
             
             // 2. Wait a small amount of time to ensure layout/draw call is registered
             yield return new WaitForSeconds(0.1f);
             
-            // 3. Start the transition by removing 'active' (scale 1 1 -> 1 0)
-            // 'visible' class stays, so display: flex is maintained during animation
-            blackout.RemoveFromClassList("blackout--active");
+            // 3. Start the transition by removing 'active'
+            blackout.RemoveFromClassList("blackout-container--active");
 
-            // 4. Wait for the transition duration (0.8s in USS)
+            // 4. Wait for the transition duration
             yield return new WaitForSeconds(0.8f);
 
-            // 5. Finally hide completely to free up processing/UI-picking
-            blackout.RemoveFromClassList("blackout--visible");
+            // 5. Finally hide completely
+            blackout.RemoveFromClassList("blackout-container--visible");
         }
     }
 }

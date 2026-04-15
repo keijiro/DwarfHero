@@ -30,6 +30,9 @@
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="blackout" class="blackout" picking-mode="Ignore" />
+        <ui:VisualElement name="blackout-container" class="blackout-container" picking-mode="Ignore">
+            <ui:VisualElement name="blackout-top" class="blackout-part blackout-top" />
+            <ui:VisualElement name="blackout-bottom" class="blackout-part blackout-bottom" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

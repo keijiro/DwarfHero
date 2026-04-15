@@ -135,25 +135,42 @@ position: absolute;
     opacity: 0;
     }
 
-.blackout {
+.blackout-container {
     display: none;
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: black;
-    scale: 1 0;
-    transform-origin: center;
-    transition-property: scale;
-    transition-duration: 0.8s;
-    transition-timing-function: ease-out-cubic;
+    pointer-events: none;
 }
 
-.blackout--visible {
+.blackout-container--visible {
     display: flex;
 }
 
-.blackout--active {
-    scale: 1 1;
+.blackout-part {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background-color: black;
+    transition-property: scale;
+    transition-duration: 0.8s;
+    transition-timing-function: ease-in-cubic;
+    scale: 1 0; /* デフォルト（開いた状態） */
+}
+
+.blackout-top {
+    top: 0;
+    transform-origin: top;
+}
+
+.blackout-bottom {
+    bottom: 0;
+    transform-origin: bottom;
+}
+
+.blackout-container--active .blackout-part {
+    scale: 1 1; /* アクティブ時（閉じた状態） */
 }
