@@ -1,0 +1,61 @@
+:root {
+    --color-text: #FFD700; /* Gold */
+    --font-main: url("project://database/Assets/UI/Pirata_One/PirataOne-Regular SDF.asset");
+}
+
+.screen {
+    flex-grow: 1;
+    -unity-font-definition: var(--font-main);
+    background-color: black;
+    justify-content: center;
+    align-items: center;
+}
+
+.background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url("project://database/Assets/Sprites/UI/Title_Background.png");
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+.heros {
+    position: absolute;
+    bottom: 0;
+    width: 80%;
+    height: 60%;
+    background-image: url("project://database/Assets/Sprites/UI/Title_Heros.png");
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.logo {
+    position: absolute;
+    top: 5%;
+    width: 60%;
+    height: 30%;
+    background-image: url("project://database/Assets/Sprites/UI/Title_Logo.png");
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.message-container {
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
+    align-items: center;
+}
+
+.start-message {
+    color: var(--color-text);
+    font-size: 40px;
+    -unity-font-style: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: black;
+    transition-property: opacity;
+    transition-duration: 0.8s;
+    opacity: 1;
+}
+
+.start-message--hidden {
+    opacity: 0.2;
+}
