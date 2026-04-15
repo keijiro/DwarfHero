@@ -1600,6 +1600,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1879991499}
   - component: {fileID: 1879991500}
+  - component: {fileID: 1879991501}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -1645,6 +1646,19 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &1879991501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879991498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eae7b9a4b40a4c019e5b0f5b2041c24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneTransitionController
+  uiDocument: {fileID: 1879991500}
 --- !u!1 &2091370380
 GameObject:
   m_ObjectHideFlags: 0
@@ -1738,6 +1752,8 @@ MonoBehaviour:
   hudDocument: {fileID: 1879991500}
   displayDuration: 4
   fadeDuration: 0.5
+  oscillationAmplitude: 15
+  oscillationSpeed: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

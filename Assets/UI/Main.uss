@@ -134,3 +134,21 @@ position: absolute;
     -unity-text-outline-color: white;
     opacity: 0;
     }
+
+    .blackout {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    scale: 1 0;
+    transform-origin: center;
+    transition-property: scale;
+    transition-duration: 0.8s;
+    transition-timing-function: ease-out-cubic;
+    }
+
+    .blackout--active {
+    scale: 1 1;
+    }
