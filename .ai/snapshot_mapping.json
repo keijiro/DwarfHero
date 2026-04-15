@@ -2003,6 +2003,12 @@
       "conversation_id": "65ad4f68-cfc4-4bec-a3db-3a3a7c389966",
       "content": "いい感じですが、もうちょっと早くしたほうが良さそうです。0.4秒で２回柔らかく光る、に変更してください。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "f0a3df3c-07cf-4044-aa1b-21548eac8dcd",
+      "conversation_id": "65ad4f68-cfc4-4bec-a3db-3a3a7c389966",
+      "content": "HP回復およびシールドアップ時のフラッシュ演出時間を **0.4秒**（1回あたり0.2秒のパルスを2回）に短縮しました。\n\nこれにより、柔らかさを保ちつつも、ゲームのテンポを損なわないキビキビとした演出になっています。",
+      "snapshot_message_type": 1
     }
   ]
 }
