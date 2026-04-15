@@ -2,6 +2,7 @@
     <Style src="project://database/Assets/UI/Title.uss" />
     <ui:VisualElement name="root" class="screen">
         <ui:VisualElement name="background" class="background" picking-mode="Ignore" />
+        <ui:VisualElement name="heros-shadow" class="heros heros-shadow" picking-mode="Ignore" />
         <ui:VisualElement name="heros" class="heros" picking-mode="Ignore" />
         <ui:VisualElement name="logo" class="logo" picking-mode="Ignore" />
         <ui:VisualElement name="message-container" class="message-container" picking-mode="Ignore">
