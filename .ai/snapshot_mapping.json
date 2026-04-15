@@ -1889,6 +1889,12 @@
       "conversation_id": "b3cf21e0-b687-45ed-85d4-2d1ce7b270c6",
       "content": "「CLICK TO START ADVENTURE」メッセージのスタイルとアニメーションを調整しました。\n\n### 変更点\n\n1.  **色の変更 (`Assets/UI/Title.uss`)**: \n    *   文字色を淡い水色（Light Blue: `rgb(173, 216, 230)`）に変更しました。\n    *   スタイルシートに `--color-message` 変数を追加し、可読性を高めています。\n\n2.  **点滅速度の倍速化**:\n    *   **USS**: フェードのアニメーション時間（`transition-duration`）を 0.8秒から **0.4秒** に短縮しました。\n    *   **C# (`Assets/Scripts/TitleScreenController.cs`)**: 切り替えの間隔を 0.8秒から **0.4秒**（`WaitForSeconds(0.4f)`）に短縮しました。\n\nこれにより、メッセージが淡い水色で軽快に（倍の速さで）点滅し、より「クリックを促す」印象が強くなりました。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "6cf29eb0-2fdd-4ec8-bc7b-f9c354dc9258",
+      "conversation_id": "b3cf21e0-b687-45ed-85d4-2d1ce7b270c6",
+      "content": "暗転（フェードアウト）演出を追加しました。\n\n### 追加内容\n\n1.  **UXML (`Assets/UI/Title.uxml`)**:\n    *   画面の最前面に `blackout` 要素を追加しました。\n2.  **USS (`Assets/UI/Title.uss`)**:\n    *   `.blackout`: 画面中央（`top: 50%`, `translate: 0 -50%`）を基点として、高さ 0% の状態をデフォルトとしました。\n    *   `.blackout--active`: 高さを 100% に変化させ、`ease-in-cubic` で 0.6秒かけてアニメーションするように設定しました。\n3.  **C# (`Assets/Scripts/TitleScreenController.cs`)**:\n    *   画面クリック時に即座にシーン遷移するのではなく、`StartAdventureSequence` コルーチンを実行するように変更しました。\n    *   このコルーチン内で `blackout--active` クラスを付与し、アニメーションが完了するのを待ってから `Main` シーンをロードします。\n\nクリックすると、画面中央から上下に黒い幕が広がるように画面が覆われ、その後に冒険が始まります。",
+      "snapshot_message_type": 1
     }
   ]
 }

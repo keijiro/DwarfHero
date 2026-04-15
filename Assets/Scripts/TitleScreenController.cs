@@ -9,7 +9,9 @@ public class TitleScreenController : MonoBehaviour
     [SerializeField] private string nextSceneName = "Main";
 
     private Label startMessage;
+    private VisualElement blackout;
     private VisualElement root;
+    private bool isStarting = false;
 
     private void OnEnable()
     {
@@ -20,6 +22,7 @@ public class TitleScreenController : MonoBehaviour
 
         root = uiDocument.rootVisualElement;
         startMessage = root.Q<Label>("start-message");
+        blackout = root.Q("blackout");
 
         // Make root clickable to start the adventure
         root.RegisterCallback<PointerDownEvent>(OnRootClicked);
@@ -63,6 +66,20 @@ public class TitleScreenController : MonoBehaviour
 
     private void OnRootClicked(PointerDownEvent evt)
     {
+        if (isStarting) return;
+        isStarting = true;
+
+        StartCoroutine(StartAdventureSequence());
+    }
+
+    private IEnumerator StartAdventureSequence()
+    {
+        // Trigger blackout animation
+        blackout?.AddToClassList("blackout--active");
+
+        // Wait for the animation to complete (0.6s in USS)
+        yield return new WaitForSeconds(0.7f);
+
         SceneManager.LoadScene(nextSceneName);
     }
-}
+    }
