@@ -2159,6 +2159,12 @@
       "conversation_id": "cba3a0a6-2dff-4773-8a83-c05134f0fae9",
       "content": "メッセージの文字サイズを現在の半分（`80px` から `40px`）に調整しました。これにより、バトル画面を過剰に遮ることなく、適切に情報を伝えられるようになりました。\n\n他にご要望はございますか？",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_4",
+      "conversation_id": "cba3a0a6-2dff-4773-8a83-c05134f0fae9",
+      "content": "ちょっと小さくなり過ぎました。今の 1.5 倍にしてください。",
+      "snapshot_message_type": 0
     }
   ]
 }
