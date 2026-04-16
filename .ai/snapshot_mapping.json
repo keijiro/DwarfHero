@@ -2171,6 +2171,12 @@
       "conversation_id": "cba3a0a6-2dff-4773-8a83-c05134f0fae9",
       "content": "メッセージの文字サイズを現在の1.5倍（`40px` から `60px`）に調整しました。視認性と画面のバランスがより改善されたかと思います。\n\n他に調整が必要な箇所はありますでしょうか？",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_5",
+      "conversation_id": "cba3a0a6-2dff-4773-8a83-c05134f0fae9",
+      "content": "敵を倒して、次に敵が出現するタイミングにおいても、敵出現メッセージを出すようにしてください。",
+      "snapshot_message_type": 0
     }
   ]
 }
