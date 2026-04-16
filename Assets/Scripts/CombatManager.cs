@@ -139,9 +139,39 @@ public class CombatManager : MonoBehaviour
         if (keyLabel != null) keyLabel.text = HasKey ? "KEY: YES" : "KEY: NO";
     }
 
-    private void Start()
+    public void ShowCenterMessage(string text, Color color)
     {
-        SpawnWave();
+        StartCoroutine(ShowCenterMessageRoutine(text, color));
+    }
+
+    private IEnumerator ShowCenterMessageRoutine(string text, Color color)
+    {
+        if (HUD == null) yield break;
+        var root = HUD.rootVisualElement;
+
+        Label label = new Label(text);
+        label.AddToClassList("center-message");
+        label.style.color = color;
+        root.Add(label);
+
+        // Small delay to allow UITK to pick up the initial state for transition
+        yield return null;
+        label.AddToClassList("center-message--visible");
+
+        yield return new WaitForSeconds(1.5f);
+
+        label.RemoveFromClassList("center-message--visible");
+        yield return new WaitForSeconds(0.6f); // Wait for transition out
+        root.Remove(label);
+    }
+
+    private IEnumerator Start()
+    {
+        yield return new WaitForSeconds(1.0f);
+        ShowCenterMessage("MONSTERS APPROACH!", new Color(1f, 0.4f, 0.2f));
+        yield return new WaitForSeconds(1.0f);
+
+        yield return StartCoroutine(SpawnWaveSequentially());
         StartCoroutine(QueueProcessor());
     }
 
@@ -531,6 +561,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         
         if (ActiveEnemies.Count == 0)
         {
+            ShowCenterMessage("VICTORY!", new Color(1f, 0.8f, 0.2f));
             StartCoroutine(SpawnWaveWithDelay());
         }
     }
@@ -538,7 +569,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
     private IEnumerator SpawnWaveWithDelay()
     {
         yield return new WaitForSeconds(1.0f);
-        SpawnWave();
+        yield return StartCoroutine(SpawnWaveSequentially());
     }
 
     private IEnumerator HandleEnemyAttack(CombatAction action)
@@ -630,6 +661,20 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
                 AudioManager.Instance.PlaySE(SEType.GameOver);
                 AudioManager.Instance.PlaySE(SEType.GameOver2);
             }
+
+            // Phase 1: All characters flash Red
+            List<Coroutine> gameOverFlashes = new List<Coroutine>();
+            Color redFlash = new Color(1f, 0f, 0f, 0.9f);
+            if (fighterVisuals != null) gameOverFlashes.Add(StartCoroutine(fighterVisuals.TriggerFlash(redFlash, 0.4f)));
+            if (mageVisuals != null) gameOverFlashes.Add(StartCoroutine(mageVisuals.TriggerFlash(redFlash, 0.4f)));
+            if (tankVisuals != null) gameOverFlashes.Add(StartCoroutine(tankVisuals.TriggerFlash(redFlash, 0.4f)));
+            foreach (var c in gameOverFlashes) yield return c;
+
+            // Phase 2: All characters turn black (silhouette)
+            if (fighterVisuals != null) fighterVisuals.SetPersistentColor(Color.black);
+            if (mageVisuals != null) mageVisuals.SetPersistentColor(Color.black);
+            if (tankVisuals != null) tankVisuals.SetPersistentColor(Color.black);
+
             Debug.Log("Game Over (Party Wiped) - Transitioning to Game Over scene.");
             yield return new WaitForSeconds(1.0f);
             SceneManager.LoadScene("GameOver");
@@ -640,9 +685,14 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
 
     public void SpawnWave()
     {
+        StartCoroutine(SpawnWaveSequentially());
+    }
+
+    private IEnumerator SpawnWaveSequentially()
+    {
         if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.WaveStart);
         foreach (var enemy in ActiveEnemies) if (enemy != null) Destroy(enemy.gameObject);
-ActiveEnemies.Clear();
+        ActiveEnemies.Clear();
 
         int count = Random.Range(2, 6); 
         for (int i = 0; i < count; i++)
@@ -657,7 +707,14 @@ ActiveEnemies.Clear();
             if (unit == null) unit = enemyObj.AddComponent<EnemyUnit>();
             
             ActiveEnemies.Add(unit);
+            
+            // White flash
+            CharacterVisuals v = unit.GetComponent<CharacterVisuals>();
+            if (v == null) v = unit.gameObject.AddComponent<CharacterVisuals>();
+            StartCoroutine(v.FlashRoutine(Color.white, 0.3f));
+            
+            yield return new WaitForSeconds(0.4f);
         }
-        Debug.Log($"New wave spawned: {count} enemies.");
+        Debug.Log($"New wave spawned sequentially: {count} enemies.");
     }
 }

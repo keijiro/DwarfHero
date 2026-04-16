@@ -142,7 +142,6 @@ position: absolute;
     top: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
 }
 
 .blackout-container--visible {
@@ -173,4 +172,31 @@ position: absolute;
 
 .blackout-container--active .blackout-part {
     scale: 1 1; /* アクティブ時（閉じた状態） */
+}
+
+/* Center Message Style (Fantasy RPG Style) */
+.center-message {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    translate: -50% -50%;
+    font-size: 80px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    color: #FFD700; /* Gold */
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: black;
+    
+    /* Animation base */
+    transition-property: opacity, scale;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out-back;
+    opacity: 0;
+    scale: 0.5 0.5;
+}
+
+.center-message--visible {
+    opacity: 1;
+    scale: 1 1;
 }

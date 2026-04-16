@@ -14,9 +14,12 @@ public class CharacterVisuals : MonoBehaviour
     private Coroutine currentFlashCoroutine;
     private Coroutine currentShakeCoroutine;
 
+    private bool hasPersistentColor = false;
+    private Color persistentColor;
+
     private void Awake()
     {
-        sr = GetComponent<SpriteRenderer>();
+sr = GetComponent<SpriteRenderer>();
         mpb = new MaterialPropertyBlock();
         if (sr != null)
         {
@@ -73,6 +76,45 @@ public class CharacterVisuals : MonoBehaviour
         currentShakeCoroutine = StartCoroutine(ShakeRoutine(amount, duration));
     }
 
+    public void SetPersistentColor(Color color)
+    {
+        if (currentFlashCoroutine != null) StopCoroutine(currentFlashCoroutine);
+        hasPersistentColor = true;
+        persistentColor = color;
+        ApplyPersistentColor();
+    }
+
+    public void ClearPersistentColor()
+    {
+        hasPersistentColor = false;
+        ResetMaterial();
+    }
+
+    private void ApplyPersistentColor()
+    {
+        if (sr == null || overlayMaterial == null) return;
+
+        sr.sharedMaterial = overlayMaterial;
+        sr.GetPropertyBlock(mpb);
+        mpb.SetColor(_OverlayColorId, persistentColor);
+        sr.SetPropertyBlock(mpb);
+    }
+
+    private void ResetMaterial()
+    {
+        if (sr == null) return;
+
+        if (hasPersistentColor)
+        {
+            ApplyPersistentColor();
+        }
+        else
+        {
+            sr.SetPropertyBlock(null);
+            sr.sharedMaterial = defaultMaterial;
+        }
+    }
+
     public IEnumerator FlashRoutine(Color color, float duration)
     {
         if (sr == null || overlayMaterial == null) yield break;
@@ -84,8 +126,7 @@ public class CharacterVisuals : MonoBehaviour
 
         yield return new WaitForSeconds(duration);
 
-        sr.SetPropertyBlock(null);
-        sr.sharedMaterial = defaultMaterial;
+        ResetMaterial();
         currentFlashCoroutine = null;
     }
 
@@ -115,8 +156,7 @@ public class CharacterVisuals : MonoBehaviour
             }
         }
 
-        sr.SetPropertyBlock(null);
-        sr.sharedMaterial = defaultMaterial;
+        ResetMaterial();
         currentFlashCoroutine = null;
     }
 
