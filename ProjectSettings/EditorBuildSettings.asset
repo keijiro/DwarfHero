@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PersistentSystems.unity
     guid: d7ca56a9008474a3894b81d26e613077
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: 0a6aa07a9db98491fafa8b7412ceef45
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
   m_UseUCBPForAssetBundles: 0
