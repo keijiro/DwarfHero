@@ -180,9 +180,9 @@ position: absolute;
     left: 75%;
     top: 40%;
     translate: -50% -50%;
-font-size: 80px;
+    font-size: 40px;
     -unity-font-style: bold;
-    -unity-text-align: middle-center;
+-unity-text-align: middle-center;
     -unity-font-definition: url("project://database/Assets/UI/Pirata_One/PirataOne-Regular SDF.asset");
     color: #FFD700; /* Gold */
 text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
