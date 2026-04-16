@@ -2141,6 +2141,12 @@
       "conversation_id": "cba3a0a6-2dff-4773-8a83-c05134f0fae9",
       "content": "中央メッセージにプロジェクトで使用されている `Pirata One` フォントを適用しました。これにより、他のUI要素と統一感のあるファンタジーRPGらしい見た目になりました。\n\n全ての要望事項が実装されました。他に調整が必要な箇所はありますでしょうか？",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "c0b83894-a2fc-4f7a-b49b-b3580aefe4be",
+      "conversation_id": "cba3a0a6-2dff-4773-8a83-c05134f0fae9",
+      "content": "メッセージの横位置を画面右から25%（`left: 75%`）の位置に調整しました。これにより、敵が出現するバトルエリアに近い位置でアナウンスが表示されるようになります。\n\n他にご要望はございますか？",
+      "snapshot_message_type": 1
     }
   ]
 }

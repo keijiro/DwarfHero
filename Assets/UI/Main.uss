@@ -177,10 +177,10 @@ position: absolute;
 /* Center Message Style (Fantasy RPG Style) */
 .center-message {
     position: absolute;
-    left: 50%;
+    left: 75%;
     top: 40%;
     translate: -50% -50%;
-    font-size: 80px;
+font-size: 80px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
     -unity-font-definition: url("project://database/Assets/UI/Pirata_One/PirataOne-Regular SDF.asset");
