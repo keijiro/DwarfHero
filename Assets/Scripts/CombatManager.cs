@@ -168,8 +168,7 @@ public class CombatManager : MonoBehaviour
     private IEnumerator Start()
     {
         yield return new WaitForSeconds(1.0f);
-        ShowCenterMessage("MONSTERS APPROACH!", new Color(1f, 0.4f, 0.2f));
-        yield return new WaitForSeconds(1.0f);
+        yield return StartCoroutine(ShowCenterMessageRoutine("MONSTERS APPROACH!", new Color(1f, 0.4f, 0.2f)));
 
         yield return StartCoroutine(SpawnWaveSequentially());
         StartCoroutine(QueueProcessor());
@@ -561,14 +560,19 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         
         if (ActiveEnemies.Count == 0)
         {
-            ShowCenterMessage("VICTORY!", new Color(1f, 0.8f, 0.2f));
-            StartCoroutine(SpawnWaveWithDelay());
+            StartCoroutine(HandleWaveClear());
         }
+    }
+
+    private IEnumerator HandleWaveClear()
+    {
+        yield return StartCoroutine(ShowCenterMessageRoutine("VICTORY!", new Color(1f, 0.8f, 0.2f)));
+        yield return StartCoroutine(SpawnWaveWithDelay());
     }
 
     private IEnumerator SpawnWaveWithDelay()
     {
-        yield return new WaitForSeconds(1.0f);
+yield return new WaitForSeconds(1.0f);
         yield return StartCoroutine(SpawnWaveSequentially());
     }
 
