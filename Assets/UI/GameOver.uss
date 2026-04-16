@@ -6,16 +6,10 @@
 .screen {
     flex-grow: 1;
     -unity-font-definition: var(--font-main);
-    /* 濃い灰色を設定 */
-    background-color: rgb(40, 40, 40);
+    /* 背景を透明にしてカメラ（Vignette付き）が見えるようにする */
+    background-color: rgba(0, 0, 0, 0);
     justify-content: center;
     align-items: center;
-}
-
-.vignette {
-    position: absolute;
-    width: 100%;
-    height: 100%;
 }
 
 .hero-image {
