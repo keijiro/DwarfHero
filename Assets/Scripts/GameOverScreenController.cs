@@ -39,8 +39,9 @@ public class GameOverScreenController : MonoBehaviour
 
     private IEnumerator FadeIn()
     {
-        // Wait for one frame to ensure UI is ready
-        yield return null;
+        // Wait a bit to ensure the UI has been painted at least once in its initial state.
+        // This ensures the transition from opaque to transparent is correctly triggered.
+        yield return new WaitForSeconds(0.1f);
         blackout?.AddToClassList("blackout--hidden");
     }
 

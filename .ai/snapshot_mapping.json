@@ -2057,6 +2057,12 @@
       "conversation_id": "89316010-1f01-4a86-b373-080f2a3004da",
       "content": "はい、少し待つようにしてみてください。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "6e80c0f2-eb33-4a91-a44a-8110ad9fa51a",
+      "conversation_id": "89316010-1f01-4a86-b373-080f2a3004da",
+      "content": "`GameOverScreenController.cs` を修正し、フェードイン開始前に `0.1秒` の待機時間を設けました。\n\nこれにより、シーンを直接開いて開始（Play）した場合でも、システムが「最初は真っ黒である」ことを認識する時間が確保され、そこから透明へと変化するアニメーション（フェードイン）が正しく実行されるようになります。\n\n### 修正内容\n```csharp\nprivate IEnumerator FadeIn()\n{\n    // UIが初期状態で一度描画されるのを確実にするため、少し待機します。\n    // これにより、不透明から透明への遷移アニメーションが正しくトリガーされます。\n    yield return new WaitForSeconds(0.1f);\n    blackout?.AddToClassList(\"blackout--hidden\");\n}\n```\n\nこれで、直接シーンを開始しても、`Main` シーンから遷移してきた場合と同様に綺麗なフェードインが発生するはずです。ぜひお試しください。",
+      "snapshot_message_type": 1
     }
   ]
 }
