@@ -2009,6 +2009,12 @@
       "conversation_id": "65ad4f68-cfc4-4bec-a3db-3a3a7c389966",
       "content": "HP回復およびシールドアップ時のフラッシュ演出時間を **0.4秒**（1回あたり0.2秒のパルスを2回）に短縮しました。\n\nこれにより、柔らかさを保ちつつも、ゲームのテンポを損なわないキビキビとした演出になっています。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_1",
+      "conversation_id": "7d7c708f-9f33-4b8b-bdbc-90138ae999b7",
+      "content": "ファイル名を変更したことでこの警告が出るようになりました。修正してください。",
+      "snapshot_message_type": 0
     }
   ]
 }
