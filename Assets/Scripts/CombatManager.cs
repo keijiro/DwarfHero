@@ -567,6 +567,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
 
     private IEnumerator HandleWaveClear()
     {
+        yield return new WaitForSeconds(0.8f);
         yield return StartCoroutine(ShowCenterMessageRoutine("VICTORY!", new Color(1f, 0.8f, 0.2f)));
         yield return StartCoroutine(SpawnWaveWithDelay());
     }
