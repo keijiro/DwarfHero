@@ -2255,6 +2255,12 @@
       "conversation_id": "92939ee3-1ac2-4975-bd11-1d42dfbafbcb",
       "content": "プランが承認されました。これより、このプランに基づいて宝箱機能の実装を開始してもよろしいでしょうか？\n\n「はい」と答えていただければ、アセットの生成、UIの構築、およびコンバットロジックの更新を順次実行いたします。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_2",
+      "conversation_id": "92939ee3-1ac2-4975-bd11-1d42dfbafbcb",
+      "content": "はい、進めてください。",
+      "snapshot_message_type": 0
     }
   ]
 }
