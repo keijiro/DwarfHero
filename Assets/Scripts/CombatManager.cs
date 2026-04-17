@@ -161,9 +161,10 @@ public class CombatManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         label.RemoveFromClassList("center-message--visible");
-        yield return new WaitForSeconds(0.6f); // Wait for transition out
+        label.AddToClassList("center-message--hiding");
+        yield return new WaitForSeconds(0.4f); // Wait for fade out transition
         root.Remove(label);
-    }
+        }
 
     private IEnumerator Start()
     {

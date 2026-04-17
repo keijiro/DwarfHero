@@ -190,14 +190,22 @@ text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
     -unity-text-outline-color: black;
     
     /* Animation base */
-    transition-property: opacity, scale;
+    transition-property: opacity, translate;
     transition-duration: 0.5s;
-    transition-timing-function: ease-out-back;
+    transition-timing-function: ease-out-cubic;
     opacity: 0;
-    scale: 0.5 0.5;
-}
+    translate: -50% 50%; /* Start slightly below (relative to its pivot) */
+    }
 
-.center-message--visible {
+    .center-message--visible {
     opacity: 1;
-    scale: 1 1;
-}
+    translate: -50% -50%; /* Target position (centered at pivot) */
+    }
+
+    .center-message--hiding {
+    /* Fast fade out, no movement */
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+    opacity: 0;
+    translate: -50% -50%; /* Keep current position */
+    }
