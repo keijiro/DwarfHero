@@ -2309,6 +2309,12 @@
       "conversation_id": "92939ee3-1ac2-4975-bd11-1d42dfbafbcb",
       "content": "原因は、USSの `.treasure-chest-image` クラスに **`transition-property: background-image;`** が設定されていることです。\n\nこれにより、プログラムでスプライトを「閉じている状態」にリセットした際、即座に切り替わらずに **0.3秒かけて前回の「開いた状態」からアニメーション（遷移）しようとします**。そのため、オーバーレイが表示された瞬間に、まだ切り替わりきっていない「開いた状態」のスプライトが映り込んでしまいます。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "ec65acff-3cf3-4ba5-b98e-428525de187b",
+      "conversation_id": "92939ee3-1ac2-4975-bd11-1d42dfbafbcb",
+      "content": "USS から `background-image` の遷移設定（`transition-property`）を削除しました。\n\nこれにより、スクリプトでスプライトを「閉じている状態」にリセットした際、0.3秒の遷移を待たずに**即座に画像が切り替わるようになります**。一方で `opacity`（不透明度）の遷移設定は残してあるため、開封時の「フェードアウト → 画像差し替え → フェードイン」という滑らかな演出は引き続き機能します。",
+      "snapshot_message_type": 1
     }
   ]
 }
