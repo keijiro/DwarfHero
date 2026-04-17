@@ -603,9 +603,12 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
 
         // Reset state
         if (ChestClosedSprite != null)
+        {
             treasureImage.style.backgroundImage = new StyleBackground(ChestClosedSprite);
+            treasureImage.style.opacity = 1;
+        }
             
-        treasureMessage.text = "You found a treasure chest!";
+        treasureMessage.text = "You found a chest!";
         
         // Show overlay
         treasureOverlay.AddToClassList("treasure-overlay--visible");
@@ -620,23 +623,30 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             Experience += KeyBonusExp;
             UpdateUI();
 
-            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Victory);
+            // Play elegant harp SE
+            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.ChestOpen);
             
+            // Fade out current sprite
+            treasureImage.style.opacity = 0;
+            yield return new WaitForSeconds(0.3f);
+
             if (ChestOpenSprite != null)
                 treasureImage.style.backgroundImage = new StyleBackground(ChestOpenSprite);
-                
-            treasureMessage.text = "The chest was opened with the key!\nYou gained bonus EXP!";
+            
+            // Fade in opened sprite
+            treasureImage.style.opacity = 1;
+            treasureMessage.text = "Unlocked with the key!\nBonus EXP obtained!";
             
             yield return new WaitForSeconds(2.5f);
         }
         else
         {
             // Opening failure
-            treasureMessage.text = "You don't have a key to open it...";
+            treasureMessage.text = "No key to open it...";
             yield return new WaitForSeconds(1.5f);
         }
 
-        // Hide overlay
+        // Hide overlay (Fades out everything)
         treasureOverlay.RemoveFromClassList("treasure-overlay--visible");
         yield return new WaitForSeconds(0.5f); // Fade out time
     }
