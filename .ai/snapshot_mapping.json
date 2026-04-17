@@ -2273,6 +2273,12 @@
       "conversation_id": "92939ee3-1ac2-4975-bd11-1d42dfbafbcb",
       "content": "宝箱の出現率はどこで決められていますか？",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "a9f953bb-2a43-4d1d-b220-d1b4f67b3c12",
+      "conversation_id": "92939ee3-1ac2-4975-bd11-1d42dfbafbcb",
+      "content": "宝箱の出現率は、`Assets/Scripts/CombatManager.cs` 内の `HandleWaveClear` というメソッドの中で定義されています。\n\n具体的には、以下のコード箇所です（578行目付近）：\n\n```csharp\nprivate IEnumerator HandleWaveClear()\n{\n    yield return new WaitForSeconds(0.8f);\n    yield return StartCoroutine(ShowCenterMessageRoutine(\"VICTORY!\", new Color(1f, 0.8f, 0.2f)));\n    \n    // 50% chance for treasure chest\n    if (Random.value < 0.5f) // ここで確率を決定しています\n    {\n        yield return StartCoroutine(TreasureChestEventRoutine());\n    }\n\n    yield return StartCoroutine(SpawnWaveWithDelay());\n}\n```\n\n`Random.value` は 0.0 から 1.0 の間のランダムな値を返すため、`0.5f` と比較することで **50%** の確率を実現しています。\n\nもしこの確率を変更したい場合は、この数値を調整してください。\n*   **30%** にしたい場合： `0.3f`\n*   **100%**（必ず出す）にしたい場合： `1.0f`（または条件文を外す）",
+      "snapshot_message_type": 1
     }
   ]
 }
