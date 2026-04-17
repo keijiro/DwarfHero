@@ -2327,6 +2327,12 @@
       "conversation_id": "92939ee3-1ac2-4975-bd11-1d42dfbafbcb",
       "content": "宝箱の開封演出のタイミングを修正しました。\n\n`CombatManager.cs` 内の `TreasureChestEventRoutine` において、`backgroundImage`（スプライト）を切り替えるタイミングを、不透明度 (`opacity`) が完全に 0 になった後に配置しました。\n\nこれにより、以下の流れが正確に実行されるようになります：\n1.  **閉じている宝箱**が 0.3 秒かけてフェードアウトする\n2.  完全に消えた状態で、スプライトを**開いている宝箱**に差し替える\n3.  差し替えられた**開いている宝箱**が 0.3 秒かけてフェードインする\n\n不自然な「開く前と後の混在」がなくなり、意図した通りの滑らかな開封演出になります。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "cc98f043-a0f7-4a07-9831-f6cab3540dae",
+      "conversation_id": "92939ee3-1ac2-4975-bd11-1d42dfbafbcb",
+      "content": "宝箱イベントの終了時に、表示がパッと消えるのではなく、滑らかにフェードアウトするように修正しました。\n\n### 修正内容：\n1.  **USSの修正**:\n    *   `pointer-events` など UITK でサポートされていないプロパティを整理し、フェードの基本状態を `opacity: 0;`、表示状態を `opacity: 1;` に設定しました。\n2.  **スクリプト (`CombatManager.cs`) の修正**:\n    *   **開始時**: `display = DisplayStyle.Flex` を設定してからフェードインを開始するようにし、確実に要素が表示されるようにしました。\n    *   **終了時**: フェードアウト用のクラスを削除した後、`yield return new WaitForSeconds(0.5f)` でフェードが完了するのを待ってから `display = DisplayStyle.None` を設定するようにしました。\n\nこれにより、背景の暗転、宝箱、メッセージパネルのすべてが 0.5 秒かけて美しくフェードアウトし、パズル画面へと戻るようになります。",
+      "snapshot_message_type": 1
     }
   ]
 }

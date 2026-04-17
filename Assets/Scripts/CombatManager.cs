@@ -611,6 +611,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         treasureMessage.text = "You found a chest!";
         
         // Show overlay
+        treasureOverlay.style.display = DisplayStyle.Flex;
         treasureOverlay.AddToClassList("treasure-overlay--visible");
         yield return new WaitForSeconds(0.5f); // Fade in time
 
@@ -649,9 +650,10 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         // Hide overlay (Fades out everything)
         treasureOverlay.RemoveFromClassList("treasure-overlay--visible");
         yield return new WaitForSeconds(0.5f); // Fade out time
-    }
+        treasureOverlay.style.display = DisplayStyle.None;
+        }
 
-    private IEnumerator SpawnWaveWithDelay()
+        private IEnumerator SpawnWaveWithDelay()
     {
         yield return new WaitForSeconds(1.0f);
         yield return StartCoroutine(ShowCenterMessageRoutine("MONSTERS APPROACH!", new Color(1f, 0.4f, 0.2f)));
