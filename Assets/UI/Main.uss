@@ -30,13 +30,13 @@
 .stat-label {
     color: #FFD700; /* Gold */
     -unity-font-style: bold;
-    font-size: 18px;
+    font-size: 27px;
     margin-right: 10px;
 }
 
 .stat-value {
     color: white;
-    font-size: 18px;
+    font-size: 27px;
 }
 
 .progress-bar-bg {

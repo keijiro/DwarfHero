@@ -2363,6 +2363,12 @@
       "conversation_id": "eb04fc67-8e3c-4386-8e3d-7bd449e7d6d4",
       "content": "まず、文字が少し小さすぎるので、今の 1.5 倍にしてください。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "2d48c4db-902d-4d20-b933-91ebfcb27431",
+      "conversation_id": "eb04fc67-8e3c-4386-8e3d-7bd449e7d6d4",
+      "content": "HUD の各統計値（HP、SHIELD、EXP、KEY）のフォントサイズを、従来の 18px から 1.5 倍の **27px** に変更しました。\n\nあわせて、コンテナ（高さ 85px 固定）内でも余裕を持って収まることを確認しています。",
+      "snapshot_message_type": 1
     }
   ]
 }
