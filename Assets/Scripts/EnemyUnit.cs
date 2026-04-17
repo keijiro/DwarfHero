@@ -93,6 +93,13 @@ public class EnemyUnit : MonoBehaviour
             AudioManager.Instance.PlaySE(SEType.EnemyDie, 0.7f);
         }
         Debug.Log($"{name} died!");
+        
+        // Grant XP to player
+        if (CombatManager.Instance != null)
+        {
+            CombatManager.Instance.AddExperience(6);
+        }
+
         Destroy(gameObject, 0.1f);
     }
 }

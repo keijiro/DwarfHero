@@ -28,6 +28,7 @@ public class CombatManager : MonoBehaviour
     public static CombatManager Instance { get; private set; }
 
     [Header("Party Stats")]
+    public int Level = 1;
     public int MaxHP = 100;
     public int CurrentHP;
     public int Shield;
@@ -39,8 +40,8 @@ public class CombatManager : MonoBehaviour
     public int BaseMagicAttack = 3;
     public int BaseHeal = 3;
     public int BaseShield = 2;
-    public int BaseExp = 10;
-    public int KeyBonusExp = 50;
+    public int BaseExp = 1;
+    public int KeyBonusExp = 15;
 
     [Header("Enemy Settings")]
     public GameObject[] EnemyPrefabs;
@@ -76,6 +77,32 @@ public class CombatManager : MonoBehaviour
     private CharacterVisuals fighterVisuals;
     private CharacterVisuals mageVisuals;
     private CharacterVisuals tankVisuals;
+
+    private int GetThresholdForLevel(int targetLevel)
+    {
+        if (targetLevel <= 1) return 0;
+
+        float total = 0;
+        for (int i = 1; i < targetLevel; i++)
+        {
+            if (i < 10)
+            {
+                // Linear increase from 36 (L1->2) to 120 (L10->11)
+                total += 36f + (i - 1) * (84f / 9f);
+            }
+            else
+            {
+                total += 120f;
+            }
+        }
+        return Mathf.RoundToInt(total);
+    }
+
+    private int GetMaxHPForLevel(int level)
+    {
+        // Linear increase from 100 (L1) to 200 (L10)
+        return Mathf.RoundToInt(100f + (level - 1) * (100f / 9f));
+    }
 
     private void Awake()
     {
@@ -137,6 +164,60 @@ public class CombatManager : MonoBehaviour
         treasureMessage = root.Q<Label>("treasure-message");
         
         UpdateUI();
+    }
+
+    public void AddExperience(int amount)
+    {
+        Experience += amount;
+        
+        while (Experience >= GetThresholdForLevel(Level + 1))
+        {
+            LevelUp();
+        }
+    }
+
+    private void LevelUp()
+    {
+        Level++;
+        MaxHP = GetMaxHPForLevel(Level);
+        CurrentHP = MaxHP; // Full heal as requested
+        
+        Debug.Log($"<color=cyan>LEVEL UP! Level: {Level}, MaxHP: {MaxHP}</color>");
+        
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySE(SEType.Victory);
+        }
+
+        ShowLevelUpPopup();
+        UpdateUI();
+    }
+
+    private void ShowLevelUpPopup()
+    {
+        StartCoroutine(ShowLevelUpPopupRoutine());
+    }
+
+    private IEnumerator ShowLevelUpPopupRoutine()
+    {
+        if (HUD == null) yield break;
+        var root = HUD.rootVisualElement;
+
+        Label label = new Label("LEVEL UP!");
+        label.AddToClassList("center-message");
+        label.style.color = Color.cyan;
+        root.Add(label);
+
+        // Small delay to allow UITK to pick up the initial state for transition
+        yield return null;
+        label.AddToClassList("center-message--visible");
+
+        yield return new WaitForSeconds(1.5f);
+
+        label.RemoveFromClassList("center-message--visible");
+        label.AddToClassList("center-message--hiding");
+        yield return new WaitForSeconds(0.4f); // Wait for fade out transition
+        root.Remove(label);
     }
 
     private void UpdateUI()
@@ -457,7 +538,7 @@ Debug.Log($"Gained {action.Value} Shield. Total: {Shield}");
                 break;
             case CombatActionType.PlayerExp:
                 if (AudioManager.Instance != null) AudioManager.Instance.PlaySEWithRandomPitch(SEType.Exp, 0.7f);
-                Experience += action.Value;
+                AddExperience(action.Value);
                 Debug.Log($"Gained {action.Value} EXP. Total: {Experience}");
                 yield return new WaitForSeconds(0.1f);
                 break;
@@ -468,7 +549,7 @@ Debug.Log($"Gained {action.Value} Shield. Total: {Shield}");
                     HasKey = true;
                     Debug.Log("Key Obtained!");
                 }
-Experience += action.Value; 
+                AddExperience(action.Value);
                 yield return new WaitForSeconds(0.3f);
                 break;
             case CombatActionType.EnemyAttack:
@@ -629,7 +710,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
 
             // Opening success logic
             HasKey = false;
-            Experience += KeyBonusExp;
+            AddExperience(KeyBonusExp);
             UpdateUI();
 
             // Play elegant harp SE
