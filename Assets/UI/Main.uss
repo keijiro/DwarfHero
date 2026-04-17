@@ -217,8 +217,6 @@ text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
     left: 0;
     width: 100%;
     height: 100%;
-    align-items: center;
-    justify-content: center;
     background-color: rgba(0, 0, 0, 0.4);
     opacity: 0;
     transition-property: opacity;
@@ -232,15 +230,22 @@ text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
     }
 
     .treasure-chest-image {
+    position: absolute;
+    left: 75%;
+    top: 35%;
+    translate: -50% -50%;
     width: 300px;
     height: 300px;
     -unity-background-scale-mode: scale-to-fit;
-    margin-bottom: 40px;
     }
 
     .dialogue-box {
-    width: 80%;
-    height: 120px;
+    position: absolute;
+    left: 75%;
+    top: 60%;
+    translate: -50% -50%;
+    width: 450px;
+    min-height: 120px;
     background-color: rgba(0, 0, 0, 0.85);
     border-width: 4px;
     border-color: #FFD700;
@@ -248,15 +253,14 @@ text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
     padding: 20px;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    bottom: 50px;
     }
 
     .dialogue-text {
     color: white;
-    font-size: 32px;
+    font-size: 28px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
     -unity-font-definition: url("project://database/Assets/UI/Pirata_One/PirataOne-Regular SDF.asset");
+    white-space: normal;
     }
 
