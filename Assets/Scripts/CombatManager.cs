@@ -111,12 +111,11 @@ public class CombatManager : MonoBehaviour
     private int GetThresholdForLevel(int targetLevel)
     {
         if (targetLevel <= 1) return 0;
-        // Plan: Req(L) = 40 + 13(L-1)
-        // Total threshold is sum of requirements up to targetLevel - 1
+        // Plan: Req(L) = 80 + 26(L-1) (Doubled from previous 40 + 13)
         float total = 0;
         for (int i = 1; i < targetLevel; i++)
         {
-            total += 40f + (i - 1) * 13f;
+            total += 80f + (i - 1) * 26f;
         }
         return Mathf.RoundToInt(total);
     }
@@ -341,16 +340,16 @@ yield return null;
                 action.Value = effectiveCount * Mathf.Max(1, MaxHP / 20);
                 break;
 case GridManager.BlockType.Gem:
-                action.Type = CombatActionType.PlayerExp;
-                // Plan: Max(1, Req(Level)/10)
-                action.Value = effectiveCount * Mathf.Max(1, currentReq / 10);
-                break;
-            case GridManager.BlockType.Key:
-                action.Type = CombatActionType.PlayerKey;
-                // Plan: Same as Gem if already has key (Chest opening handled elsewhere)
-                action.Value = effectiveCount * Mathf.Max(1, currentReq / 10);
-                break;
-            }
+    action.Type = CombatActionType.PlayerExp;
+    // Halved pace: Max(1, Req(Level)/20) - takes 20 blocks
+    action.Value = effectiveCount * Mathf.Max(1, currentReq / 20);
+    break;
+case GridManager.BlockType.Key:
+    action.Type = CombatActionType.PlayerKey;
+    // Halved pace: Max(1, Req(Level)/20)
+    action.Value = effectiveCount * Mathf.Max(1, currentReq / 20);
+    break;
+}
 
         // Show UI notification
         ShowActionNotification(action.Type, action.Value, worldPos);
@@ -763,7 +762,8 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             // Opening success logic
             HasKey = false;
             int currentReq = GetThresholdForLevel(Level + 1) - GetThresholdForLevel(Level);
-            AddExperience(Mathf.Max(1, currentReq / 4));
+            // Halved pace: 1/8 of current requirement (takes 8 chests)
+            AddExperience(Mathf.Max(1, currentReq / 8));
             UpdateUI();
 
             // Play elegant harp SE
