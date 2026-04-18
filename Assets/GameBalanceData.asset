@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ed67d5495ab5461e94e52eadde2f8cb, type: 3}
   m_Name: GameBalanceData
   m_EditorClassIdentifier: Assembly-CSharp::GameBalanceData
+  BaseMatchCount: 3
   SkaDivisor: 3
   PlayerBaseHP: 100
   PlayerBaseAttack: 10
@@ -35,7 +36,7 @@ MonoBehaviour:
     Level: 3
     HP: 40
     ATK: 4.5
-    CD: 3
+    CD: 2
     IsMagic: 0
   - Name: ZombieMage
     Level: 6
@@ -47,7 +48,7 @@ MonoBehaviour:
     Level: 7
     HP: 112
     ATK: 10.8
-    CD: 3
+    CD: 2
     IsMagic: 0
   - Name: Golem
     Level: 10
