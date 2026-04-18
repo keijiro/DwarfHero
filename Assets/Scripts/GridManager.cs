@@ -218,6 +218,9 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
     {
         isProcessing = true;
 
+        // Capture if the clicked block was Ska for "Ska-Cleansing" logic
+        bool clickedSka = (grid[x, y] == BlockType.Ska);
+
         // Perform manual destruction animation
         yield return StartCoroutine(AnimateManualDestroy(renderers[x, y].gameObject));
         
@@ -231,7 +234,8 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
 
         do
         {
-            yield return StartCoroutine(HandleGravityAndRefill(firstRefill));
+            // If the clicked block was Ska, force the first refill to be non-Ska
+            yield return StartCoroutine(HandleGravityAndRefill(firstRefill, clickedSka && firstRefill));
             firstRefill = false;
             
             // Match detection
@@ -316,7 +320,7 @@ block.SetActive(false);
         }
     }
 
-    private System.Collections.IEnumerator HandleGravityAndRefill(bool isManualRefill)
+    private System.Collections.IEnumerator HandleGravityAndRefill(bool isManualRefill, bool forceNoSka = false)
     {
         // 1. Identify all falling blocks and refill blocks
         var fallingBlocks = new List<FallingBlockInfo>();
@@ -354,7 +358,7 @@ block.SetActive(false);
             for (int i = 0; i < emptyCount; i++)
             {
                 int targetY = GridHeight - emptyCount + i;
-                BlockType newType = DecideNewBlockType(isManualRefill);
+                BlockType newType = DecideNewBlockType(isManualRefill, forceNoSka);
                 
                 // Spawn above the grid
                 Vector3 spawnPos = GetWorldPosition(x, GridHeight + i + 0.5f);
@@ -403,7 +407,7 @@ block.SetActive(false);
                             AudioManager.Instance.PlaySEWithRandomPitch(SEType.Land, 0.3f);
                         }
                         }
-fb.renderer.transform.position = pos;
+    fb.renderer.transform.position = pos;
                 }
                 yield return null;
             }
@@ -419,12 +423,12 @@ fb.renderer.transform.position = pos;
         public bool isLanded = false;
     }
 
-    private BlockType DecideNewBlockType(bool isManualRefill)
+    private BlockType DecideNewBlockType(bool isManualRefill, bool forceNoSka = false)
     {
         if (isManualRefill)
         {
-            // Make the Ska rate adjustable for manual refills
-            if (Random.value < manualSkaRate) return BlockType.Ska;
+            // Ska-Cleansing: If forceNoSka is true, skip the Ska check
+            if (!forceNoSka && Random.value < manualSkaRate) return BlockType.Ska;
             return GetWeightedRandomType();
         }
         else
