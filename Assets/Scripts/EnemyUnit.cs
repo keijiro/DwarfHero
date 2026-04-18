@@ -4,9 +4,10 @@ using System.Collections;
 public class EnemyUnit : MonoBehaviour
 {
     [Header("Stats")]
+    public int Level = 1;
     public int HP = 30;
     public int MaxHP = 30;
-    public int AttackPower = 5;
+    public float AttackPower = 5f;
     public bool IsMagic = false;
     public bool IsDead = false;
 
@@ -19,19 +20,12 @@ public class EnemyUnit : MonoBehaviour
 
     private void Start()
     {
-        HP = MaxHP;
+        // Stats are now initialized by CombatManager during Spawn
         timer = Random.Range(1.0f, AttackInterval); // Random start offset
 
         animator = GetComponent<Animator>();
         visuals = GetComponent<CharacterVisuals>();
         if (visuals == null) visuals = gameObject.AddComponent<CharacterVisuals>();
-
-        // Detect if I am a ZombieMage based on name
-        if (gameObject.name.Contains("ZombieMage"))
-        {
-            IsMagic = true;
-            AttackPower = 3; // Magic is slightly weaker but ignores Shield
-        }
     }
 
     private void Update()
@@ -41,8 +35,20 @@ public class EnemyUnit : MonoBehaviour
         timer -= Time.deltaTime;
         if (timer <= 0f)
         {
-            CombatManager.Instance.AddEnemyAction(this, AttackPower, IsMagic);
-            timer = AttackInterval;
+            CombatManager.Instance.AddEnemyAction(this, Mathf.RoundToInt(AttackPower), IsMagic);
+            
+            // Formation-based frequency
+            float effectiveInterval = AttackInterval;
+            if (!IsMagic && CombatManager.Instance != null)
+            {
+                int index = CombatManager.Instance.ActiveEnemies.IndexOf(this);
+                if (index > 0)
+                {
+                    // Back row enemies attack slower: Interval / 0.75^index
+                    effectiveInterval /= Mathf.Pow(0.75f, index);
+                }
+            }
+            timer = effectiveInterval;
         }
     }
 
@@ -97,7 +103,7 @@ public class EnemyUnit : MonoBehaviour
         // Grant XP to player
         if (CombatManager.Instance != null)
         {
-            CombatManager.Instance.AddExperience(6);
+            CombatManager.Instance.AddExperience(5 * Level);
         }
 
         Destroy(gameObject, 0.1f);

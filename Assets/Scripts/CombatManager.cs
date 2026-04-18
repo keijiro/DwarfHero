@@ -47,6 +47,36 @@ public class CombatManager : MonoBehaviour
     public GameObject[] EnemyPrefabs;
     public Transform[] EnemySpawnPoints;
     public List<EnemyUnit> ActiveEnemies = new List<EnemyUnit>();
+    public int WaveCount = 0;
+
+    [System.Serializable]
+    public class EnemyDefinition
+    {
+        public string Name;
+        public int Level;
+        public int HP;
+        public int ATK;
+        public float CD;
+        public bool IsMagic;
+    }
+
+    private Dictionary<string, EnemyDefinition> enemyDefs = new Dictionary<string, EnemyDefinition>()
+    {
+        { "Slime", new EnemyDefinition { Name = "Slime", Level = 2, HP = 30, ATK = 4, CD = 3f, IsMagic = false } },
+        { "Skeleton", new EnemyDefinition { Name = "Skeleton", Level = 3, HP = 40, ATK = 5, CD = 3f, IsMagic = false } }, // 4.5 rounded to 5 for int? Plan says 4.5. I'll use float for ATK if possible or round. Let's use 5 (rounded up) or 4.
+        { "ZombieMage", new EnemyDefinition { Name = "ZombieMage", Level = 6, HP = 40, ATK = 4, CD = 3f, IsMagic = true } },
+        { "Orc", new EnemyDefinition { Name = "Orc", Level = 7, HP = 75, ATK = 5, CD = 3f, IsMagic = false } }, // 5.4 -> 5
+        { "Golem", new EnemyDefinition { Name = "Golem", Level = 10, HP = 150, ATK = 8, CD = 3f, IsMagic = false } } // 8.1 -> 8
+    };
+    // Wait, I should stick to the plan's exact values if possible. I'll change AttackPower to float in EnemyUnit if needed, but for now I'll use int.
+    // Let's use 4.5 -> 4, 5.4 -> 5, 8.1 -> 8 (Floor/Round as appropriate).
+    // Actually, I'll use floats in the definition and round when applying.
+
+    private int GetMaxLevelForWave(int wave)
+    {
+        // Plan: 6 + 1.2 * wave
+        return Mathf.FloorToInt(6f + 1.2f * wave);
+    }
 
     private LinkedList<CombatAction> eventQueue = new LinkedList<CombatAction>();
     private bool isProcessingQueue = false;
@@ -81,27 +111,32 @@ public class CombatManager : MonoBehaviour
     private int GetThresholdForLevel(int targetLevel)
     {
         if (targetLevel <= 1) return 0;
-
+        // Plan: Req(L) = 40 + 13(L-1)
+        // Total threshold is sum of requirements up to targetLevel - 1
         float total = 0;
         for (int i = 1; i < targetLevel; i++)
         {
-            if (i < 10)
-            {
-                // Linear increase from 36 (L1->2) to 120 (L10->11)
-                total += 36f + (i - 1) * (84f / 9f);
-            }
-            else
-            {
-                total += 120f;
-            }
+            total += 40f + (i - 1) * 13f;
         }
         return Mathf.RoundToInt(total);
     }
 
     private int GetMaxHPForLevel(int level)
     {
-        // Linear increase from 100 (L1) to 200 (L10)
+        // Plan: 100 + (100/9) * (level - 1)
         return Mathf.RoundToInt(100f + (level - 1) * (100f / 9f));
+    }
+
+    private int GetAttackForLevel(int level)
+    {
+        // Plan: 10 + 2 * (level - 1)
+        return 10 + 2 * (level - 1);
+    }
+
+    private int GetMagicAttackForLevel(int level)
+    {
+        // Plan: Attack / 3
+        return GetAttackForLevel(level) / 3;
     }
 
     private void Awake()
@@ -283,31 +318,37 @@ yield return null;
         if (effectiveCount <= 0) return;
 
         CombatAction action = new CombatAction();
+        int currentReq = GetThresholdForLevel(Level + 1) - GetThresholdForLevel(Level);
+
         switch (type)
         {
             case GridManager.BlockType.Sword:
                 action.Type = CombatActionType.PlayerAttack;
-                action.Value = effectiveCount * BaseAttack;
+                action.Value = effectiveCount * GetAttackForLevel(Level);
                 break;
             case GridManager.BlockType.Magic:
                 action.Type = CombatActionType.PlayerMagicAttack;
-                action.Value = effectiveCount * BaseMagicAttack;
+                action.Value = effectiveCount * GetMagicAttackForLevel(Level);
                 break;
             case GridManager.BlockType.Heal:
                 action.Type = CombatActionType.PlayerHeal;
-                action.Value = effectiveCount * BaseHeal;
+                // Plan: Attack * 0.6 (min 1)
+                action.Value = effectiveCount * Mathf.Max(1, Mathf.RoundToInt(GetAttackForLevel(Level) * 0.6f));
                 break;
             case GridManager.BlockType.Shield:
                 action.Type = CombatActionType.PlayerShield;
-                action.Value = effectiveCount * BaseShield;
+                // Plan: MaxHP / 10 (min 1)
+                action.Value = effectiveCount * Mathf.Max(1, MaxHP / 10);
                 break;
             case GridManager.BlockType.Gem:
                 action.Type = CombatActionType.PlayerExp;
-                action.Value = effectiveCount * BaseExp;
+                // Plan: Max(1, Req(Level)/10)
+                action.Value = effectiveCount * Mathf.Max(1, currentReq / 10);
                 break;
             case GridManager.BlockType.Key:
                 action.Type = CombatActionType.PlayerKey;
-                action.Value = effectiveCount * BaseExp;
+                // Plan: Same as Gem if already has key (Chest opening handled elsewhere)
+                action.Value = effectiveCount * Mathf.Max(1, currentReq / 10);
                 break;
             }
 
@@ -721,7 +762,8 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
 
             // Opening success logic
             HasKey = false;
-            AddExperience(KeyBonusExp);
+            int currentReq = GetThresholdForLevel(Level + 1) - GetThresholdForLevel(Level);
+            AddExperience(Mathf.Max(1, currentReq / 4));
             UpdateUI();
 
             // Play elegant harp SE
@@ -884,27 +926,57 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         foreach (var enemy in ActiveEnemies) if (enemy != null) Destroy(enemy.gameObject);
         ActiveEnemies.Clear();
 
-        int count = Random.Range(2, 6); 
-        for (int i = 0; i < count; i++)
+        WaveCount++;
+        int budget = GetMaxLevelForWave(WaveCount);
+        int currentBudget = budget;
+        
+        int spawnIndex = 0;
+        while (currentBudget >= 2) // Minimum level (Slime) is 2
         {
-            if (EnemyPrefabs.Length == 0) break;
-            
-            GameObject prefab = EnemyPrefabs[Random.Range(0, EnemyPrefabs.Length)];
-            Vector3 pos = EnemySpawnPoints.Length > i ? EnemySpawnPoints[i].position : new Vector3(i * 1.5f - 3f, 3.5f, 0);
-            
+            List<int> validIndices = new List<int>();
+            for (int i = 0; i < EnemyPrefabs.Length; i++)
+            {
+                // Note: prefab.name might have "(Clone)" if it was already instantiated, 
+                // but here we are using the array from inspector.
+                string name = EnemyPrefabs[i].name;
+                if (enemyDefs.ContainsKey(name) && enemyDefs[name].Level <= currentBudget)
+                {
+                    validIndices.Add(i);
+                }
+            }
+
+            if (validIndices.Count == 0) break;
+            if (spawnIndex >= EnemySpawnPoints.Length) break;
+
+            int prefabIndex = validIndices[Random.Range(0, validIndices.Count)];
+            GameObject prefab = EnemyPrefabs[prefabIndex];
+            EnemyDefinition def = enemyDefs[prefab.name];
+
+            currentBudget -= def.Level;
+
+            Vector3 pos = EnemySpawnPoints[spawnIndex].position;
             GameObject enemyObj = Instantiate(prefab, pos, Quaternion.identity);
             EnemyUnit unit = enemyObj.GetComponent<EnemyUnit>();
             if (unit == null) unit = enemyObj.AddComponent<EnemyUnit>();
-            
+
+            // Initialize stats from definition
+            unit.Level = def.Level;
+            unit.MaxHP = def.HP;
+            unit.HP = def.HP;
+            unit.AttackPower = def.ATK;
+            unit.AttackInterval = def.CD;
+            unit.IsMagic = def.IsMagic;
+
             ActiveEnemies.Add(unit);
-            
+
             // White fade flash
             CharacterVisuals v = unit.GetComponent<CharacterVisuals>();
             if (v == null) v = unit.gameObject.AddComponent<CharacterVisuals>();
             StartCoroutine(v.FadeFlashRoutine(Color.white, 0.5f));
-            
+
+            spawnIndex++;
             yield return new WaitForSeconds(0.4f);
-}
-        Debug.Log($"New wave spawned sequentially: {count} enemies.");
+        }
+        Debug.Log($"Wave {WaveCount} spawned. Budget: {budget}, Used: {budget - currentBudget}. {ActiveEnemies.Count} enemies.");
     }
 }
