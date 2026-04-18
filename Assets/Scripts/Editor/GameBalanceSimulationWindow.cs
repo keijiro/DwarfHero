@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
 
 public class GameBalanceSimulationWindow : EditorWindow
 {
-    private GameBalanceData balanceData;
+private GameBalanceData balanceData;
     private int previewWave = 1;
     private Vector2 scrollPos;
 
@@ -109,19 +110,45 @@ public class GameBalanceSimulationWindow : EditorWindow
 
         if (balanceData.EnemyDefinitions == null || balanceData.EnemyDefinitions.Count == 0) return;
 
-        string example = "Examples: ";
+        // Save current random state and init with a deterministic seed for this wave
+        Random.State oldState = Random.state;
+        Random.InitState(previewWave * 100);
+
+        string composition = "Example Party: ";
         int tempBudget = budget;
-        int count = 0;
-        foreach (var def in balanceData.EnemyDefinitions)
+        Dictionary<string, int> counts = new Dictionary<string, int>();
+
+        // Limit attempts to avoid infinite loops if data is misconfigured
+        int attempts = 0;
+        while (tempBudget >= 2 && attempts < 15)
         {
-            if (def.Level <= 0) continue;
-            if (def.Level <= tempBudget)
-            {
-                int num = tempBudget / def.Level;
-                example += string.Format("{0}x {1}, ", num, def.Name);
-                if (++count > 2) break;
-            }
+            var validEnemies = balanceData.EnemyDefinitions.FindAll(e => e.Level > 0 && e.Level <= tempBudget);
+            if (validEnemies.Count == 0) break;
+
+            var selected = validEnemies[Random.Range(0, validEnemies.Count)];
+            tempBudget -= selected.Level;
+            
+            if (counts.ContainsKey(selected.Name)) counts[selected.Name]++;
+            else counts[selected.Name] = 1;
+            attempts++;
         }
-        EditorGUILayout.LabelField(example.TrimEnd(' ', ','));
+
+        if (counts.Count > 0)
+        {
+            foreach (var pair in counts)
+            {
+                composition += string.Format("{0}x {1}, ", pair.Value, pair.Key);
+            }
+            composition = composition.TrimEnd(' ', ',');
+        }
+        else
+        {
+            composition += "None (Budget too low)";
+        }
+
+        EditorGUILayout.LabelField(composition);
+        
+        // Restore random state
+        Random.state = oldState;
     }
 }
