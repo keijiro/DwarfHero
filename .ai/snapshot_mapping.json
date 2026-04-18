@@ -2621,6 +2621,12 @@
       "conversation_id": "18ff67a1-bebb-4e2b-aa68-50bea1252b36",
       "content": "HUDのHPバーの下部にシールドを表示する青いバーを追加しました。\n\n### 変更内容：\n\n1.  **UXML (`Main.uxml`)**:\n    *   既存の `hp-bar-bg` の中に、新しく `shield-bar-fill` という要素を追加しました。これにより、HPバーと同じ背景領域を共有します。\n2.  **USS (`Main.uss`)**:\n    *   `progress-bar-bg` のレイアウトを `column`（垂直）に変更し、HPバーとシールドバーが上下に並ぶようにしました。\n    *   HPバーを上部70%、シールドバーを下部30%の厚さに設定しました。\n    *   シールドバーの色を鮮やかな青（`#0074D9`）に設定しました。\n3.  **CombatManager (`CombatManager.cs`)**:\n    *   UI初期化時に新しいシールドバーの要素を取得するようにしました。\n    *   `UpdateUI` メソッドにて、現在のシールド値を最大HPに対する割合として計算し、バーの長さに反映させるロジックを追加しました。\n\nこれで、ダメージを受けた際に減少する赤いHPバーと、それを守る青いシールドバーの状況が、ひと目で直感的に把握できるようになりました。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "91a1b65e-4912-4c04-9131-b34c56c80c5f",
+      "conversation_id": "18ff67a1-bebb-4e2b-aa68-50bea1252b36",
+      "content": "現在、すでに鍵を持っている状態で新しく鍵ブロックを消した場合に得られる経験値は、**「Gemブロック1個あたりと同じ経験値量」**に設定されています。\n\n### 具体的な計算：\n**獲得経験値 = 消した鍵ブロック数 × (次のレベルへの必要経験値 / GemExpDivisor)**\n\n*   **GemExpDivisor** はデフォルトで **20** です。\n*   例えば、次のレベルまで 400 EXP 必要で、鍵ブロックを3個消した場合、 `3 * (400 / 20) =` **60 EXP** が手に入ります。\n\nこれは `CombatManager.cs` の `AddPlayerAction` メソッド内で、`GridManager.BlockType.Key` のケースが `GemExpDivisor` を参照して計算されているためです。もし「鍵の所有中は経験値を多くしたい」といった調整が必要であれば、`GameBalanceData` に鍵専用の係数を追加することも可能です。",
+      "snapshot_message_type": 1
     }
   ]
 }
