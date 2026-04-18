@@ -319,33 +319,56 @@ yield return null;
         switch (type)
         {
             case GridManager.BlockType.Sword:
-                action.Type = CombatActionType.PlayerAttack;
-                // Value per unit (BaseMatchCount blocks = 1 unit)
-                action.Value = Mathf.RoundToInt((effectiveCount / baseMatch) * GetAttackForLevel(Level));
+                {
+                    action.Type = CombatActionType.PlayerAttack;
+                    // Value per unit (BaseMatchCount blocks = 1 unit)
+                    action.Value = Mathf.RoundToInt((effectiveCount / baseMatch) * GetAttackForLevel(Level));
+                }
                 break;
             case GridManager.BlockType.Magic:
-                action.Type = CombatActionType.PlayerMagicAttack;
-                action.Value = Mathf.RoundToInt((effectiveCount / baseMatch) * GetMagicAttackForLevel(Level));
+                {
+                    action.Type = CombatActionType.PlayerMagicAttack;
+                    action.Value = Mathf.RoundToInt((effectiveCount / baseMatch) * GetMagicAttackForLevel(Level));
+                }
                 break;
             case GridManager.BlockType.Heal:
-                action.Type = CombatActionType.PlayerHeal;
-                float healRatio = (balanceData != null) ? balanceData.HealAttackRatio : 0.6f;
-                action.Value = Mathf.RoundToInt((effectiveCount / baseMatch) * GetAttackForLevel(Level) * healRatio);
+                {
+                    if (CurrentHP >= MaxHP)
+                    {
+                        // Full HP: Convert Heal to EXP (1/3 of Gem value)
+                        action.Type = CombatActionType.PlayerExp;
+                        int gemDiv = (balanceData != null) ? balanceData.GemExpDivisor : 20;
+                        int gemExpVal = effectiveCount * Mathf.Max(1, currentReq / gemDiv);
+                        action.Value = Mathf.Max(1, gemExpVal / 3);
+                    }
+                    else
+                    {
+                        action.Type = CombatActionType.PlayerHeal;
+                        float healRatio = (balanceData != null) ? balanceData.HealAttackRatio : 0.6f;
+                        action.Value = Mathf.RoundToInt((effectiveCount / baseMatch) * GetAttackForLevel(Level) * healRatio);
+                    }
+                }
                 break;
             case GridManager.BlockType.Shield:
-                action.Type = CombatActionType.PlayerShield;
-                int shieldDivisor = (balanceData != null) ? balanceData.ShieldMaxBlocksToReachMaxHP : 20;
-                action.Value = effectiveCount * Mathf.Max(1, MaxHP / shieldDivisor);
+                {
+                    action.Type = CombatActionType.PlayerShield;
+                    int shieldDivisor = (balanceData != null) ? balanceData.ShieldMaxBlocksToReachMaxHP : 20;
+                    action.Value = effectiveCount * Mathf.Max(1, MaxHP / shieldDivisor);
+                }
                 break;
             case GridManager.BlockType.Gem:
-                action.Type = CombatActionType.PlayerExp;
-                int gemDivisor = (balanceData != null) ? balanceData.GemExpDivisor : 20;
-                action.Value = effectiveCount * Mathf.Max(1, currentReq / gemDivisor);
+                {
+                    action.Type = CombatActionType.PlayerExp;
+                    int gemDivisor = (balanceData != null) ? balanceData.GemExpDivisor : 20;
+                    action.Value = effectiveCount * Mathf.Max(1, currentReq / gemDivisor);
+                }
                 break;
             case GridManager.BlockType.Key:
-                action.Type = CombatActionType.PlayerKey;
-                int keyDivisor = (balanceData != null) ? balanceData.GemExpDivisor : 20;
-                action.Value = effectiveCount * Mathf.Max(1, currentReq / keyDivisor);
+                {
+                    action.Type = CombatActionType.PlayerKey;
+                    int keyDivisor = (balanceData != null) ? balanceData.GemExpDivisor : 20;
+                    action.Value = effectiveCount * Mathf.Max(1, currentReq / keyDivisor);
+                }
                 break;
         }
 
