@@ -2477,6 +2477,12 @@
       "conversation_id": "18ff67a1-bebb-4e2b-aa68-50bea1252b36",
       "content": "プランが承認されました。このプランの通りに実装を開始してもよろしいでしょうか？（「はい」とお答えいただければ、全ステップを順次実行いたします。）",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_2",
+      "conversation_id": "18ff67a1-bebb-4e2b-aa68-50bea1252b36",
+      "content": "はい、進めてください。",
+      "snapshot_message_type": 0
     }
   ]
 }
