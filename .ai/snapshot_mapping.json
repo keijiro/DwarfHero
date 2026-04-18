@@ -2591,6 +2591,12 @@
       "conversation_id": "18ff67a1-bebb-4e2b-aa68-50bea1252b36",
       "content": "はい、現在設定されている全ての敵の `CD` 値は **「3（3秒に1回）」** で間違いありません。\n\nこれまでの調整において、基本となるスライムの攻撃頻度（3秒に1回）を基準として、他の敵も同じ頻度（もしくはその基準に合わせた強さのバランス）として設定されていたため、すべて同じ値になっています。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "50af1935-2d55-4b2f-85e1-d5a4b4d23f89",
+      "conversation_id": "18ff67a1-bebb-4e2b-aa68-50bea1252b36",
+      "content": "インスペクターで値を変更した際に、シミュレーターウィンドウ（Simulator）が即座に再描画（Repaint）されるように機能を拡張しました。\n\n### 実装した修正：\n1.  **インスペクター側 (`GameBalanceDataEditor.cs`)**:\n    *   値の変更を検知する `EditorGUI.BeginChangeCheck` と `EndChangeCheck` を適切に配置しました。\n    *   変更があった際、もしシミュレーターウィンドウが開いていれば、そのウィンドウに対して `Repaint()` を発行するようにしました。\n2.  **シミュレーターウィンドウ側 (`GameBalanceSimulationWindow.cs`)**:\n    *   Undo/Redo（元に戻す/やり直し）が行われた際にも表示が更新されるよう、`Undo.undoRedoPerformed` イベントをフックしました。\n\nこれにより、インスペクターのスライダーを動かしたり数値を入力したりするのと同時に、別ウィンドウの成長グラフや戦闘分析の結果がリアルタイムに反映されるようになり、より直感的なバランス調整が可能になりました。",
+      "snapshot_message_type": 1
     }
   ]
 }

@@ -15,16 +15,32 @@ private GameBalanceData balanceData;
         window.Show();
     }
 
+    private void OnEnable()
+    {
+        Undo.undoRedoPerformed += OnUndoRedo;
+    }
+
+    private void OnDisable()
+    {
+        Undo.undoRedoPerformed -= OnUndoRedo;
+    }
+
+    private void OnUndoRedo()
+    {
+        Repaint();
+    }
+
     private void OnGUI()
     {
-        if (balanceData == null)
+        // ... (existing check)
+        
+        // Repaint if the target asset has been modified in the inspector
+        if (balanceData != null && GUI.changed)
         {
-            EditorGUILayout.HelpBox("Select a GameBalanceData asset and click 'Open Simulation Window'.", MessageType.Warning);
-            balanceData = (GameBalanceData)EditorGUILayout.ObjectField("Balance Data", balanceData, typeof(GameBalanceData), false);
-            return;
+            Repaint();
         }
-
-        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+        
+        // ...
 
         EditorGUILayout.LabelField("Simulation & Analysis: " + balanceData.name, EditorStyles.boldLabel);
         EditorGUILayout.Space(10);

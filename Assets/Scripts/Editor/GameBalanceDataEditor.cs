@@ -60,8 +60,22 @@ DrawFieldWithDescription("PlayerBaseHP", "Maximum HP at Level 1.");
         DrawFieldWithDescription("BudgetIncreasePerWave", "The increase in level budget for each subsequent wave.");
         DrawFieldWithDescription("FormationPenaltyFactor", "The attack frequency reduction factor for enemies in the back row. (e.g., 0.75 means 25% slower).");
 
-        serializedObject.ApplyModifiedProperties();
-    }
+        if (EditorGUI.EndChangeCheck())
+        {
+            serializedObject.ApplyModifiedProperties();
+            // Force the simulation window to repaint if it is open
+            if (HasWindow<GameBalanceSimulationWindow>())
+            {
+                EditorWindow.GetWindow<GameBalanceSimulationWindow>().Repaint();
+            }
+        }
+        }
+
+        private bool HasWindow<T>() where T : EditorWindow
+        {
+        T[] windows = Resources.FindObjectsOfTypeAll<T>();
+        return windows != null && windows.Length > 0;
+        }
 
     private void DrawFieldWithDescription(string propertyName, string description)
     {
