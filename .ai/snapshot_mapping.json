@@ -2525,6 +2525,12 @@
       "conversation_id": "18ff67a1-bebb-4e2b-aa68-50bea1252b36",
       "content": "ScriptableObject の定義からそのインスペクターの実装までを新たなプランとして策定してください。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "8ec901ca-58a3-430e-9159-7a02d7c37cea",
+      "conversation_id": "18ff67a1-bebb-4e2b-aa68-50bea1252b36",
+      "content": "プランが承認されました。これより実装を開始してもよろしいでしょうか？",
+      "snapshot_message_type": 1
     }
   ]
 }
