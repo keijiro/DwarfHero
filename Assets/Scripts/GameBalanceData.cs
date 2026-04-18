@@ -4,6 +4,7 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName = "GameBalanceData", menuName = "Combat/GameBalanceData")]
 public class GameBalanceData : ScriptableObject
 {
+    public float BaseMatchCount = 3.0f;
     public float SkaDivisor = 3.0f;
 
     public int PlayerBaseHP = 100;

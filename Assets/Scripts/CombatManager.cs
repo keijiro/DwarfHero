@@ -302,6 +302,7 @@ yield return null;
     public void AddPlayerAction(GridManager.BlockType type, int matchCount, int skaCount, Vector3 worldPos)
     {
         float divisor = (balanceData != null) ? balanceData.SkaDivisor : 3.0f;
+        float baseMatch = (balanceData != null) ? balanceData.BaseMatchCount : 3.0f;
         int effectiveCount = matchCount + Mathf.FloorToInt(skaCount / divisor);
         if (effectiveCount <= 0) return;
 
@@ -312,16 +313,17 @@ yield return null;
         {
             case GridManager.BlockType.Sword:
                 action.Type = CombatActionType.PlayerAttack;
-                action.Value = effectiveCount * GetAttackForLevel(Level);
+                // Value per unit (BaseMatchCount blocks = 1 unit)
+                action.Value = Mathf.RoundToInt((effectiveCount / baseMatch) * GetAttackForLevel(Level));
                 break;
             case GridManager.BlockType.Magic:
                 action.Type = CombatActionType.PlayerMagicAttack;
-                action.Value = effectiveCount * GetMagicAttackForLevel(Level);
+                action.Value = Mathf.RoundToInt((effectiveCount / baseMatch) * GetMagicAttackForLevel(Level));
                 break;
             case GridManager.BlockType.Heal:
                 action.Type = CombatActionType.PlayerHeal;
                 float healRatio = (balanceData != null) ? balanceData.HealAttackRatio : 0.6f;
-                action.Value = effectiveCount * Mathf.Max(1, Mathf.RoundToInt(GetAttackForLevel(Level) * healRatio));
+                action.Value = Mathf.RoundToInt((effectiveCount / baseMatch) * GetAttackForLevel(Level) * healRatio);
                 break;
             case GridManager.BlockType.Shield:
                 action.Type = CombatActionType.PlayerShield;
