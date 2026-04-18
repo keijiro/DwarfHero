@@ -55,20 +55,20 @@ public class CombatManager : MonoBehaviour
         public string Name;
         public int Level;
         public int HP;
-        public int ATK;
+        public float ATK;
         public float CD;
         public bool IsMagic;
     }
 
     private Dictionary<string, EnemyDefinition> enemyDefs = new Dictionary<string, EnemyDefinition>()
     {
-        { "Slime", new EnemyDefinition { Name = "Slime", Level = 2, HP = 30, ATK = 4, CD = 3f, IsMagic = false } },
-        { "Skeleton", new EnemyDefinition { Name = "Skeleton", Level = 3, HP = 40, ATK = 5, CD = 3f, IsMagic = false } }, // 4.5 rounded to 5 for int? Plan says 4.5. I'll use float for ATK if possible or round. Let's use 5 (rounded up) or 4.
-        { "ZombieMage", new EnemyDefinition { Name = "ZombieMage", Level = 6, HP = 40, ATK = 4, CD = 3f, IsMagic = true } },
-        { "Orc", new EnemyDefinition { Name = "Orc", Level = 7, HP = 75, ATK = 5, CD = 3f, IsMagic = false } }, // 5.4 -> 5
-        { "Golem", new EnemyDefinition { Name = "Golem", Level = 10, HP = 150, ATK = 8, CD = 3f, IsMagic = false } } // 8.1 -> 8
+        { "Slime", new EnemyDefinition { Name = "Slime", Level = 2, HP = 30, ATK = 4f, CD = 3f, IsMagic = false } },
+        { "Skeleton", new EnemyDefinition { Name = "Skeleton", Level = 3, HP = 40, ATK = 4.5f, CD = 3f, IsMagic = false } },
+        { "ZombieMage", new EnemyDefinition { Name = "ZombieMage", Level = 6, HP = 40, ATK = 4f, CD = 3f, IsMagic = true } },
+        { "Orc", new EnemyDefinition { Name = "Orc", Level = 7, HP = 112, ATK = 10.8f, CD = 3f, IsMagic = false } },
+        { "Golem", new EnemyDefinition { Name = "Golem", Level = 10, HP = 225, ATK = 16.2f, CD = 3f, IsMagic = false } }
     };
-    // Wait, I should stick to the plan's exact values if possible. I'll change AttackPower to float in EnemyUnit if needed, but for now I'll use int.
+// Wait, I should stick to the plan's exact values if possible. I'll change AttackPower to float in EnemyUnit if needed, but for now I'll use int.
     // Let's use 4.5 -> 4, 5.4 -> 5, 8.1 -> 8 (Floor/Round as appropriate).
     // Actually, I'll use floats in the definition and round when applying.
 
