@@ -40,7 +40,7 @@ public class GameBalanceSimulationWindow : EditorWindow
     private void DrawPlayerProgressionTable()
     {
         EditorGUILayout.LabelField("Player Progression Preview", EditorStyles.boldLabel);
-        EditorGUILayout.HelpBox("レベルごとのステータスと必要経験値の推移を表示します。", MessageType.Info);
+        EditorGUILayout.HelpBox("Displays the progression of stats and EXP requirements for each level.", MessageType.Info);
 
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.BeginHorizontal();
@@ -72,14 +72,14 @@ public class GameBalanceSimulationWindow : EditorWindow
     private void DrawMonsterAnalysis()
     {
         EditorGUILayout.LabelField("Monster Combat Analysis (vs Lv 1 Player)", EditorStyles.boldLabel);
-        EditorGUILayout.HelpBox("Lv1プレイヤーとの戦闘シミュレーション。何回で倒せるかを表示します。", MessageType.Info);
+        EditorGUILayout.HelpBox("Combat simulation vs a Lv1 player. Shows how many hits are needed to kill/die.", MessageType.Info);
 
         int playerAtk = balanceData.PlayerBaseAttack;
         int playerHP = balanceData.PlayerBaseHP;
 
         if (balanceData.EnemyDefinitions == null || balanceData.EnemyDefinitions.Count == 0)
         {
-            EditorGUILayout.HelpBox("敵が定義されていません。", MessageType.Warning);
+            EditorGUILayout.HelpBox("No enemies defined.", MessageType.Warning);
             return;
         }
 
@@ -90,7 +90,7 @@ public class GameBalanceSimulationWindow : EditorWindow
             float hitsToKillEnemy = playerAtk > 0 ? (float)enemy.HP / playerAtk : float.PositiveInfinity;
             float hitsToKillPlayer = enemy.ATK > 0 ? (float)playerHP / enemy.ATK : float.PositiveInfinity;
 
-            string analysis = string.Format("{0}: 撃破まで {1:F1} 回 / プレイヤー死亡まで {2:F1} 回", 
+            string analysis = string.Format("{0}: {1:F1} hits to kill / {2:F1} hits to die", 
                 enemy.Name, hitsToKillEnemy, hitsToKillPlayer);
             
             EditorGUILayout.LabelField(analysis);
@@ -100,16 +100,16 @@ public class GameBalanceSimulationWindow : EditorWindow
     private void DrawWaveSimulator()
     {
         EditorGUILayout.LabelField("Wave Simulator", EditorStyles.boldLabel);
-        EditorGUILayout.HelpBox("ウェーブごとの敵出現予算をシミュレーションします。", MessageType.Info);
+        EditorGUILayout.HelpBox("Simulates the enemy spawn budget for each wave.", MessageType.Info);
         
         previewWave = EditorGUILayout.IntSlider("Preview Wave", previewWave, 1, 50);
 
         int budget = Mathf.FloorToInt(balanceData.InitialWaveBudget + (previewWave - 1) * balanceData.BudgetIncreasePerWave);
-        EditorGUILayout.LabelField(string.Format("Wave {0} の予算: {1}", previewWave, budget));
+        EditorGUILayout.LabelField(string.Format("Budget for Wave {0}: {1}", previewWave, budget));
 
         if (balanceData.EnemyDefinitions == null || balanceData.EnemyDefinitions.Count == 0) return;
 
-        string example = "出現例: ";
+        string example = "Examples: ";
         int tempBudget = budget;
         int count = 0;
         foreach (var def in balanceData.EnemyDefinitions)
