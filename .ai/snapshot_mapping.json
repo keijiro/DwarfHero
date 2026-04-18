@@ -2555,6 +2555,12 @@
       "conversation_id": "18ff67a1-bebb-4e2b-aa68-50bea1252b36",
       "content": "「Balance Simulator」ウィンドウ内のテキストもすべて英語に統一しました。\n\nこれで、`GameBalanceData` アセットのインスペクターでの各項目の説明、および独立したシミュレーションウィンドウ内の分析表示がすべて英語で表示されるようになりました。\n\n### 更新されたツールの構成：\n- **Inspector (`GameBalanceDataEditor.cs`)**: 各設定項目の直後に英語の解説ラベルが表示されます。最上部の「Open Simulation Window」ボタンでシミュレーターを開きます。\n- **Simulator Window (`GameBalanceSimulationWindow.cs`)**: 成長推移、モンスター分析、ウェーブシミュレーションの結果を英語で表示します。\n\n他に調整が必要な箇所はありますでしょうか？",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "d52c1e06-7547-420a-a598-005edb20d97e",
+      "conversation_id": "18ff67a1-bebb-4e2b-aa68-50bea1252b36",
+      "content": "スクリーンショットでのご指摘、ありがとうございました。\n\nラベルが重複していた理由は、元のスクリプトに記述していた `[Header]` 属性と、カスタムインスペクターで手動で追加した `EditorGUILayout.LabelField` が両方表示されていたためです。\n\n### 修正内容：\n\n1.  **`GameBalanceData.cs` から属性を削除**:\n    *   `[Header]` および `[Tooltip]` 属性をすべて削除しました。これにより、インスペクターの表示制御を完全にカスタムエディター側へ移行しました。\n2.  **`GameBalanceDataEditor.cs` の整理**:\n    *   すべてのセクション（Matching Rules, Player Scaling, Experience Scaling, Actions, Enemies, Wave Balancing）に対して、一貫したデザインでセクションラベルが表示されるように調整しました。\n\nこれで重複が解消され、各項目の下に英語の説明テキストが配置された、スッキリとしたインスペクター画面になっているはずです。ご確認いただけますでしょうか？",
+      "snapshot_message_type": 1
     }
   ]
 }

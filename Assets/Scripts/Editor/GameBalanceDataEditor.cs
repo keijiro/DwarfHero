@@ -26,11 +26,12 @@ public class GameBalanceDataEditor : Editor
 
         EditorGUILayout.Space(10);
 
+        EditorGUILayout.LabelField("Matching Rules", EditorStyles.boldLabel);
         DrawFieldWithDescription("SkaDivisor", "The multiplier for Ska blocks. (e.g., if set to 3.0, 3 Ska blocks count as 1 normal match).");
         
         EditorGUILayout.Space(10);
         EditorGUILayout.LabelField("Player Scaling", EditorStyles.boldLabel);
-        DrawFieldWithDescription("PlayerBaseHP", "Maximum HP at Level 1.");
+DrawFieldWithDescription("PlayerBaseHP", "Maximum HP at Level 1.");
         DrawFieldWithDescription("PlayerBaseAttack", "Base Physical Attack power at Level 1.");
         DrawFieldWithDescription("HPIncreasePerLevel", "Amount of Max HP added per level up.");
         DrawFieldWithDescription("AttackIncreasePerLevel", "Amount of Physical Attack power added per level up.");
@@ -49,6 +50,7 @@ public class GameBalanceDataEditor : Editor
         DrawFieldWithDescription("ShieldMaxBlocksToReachMaxHP", "Number of blocks required to reach full shield (equal to Max HP).");
 
         EditorGUILayout.Space(10);
+        EditorGUILayout.LabelField("Enemies", EditorStyles.boldLabel);
         DrawFieldWithDescription("EnemyDefinitions", "List of base settings for each monster type.");
 
         EditorGUILayout.Space(10);
