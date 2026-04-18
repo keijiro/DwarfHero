@@ -32,18 +32,23 @@ private GameBalanceData balanceData;
 
     private void OnGUI()
     {
-        // ... (existing check)
-        
+        if (balanceData == null)
+        {
+            EditorGUILayout.HelpBox("Select a GameBalanceData asset and click 'Open Simulation Window'.", MessageType.Warning);
+            balanceData = (GameBalanceData)EditorGUILayout.ObjectField("Balance Data", balanceData, typeof(GameBalanceData), false);
+            return;
+        }
+
         // Repaint if the target asset has been modified in the inspector
-        if (balanceData != null && GUI.changed)
+        if (GUI.changed)
         {
             Repaint();
         }
-        
-        // ...
+
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 
         EditorGUILayout.LabelField("Simulation & Analysis: " + balanceData.name, EditorStyles.boldLabel);
-        EditorGUILayout.Space(10);
+EditorGUILayout.Space(10);
 
         DrawPlayerProgressionTable();
         EditorGUILayout.Space(20);
