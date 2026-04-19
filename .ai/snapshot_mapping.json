@@ -2783,6 +2783,12 @@
       "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
       "content": "いい感じだと思います。１点だけ懸念があり、\n\nIf stuck, Shatter a block or Blast a \"?\" to find matches.\n\nスタック（マッチできない状況）してしまったら、マッチできないわけですから、そもそも Blast は使えないと言うことになり、ここで Blast せよとアドバイスするのは違う気がします。どん詰まりになったらとにかく \"?\" を Shatter しまくれば打開できるかもしれない・・・というアドバイスになります。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "ef2545c0-efa0-48c6-9c50-ba23eb6d843d",
+      "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
+      "content": "ご指摘の通りです。マッチが発生しない（＝詰んでいる）状況では、マッチを起点とする **Blast** は発動できません。\n\nこの場合のアドバイスは「手動で（Shatterして）盤面を動かし、新しい状況を作れ」というものになります。特に「？」を Shatter すればアイテムが降ってくるため、局面を大きく変えるきっかけになります。\n\nこれを踏まえて、該当箇所を修正し、最終的なリストを作成しました。\n\n### 修正したTIPS\n*   **If stuck, Shatter a block or a \"?\" to find new matches.**\n    （詰まったら、ブロックか『？』を砕いて（Shatter）、新しいマッチを見つけよう。）\n    ※ Shatterは最下段しかできませんが、基本操作である Shatter を通じて盤面を動かすことを促す表現にしました。\n\n---\n\n### 最終確定版：用語統一済みTIPS（英語）\n\n| 日本語原文 | 英語TIPS（Match, Shatter, Blast を使用） |\n| :--- | :--- |\n| シールドをためることで敵の物理攻撃をブロックできる | **Match Shields to block incoming physical attacks.** |\n| “?” ブロックは揃えても消すことができないので注意 | **\"?\" blocks cannot be matched. Shatter or Blast them.** |\n| 魔法は全体攻撃なので多数の敵に対して有利だ | **Magic matches hit all enemies on screen.** |\n| アイテムブロックを壊すと必ず “?” ブロックが出現する | **Shattering an item drops a \"?\" block from above.** |\n| 魔法攻撃はシールドでブロックできないので注意しよう | **Shields cannot block enemy magic attacks.** |\n| 宝箱を開けるには鍵が必要だが、鍵は１つしか持てない | **A Key is needed for chests, but you can only carry one.** |\n| “?” ブロックを消すと必ずアイテムブロックが出現する | **Shattering or Blasting a \"?\" drops an item from above.** |\n| 宝石ブロックをマッチして経験値を得よう | **Match Gems to gain EXP.** |\n| マッチできなくなったら “?” ブロックを消せば助かるかもしれない | **If stuck, Shatter a block or a \"?\" to find new matches.** |\n| HP満タン時に薬ブロックをマッチすると経験値が得られる | **Matching Heal blocks at full HP grants EXP.** |\n| 鍵を持っている時に鍵ブロックをマッチすると経験値が得られる | **Matching Keys while holding one grants EXP.** |\n| 隊列の後ろにいる敵は攻撃速度が遅い | **Enemies in the back row attack more slowly.** |\n\n---\n\nこれで全ての用語の整合性が取れ、ゲームの仕様（特に連鎖、手動操作、リフィルの挙動）を正確に反映した英語TIPSとなりました。\n\nこのテキスト群を使用して、スクリプトへの組み込みや、UIToolkit での表示処理（例えば `CombatManager` の `UpdateUI` 周りや、タイトル画面での表示など）に進むことができます。必要であれば実装のサポートもいたしますので、いつでもお声がけください。",
+      "snapshot_message_type": 1
     }
   ]
 }
