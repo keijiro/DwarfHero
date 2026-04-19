@@ -145,14 +145,16 @@ EditorGUILayout.Space(10);
         int spawnCount = 0;
         int maxSpawn = 5; // Matches EnemySpawnPoints.Length in CombatManager
 
+        // Matching CombatManager's dynamic weighting logic
+        float power = 1.0f + (float)previewWave / 10.0f;
+
         while (tempBudget >= 2 && spawnCount < maxSpawn)
         {
             var validEnemies = balanceData.EnemyDefinitions.FindAll(e => e.Level > 0 && e.Level <= tempBudget);
             if (validEnemies.Count == 0) break;
 
-            // Weighted selection matching CombatManager logic (Level^2)
             float totalWeight = 0;
-            foreach (var e in validEnemies) totalWeight += Mathf.Pow(e.Level, 2);
+            foreach (var e in validEnemies) totalWeight += Mathf.Pow(e.Level, power);
 
             float r = Random.value * totalWeight;
             float cumulative = 0;
@@ -160,7 +162,7 @@ EditorGUILayout.Space(10);
             
             foreach (var e in validEnemies)
             {
-                cumulative += Mathf.Pow(e.Level, 2);
+                cumulative += Mathf.Pow(e.Level, power);
                 if (r <= cumulative)
                 {
                     selected = e;

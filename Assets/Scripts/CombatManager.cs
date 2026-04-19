@@ -1051,14 +1051,16 @@ tipClicked = false;
             if (validIndices.Count == 0) break;
             if (spawnIndex >= EnemySpawnPoints.Length) break;
 
-            // Weighted selection based on Level^2 to favor stronger enemies as budget allows
+            // Dynamic weighted selection: Weight = Level ^ (1 + WaveCount / 10)
+            // Starts nearly uniform and increasingly favors stronger enemies as waves progress.
+            float power = 1.0f + (float)WaveCount / 10.0f;
             float totalWeight = 0;
             List<float> weights = new List<float>();
             foreach (int index in validIndices)
             {
                 string name = EnemyPrefabs[index].name;
                 int level = enemyDefs[name].Level;
-                float weight = Mathf.Pow(level, 2); // Favor higher level enemies
+                float weight = Mathf.Pow(level, power);
                 weights.Add(weight);
                 totalWeight += weight;
             }
