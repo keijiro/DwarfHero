@@ -298,3 +298,14 @@ text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
     white-space: normal;
     }
 
+    .tip-icon {
+        position: absolute;
+        top: -40px;
+        left: -40px;
+        width: 80px;
+        height: 80px;
+        background-image: url("project://database/Assets/Sprites/UI/Icon_Tip.png");
+        -unity-background-scale-mode: scale-to-fit;
+        display: none;
+    }
+

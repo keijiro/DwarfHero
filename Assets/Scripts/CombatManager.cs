@@ -83,6 +83,7 @@ private Label shieldText;
     public Sprite ChestOpenSprite;
     private VisualElement treasureOverlay;
     private VisualElement treasureImage;
+    private VisualElement tipIcon;
     private VisualElement dialogueBox;
     private Label treasureMessage;
 
@@ -203,9 +204,10 @@ shieldText = root.Q<Label>("shield-text");
         notificationLayer = root.Q<VisualElement>("notification-layer");
         treasureOverlay = root.Q<VisualElement>("treasure-overlay");
         treasureImage = root.Q<VisualElement>("treasure-chest-image");
+        tipIcon = root.Q<VisualElement>("tip-icon");
         dialogueBox = root.Q<VisualElement>("dialogue-box");
         treasureMessage = root.Q<Label>("treasure-message");
-        
+
         UpdateUI();
     }
 
@@ -783,10 +785,11 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
 
         // Setup UI for Tip
         treasureImage.style.display = DisplayStyle.None;
+        if (tipIcon != null) tipIcon.style.display = DisplayStyle.Flex;
         if (dialogueBox != null) dialogueBox.style.top = new Length(50, LengthUnit.Percent);
         treasureMessage.style.unityFontStyleAndWeight = FontStyle.BoldAndItalic;
         treasureMessage.text = "Tip: " + currentTip;
-        
+
         // Reset click flag and register callback
 tipClicked = false;
         treasureOverlay.pickingMode = PickingMode.Position;
@@ -817,9 +820,10 @@ tipClicked = false;
         
         // Reset for potential TreasureChestEventRoutine
         treasureImage.style.display = DisplayStyle.Flex;
+        if (tipIcon != null) tipIcon.style.display = DisplayStyle.None;
         if (dialogueBox != null) dialogueBox.style.top = new Length(55, LengthUnit.Percent);
         treasureMessage.style.unityFontStyleAndWeight = FontStyle.Bold;
-        }
+}
 
     private void OnTipOverlayClicked(ClickEvent evt)
     {
