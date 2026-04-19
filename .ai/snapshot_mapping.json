@@ -2921,6 +2921,12 @@
       "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
       "content": "I will update the `TIPS` array in `CombatManager.cs` to use \"elemental block\" instead of \"item\" and review `Project_Overview.md` for any remaining references.\n\nWould you like me to proceed with these changes?",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "0820d1c2-76be-430c-b305-febb54fcb14f",
+      "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
+      "content": "`CombatManager.cs` 内の `TIPS` 配列に含まれていた \"item\" という表現を \"elemental block\" に更新しました。\n\n### 修正箇所（Assets/Scripts/CombatManager.cs）\n*   95行目: `\"Shattering an elemental block drops a \\\"?\\\" block from above.\"`\n*   98行目: `\"Shattering or Blasting a \\\"?\\\" drops an elemental block from above.\"`\n\nこれでゲーム内の TIPS 表示においても用語が統一されました。他に対応が必要な箇所があればお知らせください。",
+      "snapshot_message_type": 1
     }
   ]
 }
