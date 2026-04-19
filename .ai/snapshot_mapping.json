@@ -2909,6 +2909,12 @@
       "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
       "content": "`README.md` の構成をさらに整理し、情報をルールセクションに集約しました。\n\n### 修正内容\n1.  **Pro Tips セクションの削除:** 独立した Tips セクションを廃止し、実用的な情報を「ルール」内に統合しました。\n2.  **\"?\" Mystery Block セクションの新設:** \n    *   従来の「Elemental Blocks」のリストから \"?\" を削除し、独立した小セクションとして詳細に解説しました。\n    *   **Clearing:** Shatter（手動破壊）または Blast（誘爆）で消去可能であること。\n    *   **The Cycle:** アイテムを壊せば \"?\" が降り、\"?\" を消せばアイテムが降るという「サイクル（循環）」の仕組み。\n    *   **Strategy:** マッチできない時の打開策としての活用方法。\n    *   これらをファンタジー表現を抑えた、明快なシステム解説として記述しました。\n3.  **全体のクリーンアップ:** セクション間の不要な区切り線を整理し、ドキュメントとしてのまとまりを向上させました。\n\n### 現在の構成\n*   **The Tale of the Three Heroes:** ストーリーとヒーローの集合画像。\n*   **How to Play:** 基本操作（Shatter, Gravity, Match）。\n*   **Rules of the Realm:**\n    *   **Elemental Blocks:** 6つの基本ブロックの解説とアイコン画像。\n    *   **\"?\" Mystery Block:** \"?\" ブロックの特殊ルールとサイクルの解説。\n    *   **Combat Mechanics:** 戦闘システムと宝箱のルール。\n\nこれで、プレイヤーがゲームシステムを論理的に理解しやすくなり、かつ冒頭のストーリーで世界観に浸れる、完成度の高い README になりました。すべての調整が完了しました。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "5f58192a-6d78-4b31-97d8-e3d0602c965e",
+      "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
+      "content": "`README.md` 内の用語を修正し、一貫性を持たせました。\n\n### 修正内容\n*   **用語の統一:** `item block` という表現を、見出しの用語と合わせて **`elemental block`** に変更しました。\n    *   修正前: \"Shattering an item block always causes...\" / \"result in a new item block...\"\n    *   修正後: \"Shattering an **elemental block** always causes...\" / \"result in a new **elemental block**...\"\n\nこれにより、6つの基本ブロック（Sword, Shield, Magic, Heal, Gem, Key）を指す用語が統一され、プレイヤーにとっても理解しやすい解説となりました。\n\n今回の実装・調整のすべてが完了しました。\n- 用語（Match, Shatter, Blast）の定義とTIPSの作成\n- 各ウェーブ終了後のTIPS表示機能（アイコン付き、UIレイアウト調整済み）の実装\n- プレイヤー向けに最適化された `README.md` の作成\n\n他に何かお手伝いできることがあれば、いつでもお知らせください。",
+      "snapshot_message_type": 1
     }
   ]
 }

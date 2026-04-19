@@ -33,7 +33,7 @@ Each block type corresponds to a specific action for your heroes:
 ### ❓ "?" Mystery Block
 The grid contains special blocks marked with a question mark. These blocks follow a unique cycle and cannot be matched like normal elemental blocks.
 - **Clearing:** These blocks must be cleared by **Shattering** them directly or via a **Blast** (an adjacent match).
-- **The Cycle:** Shattering an item block always causes a "?" mystery block to drop from above as a refill. Conversely, clearing a "?" block will always result in a new item block dropping into the grid.
+- **The Cycle:** Shattering an elemental block always causes a "?" mystery block to drop from above as a refill. Conversely, clearing a "?" block will always result in a new elemental block dropping into the grid.
 - **Strategy:** If there are no obvious matches available, focus on shattering "?" blocks to shift the grid and uncover new matches.
 
 ### 🛡️ Combat Mechanics
