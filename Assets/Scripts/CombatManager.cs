@@ -788,7 +788,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         if (tipIcon != null) tipIcon.style.display = DisplayStyle.Flex;
         if (dialogueBox != null) dialogueBox.style.top = new Length(40, LengthUnit.Percent);
         treasureMessage.style.unityFontStyleAndWeight = FontStyle.BoldAndItalic;
-        treasureMessage.text = "Tip: " + currentTip;
+        treasureMessage.text = currentTip;
 
         // Reset click flag and register callback
 tipClicked = false;

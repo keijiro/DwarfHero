@@ -300,8 +300,8 @@ min-height: 100px;
 
     .tip-icon {
         position: absolute;
-        top: -80px;
-        left: -80px;
+        top: 0;
+        left: -180px; /* Positioned to the left of the box (width 160px + 20px margin) */
         width: 160px;
         height: 160px;
         background-image: url("project://database/Assets/Sprites/UI/Icon_Tip.png");
