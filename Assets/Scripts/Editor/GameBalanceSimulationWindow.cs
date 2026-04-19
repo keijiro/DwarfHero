@@ -55,9 +55,77 @@ EditorGUILayout.Space(10);
         DrawMonsterAnalysis();
         EditorGUILayout.Space(20);
         DrawWaveSimulator();
+        EditorGUILayout.Space(20);
+        DrawLevelProjection();
 
         EditorGUILayout.EndScrollView();
-    }
+        }
+
+        private void DrawLevelProjection()
+        {
+        EditorGUILayout.LabelField("Player Level Projection", EditorStyles.boldLabel);
+        EditorGUILayout.HelpBox("Roughly estimates player level progression. Assumes ~30% of level EXP is gained from Gem/Key matches and Chests per wave, plus enemy rewards.", MessageType.Info);
+
+        EditorGUILayout.BeginVertical("box");
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Wave", GUILayout.Width(40));
+        EditorGUILayout.LabelField("Budget", GUILayout.Width(50));
+        EditorGUILayout.LabelField("Est. Level", GUILayout.Width(60));
+        EditorGUILayout.LabelField("Cumul. EXP", GUILayout.Width(80));
+        EditorGUILayout.EndHorizontal();
+
+        int simulatedLevel = 1;
+        int simulatedExp = 0;
+
+        for (int w = 1; w <= 30; w++)
+        {
+            int budget = Mathf.FloorToInt(balanceData.InitialWaveBudget + (w - 1) * balanceData.BudgetIncreasePerWave);
+            
+            // 1. Enemy Kill EXP (5 per level as defined in EnemyUnit.Die)
+            int enemyExp = 5 * budget;
+            
+            // 2. Puzzle/Chest EXP Estimate
+            // Assume 1 Gem match (15%), 0.5 Key match (7.5%), and 50% chest chance (6.25%)
+            // Roughly 30% of current level requirement
+            int currentReq = balanceData.ExpBaseRequirement + (simulatedLevel - 1) * balanceData.ExpIncreasePerLevel;
+            int puzzleExp = Mathf.RoundToInt(currentReq * 0.3f);
+
+            simulatedExp += (enemyExp + puzzleExp);
+
+            // Check for level ups
+            while (true)
+            {
+                int nextThreshold = GetThresholdForLevel(simulatedLevel + 1);
+                if (simulatedExp >= nextThreshold)
+                {
+                    simulatedLevel++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(w.ToString(), GUILayout.Width(40));
+            EditorGUILayout.LabelField(budget.ToString(), GUILayout.Width(50));
+            EditorGUILayout.LabelField(simulatedLevel.ToString(), GUILayout.Width(60));
+            EditorGUILayout.LabelField(simulatedExp.ToString(), GUILayout.Width(80));
+            EditorGUILayout.EndHorizontal();
+        }
+        EditorGUILayout.EndVertical();
+        }
+
+        private int GetThresholdForLevel(int targetLevel)
+        {
+        if (targetLevel <= 1) return 0;
+        float total = 0;
+        for (int i = 1; i < targetLevel; i++)
+        {
+            total += (float)balanceData.ExpBaseRequirement + (i - 1) * balanceData.ExpIncreasePerLevel;
+        }
+        return Mathf.RoundToInt(total);
+        }
 
     private void DrawPlayerProgressionTable()
     {
