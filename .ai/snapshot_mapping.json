@@ -2927,6 +2927,12 @@
       "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
       "content": "`CombatManager.cs` 内の `TIPS` 配列に含まれていた \"item\" という表現を \"elemental block\" に更新しました。\n\n### 修正箇所（Assets/Scripts/CombatManager.cs）\n*   95行目: `\"Shattering an elemental block drops a \\\"?\\\" block from above.\"`\n*   98行目: `\"Shattering or Blasting a \\\"?\\\" drops an elemental block from above.\"`\n\nこれでゲーム内の TIPS 表示においても用語が統一されました。他に対応が必要な箇所があればお知らせください。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "b6c3f58f-2088-4fec-bac1-597fc3397f63",
+      "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
+      "content": "ゲームオーバー画面にリザルト表示（最終レベル、累計EXP、勝利Wave数）を追加しました。\n\n### 実施した内容\n1.  **データ永続化クラスの追加:** シーンを跨いでスコアを保持するための静的クラス `GameResults.cs` を作成しました。\n2.  **スコア保存処理の実装:** `CombatManager.cs` でプレイヤーのHPが0になった際、シーン遷移の直前に現在のレベル、EXP、およびクリアしたWave数（`WaveCount - 1`）を `GameResults` に保存するようにしました。\n3.  **UIの更新 (UXML/USS):**\n    *   `GameOver.uxml` にリザルト表示用のコンテナとラベル（Level, EXP, Waves Cleared）を追加しました。\n    *   `GameOver.uss` にリザルトパネルのスタイルを追加しました。半透明の背景と枠線で装飾し、メッセージ表示の後に少し遅れてフェードイン・スライドアップするアニメーションを設定しています。\n4.  **表示制御の実装:** `GameOverScreenController.cs` を更新し、シーン開始時に `GameResults` から値を取得してラベルに反映させ、アニメーションを開始するようにしました。\n\nこれにより、冒険の成果がゲームオーバー画面でひと目で確認できるようになり、プレイヤーの達成感や次へのモチベーションに繋がるようになりました。",
+      "snapshot_message_type": 1
     }
   ]
 }

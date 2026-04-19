@@ -1005,9 +1005,15 @@ tipClicked = false;
             if (tankVisuals != null) tankVisuals.SetPersistentColor(Color.black);
 
             Debug.Log("Game Over (Party Wiped) - Transitioning to Game Over scene.");
+            
+            // Save results for game over screen
+            GameResults.FinalLevel = Level;
+            GameResults.FinalExperience = Experience;
+            GameResults.WavesWon = Mathf.Max(0, WaveCount - 1);
+
             yield return new WaitForSeconds(1.0f);
             SceneManager.LoadScene("GameOver");
-        }
+}
 
         UpdateUI();
     }

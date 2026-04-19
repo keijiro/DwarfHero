@@ -11,6 +11,10 @@ public class GameOverScreenController : MonoBehaviour
     private VisualElement blackout;
     private VisualElement root;
     private Label lossMessage;
+    private VisualElement resultsContainer;
+    private Label levelResult;
+    private Label expResult;
+    private Label waveResult;
     private bool isTransitioning = false;
 
     private void OnEnable()
@@ -23,9 +27,18 @@ public class GameOverScreenController : MonoBehaviour
         root = uiDocument.rootVisualElement;
         blackout = root.Q("blackout");
         lossMessage = root.Q<Label>("loss-message");
+        resultsContainer = root.Q("results-container");
+        levelResult = root.Q<Label>("level-result");
+        expResult = root.Q<Label>("exp-result");
+        waveResult = root.Q<Label>("wave-result");
+
+        // Set result values
+        if (levelResult != null) levelResult.text = $"LEVEL: {GameResults.FinalLevel}";
+        if (expResult != null) expResult.text = $"EXP: {GameResults.FinalExperience}";
+        if (waveResult != null) waveResult.text = $"WAVES CLEARED: {GameResults.WavesWon}";
 
         // Runtime check: Immediately make it black for the starting fade-in
-        blackout?.AddToClassList("blackout--active");
+blackout?.AddToClassList("blackout--active");
 
         // Click to return to title
         root.RegisterCallback<PointerDownEvent>(OnRootClicked);
@@ -55,7 +68,10 @@ public class GameOverScreenController : MonoBehaviour
         
         // Show loss message with a scale-up animation
         lossMessage?.AddToClassList("loss-message--visible");
-    }
+        
+        // Show results
+        resultsContainer?.AddToClassList("results-container--visible");
+        }
 
     private void OnRootClicked(PointerDownEvent evt)
     {

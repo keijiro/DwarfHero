@@ -49,8 +49,34 @@
     scale: 1;
 }
 
+.results-container {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px 40px;
+    border-width: 2px;
+    border-color: var(--color-message);
+    border-radius: 10px;
+    margin-bottom: 30px;
+    align-items: center;
+    transition-property: opacity, translate;
+    transition-duration: 1.5s;
+    transition-delay: 1s;
+    opacity: 0;
+    translate: 0 50px;
+}
+
+.results-container--visible {
+    opacity: 1;
+    translate: 0 0;
+}
+
+.result-label {
+    color: white;
+    font-size: 36px;
+    margin: 5px 0;
+}
+
 .blackout {
-    position: absolute;
+position: absolute;
     left: 0;
     top: 0;
     width: 100%;
