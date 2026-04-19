@@ -2741,6 +2741,12 @@
       "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
       "content": "詳細なフィードバックをありがとうございます。\n「クリックのみに限定しない」「置き換わるのではなく降ってくる」「宝箱との関係性」など、実際のゲーム挙動（`GridManager` のリフィル処理や `CombatManager` の鍵管理）に即した形で、より正確かつ簡潔な表現に調整しました。\n\n| 日本語原文 | 英語TIPS案（正確さ・分かりやすさ重視） |\n| :--- | :--- |\n| シールドをためることで敵の物理攻撃をブロックできる | **Shields block incoming physical attacks.** |\n| “?” ブロックは揃えても消すことができないので注意 | **\"?\" blocks cannot be matched. Clear them to progress.** |\n| 魔法は全体攻撃なので多数の敵に対して有利だ | **Magic attacks hit all enemies on screen.** |\n| アイテムブロックを壊すと必ず “?” ブロックが出現する | **Breaking an item causes a \"?\" block to drop from above.** |\n| 魔法攻撃はシールドでブロックできないので注意しよう | **Shields cannot block enemy magic attacks.** |\n| 宝箱を開けるには鍵が必要だが、鍵は１つしか持てない | **A Key is needed for chests, but you can only carry one.** |\n| “?” ブロックを消すと必ずアイテムブロックが出現する | **Clearing a \"?\" block causes an item to drop from above.** |\n| 宝石ブロックをマッチして経験値を得よう | **Match Gems to gain EXP.** |\n| マッチできなくなったら “?” ブロックを消せば助かるかもしれない | **If stuck, clearing a \"?\" block may create new matches.** |\n| HP満タン時に薬ブロックをマッチすると経験値が得られる | **Matching Heal blocks at full HP grants EXP.** |\n| 鍵を持っている時に鍵ブロックをマッチすると経験値が得られる | **Matching Keys while already holding one grants EXP.** |\n| 隊列の後ろにいる敵は攻撃速度が遅い | **Enemies in the back row attack more slowly.** |\n\n### 調整のポイント\n1.  **\"Clear\" の採用:** 「？」ブロックについて、クリック（手動破壊）と隣接マッチ（誘爆）の両方を包含する **\"Clear\"** という言葉を使いました。\n2.  **\"Drop from above\"**: 「その場で変わる」誤解を避けるため、リフィル（補充）の挙動を示す **\"drop from above\"**（上から落ちてくる）という表現にしました。\n3.  **鍵と宝箱の併記:** 「宝箱には鍵が必要」という前提条件を前半に入れ、後半で「1つしか持てない」という制約を記述しました。\n4.  **地味だが確実な変化:** グリッド全体のリフレッシュではなく、**\"create new matches\"**（新しいマッチを作る）とすることで、盤面が少し動いて状況が変わるニュアンスに留めました。\n5.  **用語の固定:** ご指定通り **\"EXP\"** を直接使用し、攻撃対象も **\"all enemies\"** と明確にしました。\n\nこの内容であれば、システムの仕様と実際のプレイ感覚が一致し、プレイヤーもスムーズに理解できるかと思います。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_6",
+      "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
+      "content": "この辺り分かりやすくするために、まずは用語を整える必要がありそうですね。\n\nまず確認ですが、このゲームではマッチしたブロックに接触している \"?\" ブロックは連動して消滅するわけですが、このような、日本語では「誘爆」とも言うべき挙動のことを、英語では何と言うのが分かりやすいでしょうか？",
+      "snapshot_message_type": 0
     }
   ]
 }
