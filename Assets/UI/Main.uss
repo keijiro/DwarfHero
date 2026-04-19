@@ -291,9 +291,9 @@ text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
 
     .dialogue-box--tip {
         top: 40%;
-        width: 750px;
+        width: 600px;
         flex-direction: row;
-        padding: 15px 30px;
+        padding: 15px 15px;
         justify-content: flex-start;
     }
 
@@ -303,7 +303,7 @@ text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
         left: 0;
         width: 140px;
         height: 140px;
-        margin-right: 25px;
+        margin-right: 20px;
         flex-shrink: 0;
     }
 
@@ -326,7 +326,6 @@ color: white;
         position: absolute;
         top: 45%; /* Center (50%) and shift up slightly (-5%) */
         left: -180px;
-        translate: 0 -50%;
         width: 160px;
         height: 160px;
         background-image: url("project://database/Assets/Sprites/UI/Icon_Tip.png");
