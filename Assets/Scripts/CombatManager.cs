@@ -786,7 +786,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         // Setup UI for Tip
         treasureImage.style.display = DisplayStyle.None;
         if (tipIcon != null) tipIcon.style.display = DisplayStyle.Flex;
-        if (dialogueBox != null) dialogueBox.style.top = new Length(40, LengthUnit.Percent);
+        if (dialogueBox != null) dialogueBox.AddToClassList("dialogue-box--tip");
         treasureMessage.style.unityFontStyleAndWeight = FontStyle.BoldAndItalic;
         treasureMessage.text = currentTip;
 
@@ -821,7 +821,7 @@ tipClicked = false;
         // Reset for potential TreasureChestEventRoutine
         treasureImage.style.display = DisplayStyle.Flex;
         if (tipIcon != null) tipIcon.style.display = DisplayStyle.None;
-        if (dialogueBox != null) dialogueBox.style.top = new Length(45, LengthUnit.Percent);
+        if (dialogueBox != null) dialogueBox.RemoveFromClassList("dialogue-box--tip");
         treasureMessage.style.unityFontStyleAndWeight = FontStyle.Bold;
 }
 

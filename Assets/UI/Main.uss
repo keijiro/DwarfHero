@@ -274,10 +274,10 @@ text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
     .dialogue-box {
     position: absolute;
     left: 75%;
-    top: 45%;
+    top: 55%;
     translate: -50% -50%;
     width: 380px;
-min-height: 100px;
+    min-height: 100px;
     background-color: rgba(0, 0, 0, 0.85);
     border-width: 2px;
     border-color: white;
@@ -285,12 +285,16 @@ min-height: 100px;
     padding: 15px;
     justify-content: center;
     align-items: center;
-    transition-property: opacity;
+    transition-property: opacity, top;
     transition-duration: 0.3s;
     }
 
+    .dialogue-box--tip {
+        top: 40%;
+    }
+
     .dialogue-text {
-    color: white;
+color: white;
     font-size: 28px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
