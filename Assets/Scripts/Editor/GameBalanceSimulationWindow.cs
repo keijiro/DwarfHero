@@ -146,10 +146,11 @@ EditorGUILayout.Space(10);
         int maxSpawn = 5; // Matches EnemySpawnPoints.Length in CombatManager
 
         // Matching CombatManager's dynamic weighting logic
-        float power = 1.0f + (float)previewWave / 10.0f;
+        // Starts negative (favor weak) -> zero (uniform) -> positive (favor strong)
+        float power = -1.0f + (float)previewWave / 10.0f;
 
         while (tempBudget >= 2 && spawnCount < maxSpawn)
-        {
+{
             var validEnemies = balanceData.EnemyDefinitions.FindAll(e => e.Level > 0 && e.Level <= tempBudget);
             if (validEnemies.Count == 0) break;
 
