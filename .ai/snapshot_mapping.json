@@ -2873,6 +2873,12 @@
       "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
       "content": "TIPSの表示時間をさらに1秒延ばし、合計 **4秒間** に変更しました。\n\n`CombatManager.cs` 内の `ShowTipRoutine` を修正し、タイマーを `4.0f` に設定しています。これにより、少し長めの文章でもプレイヤーが余裕を持って読めるようになりました。もちろん、画面をクリックすればいつでも即座にスキップすることが可能です。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "dc016866-7dc7-4152-ad99-a106f5409987",
+      "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
+      "content": "プロジェクトの `README.md` を作成しました。\n\nプレイヤー向けのドキュメントとして、ファンタジーの世界観を感じさせるストーリーから始まり、このゲーム独自の「最下段を砕く（Shatter）」メカニクスやルール、そして今回実装した12個のTIPSを網羅した内容になっています。\n\nまた、GitHub上で見栄えが良くなるよう、プロジェクト内のロゴやキャラクターコンセプト、アイコンなどの画像アセットを効果的に配置しています。\n\n### README.md の主な構成\n1.  **The Tale of the Three Heroes:** 3人のヒーロー（Fighter, Mage, Tank）がダンジョンに挑む短い背景ストーリー。\n2.  **How to Play:** 最下段をクリックして「Shatter」し、重力と連鎖（Cascade）を利用する操作方法の解説。\n3.  **Rules of the Realm:** 各エレメンタルブロックの効果（Sword, Shield, Magicなど）や、魔法攻撃・後列の敵といった戦闘ルールの詳説。\n4.  **Pro Tips:** 先ほど確定した12個のTIPSをアイコン付きでリスト化。\n\nファイルはプロジェクトのルートディレクトリに `README.md` として保存されています。GitHubにアップロードした際、画像と共に美しく表示されるはずです。",
+      "snapshot_message_type": 1
     }
   ]
 }
