@@ -2723,6 +2723,12 @@
       "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
       "content": "うーん、ちょっとこれだと分かりにくいかもなあ・・・と思いました。思い切ってファンタジー的テーマをここに盛り込むのは諦めて、純粋にゲーム用 TIPS としての分かりやすさを重視する形で作り直してみてもらえますか？",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "31d13c9d-00e3-4b37-aac1-46a55775eb93",
+      "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
+      "content": "承知いたしました。装飾的な表現を排し、プレイヤーがひと目でルールを理解できる「実用性・分かりやすさ」を最優先した英語テキストを作成しました。\n\n表示面積を考慮し、極力短く、かつ専門用語（Vigor等）ではなく一般的なゲーム用語（HP, Shield, Attackなど）を使用しています。\n\n| 日本語原文 | 英語TIPS案（分かりやすさ重視・シンプル版） |\n| :--- | :--- |\n| シールドをためることで敵の物理攻撃をブロックできる | **Shields block enemy physical attacks.** |\n| “?” ブロックは揃えても消すことができないので注意 | **\"?\" blocks cannot be matched. Click to break them.** |\n| 魔法は全体攻撃なので多数の敵に対して有利だ | **Magic attacks hit all enemies at once.** |\n| アイテムブロックを壊すと必ず “?” ブロックが出現する | **Manually breaking an item turns it into a \"?\" block.** |\n| 魔法攻撃はシールドでブロックできないので注意しよう | **Shields cannot block enemy magic attacks.** |\n| 宝箱を開けるには鍵が必要だが、鍵は１つしか持てない | **You can only carry one Key at a time.** |\n| “?” ブロックを消すと必ずアイテムブロックが出現する | **Manually breaking a \"?\" block turns it into an item.** |\n| 宝石ブロックをマッチして経験値を得よう | **Match Gems to gain Experience (EXP).** |\n| マッチできなくなったら “?” ブロックを消せば助かるかもしれない | **If stuck, try breaking a \"?\" block to refresh the grid.** |\n| HP満タン時に薬ブロックをマッチすると経験値が得られる | **Matching Heal blocks at full HP grants bonus EXP.** |\n| 鍵を持っている時に鍵ブロックをマッチすると経験値が得られる | **Keys grant EXP if you already have a Key.** |\n| 隊列の後ろにいる敵は攻撃速度が遅い | **Enemies in the back row attack more slowly.** |\n\n### 修正のポイント\n*   **操作の明示:** 「消す」「壊す」という言葉に対し、このゲーム特有の「クリックして手動で壊す」ことを表すため、**\"Click to break\"** や **\"Manually breaking\"** という言葉を使いました。\n*   **効果の明確化:** 「有利だ」「注意しよう」などの抽象的な言い回しを、「Hit all enemies」「Cannot block」など、具体的なシステム上の挙動として記述しました。\n*   **用語の統一:** 経験値は **EXP**、体力は **HP** と、最も一般的な略称に統一して可読性を高めています。\n\nこれならば、プレイ中の短い表示時間でも、英語圏のプレイヤーが迷うことなくルールを理解できるかと思います。",
+      "snapshot_message_type": 1
     }
   ]
 }
