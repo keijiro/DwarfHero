@@ -784,7 +784,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         // Setup UI for Tip
         treasureImage.style.display = DisplayStyle.None;
         if (dialogueBox != null) dialogueBox.style.top = new Length(50, LengthUnit.Percent);
-        treasureMessage.text = currentTip;
+        treasureMessage.text = "Tip: " + currentTip;
         
         // Reset click flag and register callback
         tipClicked = false;
@@ -796,10 +796,10 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         treasureOverlay.AddToClassList("treasure-overlay--visible");
         if (dialogueBox != null) dialogueBox.style.opacity = 1;
 
-        // Wait for 2 seconds or click
-        float timer = 2.0f;
+        // Wait for 3 seconds or click
+        float timer = 3.0f;
         while (timer > 0 && !tipClicked)
-        {
+{
             timer -= Time.deltaTime;
             yield return null;
         }
