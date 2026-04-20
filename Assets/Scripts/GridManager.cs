@@ -183,7 +183,7 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
         // Ignore input while processing
         if (isProcessing) return;
 
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        if (Pointer.current != null && Pointer.current.press.wasPressedThisFrame)
         {
             HandleClick();
         }
@@ -191,8 +191,8 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
 
     private void HandleClick()
     {
-        Vector2 mousePos = Mouse.current.position.ReadValue();
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        Vector2 pointerPos = Pointer.current.position.ReadValue();
+        Ray ray = Camera.main.ScreenPointToRay(pointerPos);
         RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
 
         if (hit.collider != null)
