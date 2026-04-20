@@ -9,5 +9,6 @@
             <ui:Label name="start-message" text="CLICK TO START ADVENTURE" class="start-message" />
         </ui:VisualElement>
         <ui:VisualElement name="blackout" class="blackout" picking-mode="Ignore" />
+        <ui:Label name="version-label" text="v0.0.0" class="version-label" picking-mode="Ignore" />
         </ui:VisualElement>
         </ui:UXML>

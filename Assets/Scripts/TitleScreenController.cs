@@ -24,8 +24,15 @@ public class TitleScreenController : MonoBehaviour
         startMessage = root.Q<Label>("start-message");
         blackout = root.Q("blackout");
 
+        // Set version number from Player Settings
+        Label versionLabel = root.Q<Label>("version-label");
+        if (versionLabel != null)
+        {
+            versionLabel.text = "v" + Application.version;
+        }
+
         // Make root clickable to start the adventure
-        root.RegisterCallback<PointerDownEvent>(OnRootClicked);
+root.RegisterCallback<PointerDownEvent>(OnRootClicked);
 
         // Start blinking effect
         StartCoroutine(BlinkMessage());
