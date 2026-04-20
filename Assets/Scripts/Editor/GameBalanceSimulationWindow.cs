@@ -95,7 +95,12 @@ public class GameBalanceSimulationWindow : EditorWindow
             int budget = Mathf.FloorToInt(balanceData.InitialWaveBudget + (w - 1) * balanceData.BudgetIncreasePerWave);
             int enemyExp = 5 * budget;
             int currentReq = balanceData.ExpBaseRequirement + (simulatedLevel - 1) * balanceData.ExpIncreasePerLevel;
-            simulatedExp += (enemyExp + Mathf.RoundToInt(currentReq * 0.3f));
+            
+            // 15 Gems per wave + 50% chance of opening a chest
+            int gemExp = 15 * Mathf.Max(1, currentReq / balanceData.GemExpDivisor);
+            int chestExp = Mathf.RoundToInt(0.5f * Mathf.Max(1, currentReq / balanceData.ChestExpDivisor));
+            
+            simulatedExp += (enemyExp + gemExp + chestExp);
 
             while (simulatedExp >= GetThresholdForLevel(simulatedLevel + 1)) simulatedLevel++;
         }
