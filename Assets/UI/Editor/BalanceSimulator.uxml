@@ -2,62 +2,55 @@
     <ui:Style src="BalanceSimulator.uss" />
     <ui:ScrollView class="scroll-view">
         <ui:VisualElement class="root-container">
-            <ui:Label text="Balance Simulator" class="section-header" style="margin-top: 0;" />
             
             <ui:VisualElement class="card">
                 <uie:ObjectField name="balanceDataField" label="Balance Data Asset" />
             </ui:VisualElement>
 
-            <!-- PLAYER SECTION -->
-            <ui:Label text="Player &amp; Combat Analysis (Driven by Wave Projection)" class="section-header" />
-            <ui:VisualElement class="card">
-                <ui:VisualElement name="playerStatsContainer">
-                    <ui:Label text="Estimated Player Stats" class="card-title" />
-                    <ui:VisualElement class="data-row">
-                        <ui:Label text="Projected Level" class="data-label" />
-                        <ui:Label name="estLevelValue" text="1" class="data-value" />
-                    </ui:VisualElement>
-                    <ui:VisualElement class="data-row">
-                        <ui:Label text="HP" class="data-label" />
-                        <ui:Label name="playerHpValue" text="0" class="data-value" />
-                    </ui:VisualElement>
-                    <ui:VisualElement class="data-row">
-                        <ui:Label text="Attack" class="data-label" />
-                        <ui:Label name="playerAtkValue" text="0" class="data-value" />
-                    </ui:VisualElement>
-                    <ui:VisualElement class="data-row">
-                        <ui:Label text="Next Level Req" class="data-label" />
-                        <ui:Label name="playerExpValue" text="0 EXP" class="data-value" />
-                    </ui:VisualElement>
-                </ui:VisualElement>
-            </ui:VisualElement>
-
-            <ui:VisualElement class="card">
-                <ui:Label text="Monster vs Player Analysis" class="card-title" />
-                <ui:VisualElement name="monsterAnalysisList" />
-            </ui:VisualElement>
-
-            <!-- WAVE SECTION -->
-            <ui:Label text="Wave &amp; Progression Projection" class="section-header" />
+            <!-- WAVE SLIDER SECTION -->
             <ui:VisualElement class="card">
                 <ui:SliderInt name="waveSlider" label="Target Wave" low-value="1" high-value="100" show-input-field="true" />
-
-                <ui:VisualElement style="margin-top: 8px;">
-                    <ui:VisualElement class="data-row">
-                        <ui:Label text="Wave Budget" class="data-label" />
-                        <ui:Label name="waveBudgetValue" text="0" class="data-value" />
-                    </ui:VisualElement>
-                    <ui:Label text="Example Party Composition:" class="data-label" style="margin-top: 4px;" />
-                    <ui:Label name="partyCompositionText" text="None" class="party-composition" />
-                </ui:VisualElement>
             </ui:VisualElement>
 
+            <!-- WAVE BUDGET & COMPOSITION SECTION -->
             <ui:VisualElement class="card">
-                <ui:Label text="Cumulative Experience Projection" class="card-title" />
                 <ui:VisualElement class="data-row">
+                    <ui:Label text="Wave Budget" class="data-label" />
+                    <ui:Label name="waveBudgetValue" text="0" class="data-value" />
+                </ui:VisualElement>
+                <ui:Label text="Example Party Composition:" class="data-label" style="margin-top: 4px;" />
+                <ui:Label name="partyCompositionText" text="None" class="party-composition" />
+            </ui:VisualElement>
+
+            <!-- PLAYER STATS SECTION -->
+            <ui:VisualElement class="card">
+                <ui:Label text="Estimated Player Stats" class="card-title" />
+                <ui:VisualElement class="data-row">
+                    <ui:Label text="Projected Level" class="data-label" />
+                    <ui:Label name="estLevelValue" text="1" class="data-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="data-row">
+                    <ui:Label text="HP" class="data-label" />
+                    <ui:Label name="playerHpValue" text="0" class="data-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="data-row">
+                    <ui:Label text="Attack" class="data-label" />
+                    <ui:Label name="playerAtkValue" text="0" class="data-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="data-row">
+                    <ui:Label text="Next Level Req" class="data-label" />
+                    <ui:Label name="playerExpValue" text="0 EXP" class="data-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="data-row" style="margin-top: 4px; border-top-width: 1px; border-top-color: #444; padding-top: 4px;">
                     <ui:Label text="Total Accumulated EXP" class="data-label" />
                     <ui:Label name="cumulativeExpValue" text="0" class="data-value" />
                 </ui:VisualElement>
+            </ui:VisualElement>
+
+            <!-- MONSTER ANALYSIS SECTION -->
+            <ui:VisualElement class="card">
+                <ui:Label text="Monster vs Player Analysis" class="card-title" />
+                <ui:VisualElement name="monsterAnalysisList" />
             </ui:VisualElement>
 
         </ui:VisualElement>
