@@ -16,8 +16,8 @@ MonoBehaviour:
   SkaDivisor: 3
   PlayerBaseHP: 100
   PlayerBaseAttack: 10
-  HPIncreasePerLevel: 3
-  AttackIncreasePerLevel: 1
+  HPIncreasePerLevel: 4
+  AttackIncreasePerLevel: 1.2
   MagicAttackRatio: 0.33333334
   ExpBaseRequirement: 80
   ExpIncreasePerLevel: 28
@@ -58,5 +58,5 @@ MonoBehaviour:
     IsMagic: 0
   InitialWaveBudget: 6
   BudgetIncreasePerWave: 1.2
-  WaveWeightShiftFactor: 8
+  WaveWeightShiftFactor: 7.9
   FormationPenaltyFactor: 0.66
