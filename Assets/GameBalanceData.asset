@@ -16,7 +16,7 @@ MonoBehaviour:
   SkaDivisor: 3
   PlayerBaseHP: 100
   PlayerBaseAttack: 10
-  HPIncreasePerLevel: 8
+  HPIncreasePerLevel: 6
   AttackIncreasePerLevel: 2
   MagicAttackRatio: 0.33333334
   ExpBaseRequirement: 80
@@ -24,7 +24,7 @@ MonoBehaviour:
   GemExpDivisor: 20
   ChestExpDivisor: 8
   HealAttackRatio: 0.6
-  ShieldMaxBlocksToReachMaxHP: 20
+  ShieldMaxBlocksToReachMaxHP: 25
   EnemyDefinitions:
   - Name: Slime
     Level: 2
