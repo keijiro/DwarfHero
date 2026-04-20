@@ -26,7 +26,7 @@
             <ui:VisualElement class="card">
                 <ui:Label text="Estimated Player Stats" class="card-title" />
                 <ui:VisualElement class="data-row">
-                    <ui:Label text="Total Accumulated EXP" class="data-label" />
+                    <ui:Label text="Accumulated EXP" class="data-label" />
                     <ui:Label name="cumulativeExpValue" text="0" class="data-value" />
                 </ui:VisualElement>
                 <ui:VisualElement class="data-row">
@@ -41,11 +41,7 @@
                     <ui:Label text="Attack" class="data-label" />
                     <ui:Label name="playerAtkValue" text="0" class="data-value" />
                 </ui:VisualElement>
-                <ui:VisualElement class="data-row">
-                    <ui:Label text="Next Level Req" class="data-label" />
-                    <ui:Label name="playerExpValue" text="0 EXP" class="data-value" />
                 </ui:VisualElement>
-            </ui:VisualElement>
 
             <!-- MONSTER ANALYSIS SECTION -->
             <ui:VisualElement class="card">

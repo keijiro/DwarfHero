@@ -3053,6 +3053,12 @@
       "conversation_id": "30cca2ae-d526-49bd-874f-1f796a4c0114",
       "content": "Total Accumulated EXP を Projected Level の前に移動し、区切り線を除去しました。\n\nこれで、「ウェーブ選択 → 獲得EXP確定 → レベル確定 → ステータス確定」という論理的な順序で情報が並ぶようになり、より直感的に理解しやすいレイアウトになりました。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "3cc306ae-284f-403b-ba8a-081037a6c6bf",
+      "conversation_id": "30cca2ae-d526-49bd-874f-1f796a4c0114",
+      "content": "`Next Level Req` の表示を削除し、`Accumulated EXP` のラベル更新と数値のカンマ区切りフォーマット（例: `1,234`）を適用しました。\n\nさらに情報が整理され、大きな数値も直感的に把握しやすいレイアウトになりました。",
+      "snapshot_message_type": 1
     }
   ]
 }

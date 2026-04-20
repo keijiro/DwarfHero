@@ -110,24 +110,20 @@ public class GameBalanceSimulationWindow : EditorWindow
         if (estLevelLabel != null) estLevelLabel.text = simulatedLevel.ToString();
 
         var cumExpLabel = root.Q<Label>("cumulativeExpValue");
-        if (cumExpLabel != null) cumExpLabel.text = simulatedExp.ToString();
-    }
+        if (cumExpLabel != null) cumExpLabel.text = simulatedExp.ToString("N0");
+        }
 
-    private void UpdatePlayerStats(int lv)
-    {
+        private void UpdatePlayerStats(int lv)
+        {
         int hp = Mathf.RoundToInt(balanceData.PlayerBaseHP + (lv - 1) * balanceData.HPIncreasePerLevel);
         int atk = balanceData.PlayerBaseAttack + (lv - 1) * balanceData.AttackIncreasePerLevel;
-        int nextReq = balanceData.ExpBaseRequirement + (lv - 1) * balanceData.ExpIncreasePerLevel;
 
         var hpLabel = root.Q<Label>("playerHpValue");
         if (hpLabel != null) hpLabel.text = hp.ToString();
 
         var atkLabel = root.Q<Label>("playerAtkValue");
         if (atkLabel != null) atkLabel.text = atk.ToString();
-
-        var expLabel = root.Q<Label>("playerExpValue");
-        if (expLabel != null) expLabel.text = $"{nextReq} EXP";
-    }
+        }
 
     private void UpdateMonsterAnalysis(int lv)
     {
