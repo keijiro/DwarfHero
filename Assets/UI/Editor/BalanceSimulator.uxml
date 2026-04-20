@@ -11,7 +11,7 @@
             <!-- PLAYER SECTION -->
             <ui:Label text="Player &amp; Combat Analysis" class="section-header" />
             <ui:VisualElement class="card">
-                <ui:SliderInt name="playerLevelSlider" label="Target Player Level" low-value="1" high-value="50" />
+                <ui:SliderInt name="playerLevelSlider" label="Target Player Level" low-value="1" high-value="50" show-input-field="true" />
                 
                 <ui:VisualElement name="playerStatsContainer" style="margin-top: 8px;">
                     <ui:Label text="Player Stats Preview" class="card-title" />
@@ -38,8 +38,8 @@
             <!-- WAVE SECTION -->
             <ui:Label text="Wave &amp; Progression Projection" class="section-header" />
             <ui:VisualElement class="card">
-                <ui:SliderInt name="waveSlider" label="Target Wave" low-value="1" high-value="100" />
-                
+                <ui:SliderInt name="waveSlider" label="Target Wave" low-value="1" high-value="100" show-input-field="true" />
+
                 <ui:VisualElement style="margin-top: 8px;">
                     <ui:VisualElement class="data-row">
                         <ui:Label text="Wave Budget" class="data-label" />
