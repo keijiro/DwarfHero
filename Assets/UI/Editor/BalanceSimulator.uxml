@@ -9,12 +9,14 @@
             </ui:VisualElement>
 
             <!-- PLAYER SECTION -->
-            <ui:Label text="Player &amp; Combat Analysis" class="section-header" />
+            <ui:Label text="Player &amp; Combat Analysis (Driven by Wave Projection)" class="section-header" />
             <ui:VisualElement class="card">
-                <ui:SliderInt name="playerLevelSlider" label="Target Player Level" low-value="1" high-value="50" show-input-field="true" />
-                
-                <ui:VisualElement name="playerStatsContainer" style="margin-top: 8px;">
-                    <ui:Label text="Player Stats Preview" class="card-title" />
+                <ui:VisualElement name="playerStatsContainer">
+                    <ui:Label text="Estimated Player Stats" class="card-title" />
+                    <ui:VisualElement class="data-row">
+                        <ui:Label text="Projected Level" class="data-label" />
+                        <ui:Label name="estLevelValue" text="1" class="data-value" />
+                    </ui:VisualElement>
                     <ui:VisualElement class="data-row">
                         <ui:Label text="HP" class="data-label" />
                         <ui:Label name="playerHpValue" text="0" class="data-value" />
@@ -51,13 +53,9 @@
             </ui:VisualElement>
 
             <ui:VisualElement class="card">
-                <ui:Label text="Progression Projection (at end of Wave)" class="card-title" />
+                <ui:Label text="Cumulative Experience Projection" class="card-title" />
                 <ui:VisualElement class="data-row">
-                    <ui:Label text="Estimated Player Level" class="data-label" />
-                    <ui:Label name="estLevelValue" text="1" class="data-value" />
-                </ui:VisualElement>
-                <ui:VisualElement class="data-row">
-                    <ui:Label text="Cumulative Experience" class="data-label" />
+                    <ui:Label text="Total Accumulated EXP" class="data-label" />
                     <ui:Label name="cumulativeExpValue" text="0" class="data-value" />
                 </ui:VisualElement>
             </ui:VisualElement>

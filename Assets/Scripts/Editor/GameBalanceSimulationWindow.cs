@@ -8,11 +8,9 @@ public class GameBalanceSimulationWindow : EditorWindow
 {
     private GameBalanceData balanceData;
     private int previewWave = 1;
-    private int previewPlayerLevel = 1;
 
     private VisualElement root;
     private ObjectField dataField;
-    private SliderInt levelSlider;
     private SliderInt waveSlider;
 
     [MenuItem("Window/Combat/Balance Simulator")]
@@ -61,16 +59,6 @@ public class GameBalanceSimulationWindow : EditorWindow
             RefreshUI();
         });
 
-        levelSlider = root.Q<SliderInt>("playerLevelSlider");
-        if (levelSlider != null)
-        {
-            levelSlider.value = previewPlayerLevel;
-            levelSlider.RegisterValueChangedCallback(evt => {
-                previewPlayerLevel = evt.newValue;
-                RefreshUI();
-            });
-        }
-
         waveSlider = root.Q<SliderInt>("waveSlider");
         if (waveSlider != null)
         {
@@ -98,15 +86,35 @@ public class GameBalanceSimulationWindow : EditorWindow
 
         if (!hasData) return;
 
-        UpdatePlayerStats();
-        UpdateMonsterAnalysis();
+        // 1. Calculate Progression first
+        int simulatedLevel = 1;
+        int simulatedExp = 0;
+
+        for (int w = 1; w <= previewWave; w++)
+        {
+            int budget = Mathf.FloorToInt(balanceData.InitialWaveBudget + (w - 1) * balanceData.BudgetIncreasePerWave);
+            int enemyExp = 5 * budget;
+            int currentReq = balanceData.ExpBaseRequirement + (simulatedLevel - 1) * balanceData.ExpIncreasePerLevel;
+            simulatedExp += (enemyExp + Mathf.RoundToInt(currentReq * 0.3f));
+
+            while (simulatedExp >= GetThresholdForLevel(simulatedLevel + 1)) simulatedLevel++;
+        }
+
+        // 2. Update all sections with the simulated results
+        UpdatePlayerStats(simulatedLevel);
+        UpdateMonsterAnalysis(simulatedLevel);
         UpdateWaveSimulator();
-        UpdateProgressionProjection();
+        
+        // Update projection specific labels
+        var estLevelLabel = root.Q<Label>("estLevelValue");
+        if (estLevelLabel != null) estLevelLabel.text = simulatedLevel.ToString();
+
+        var cumExpLabel = root.Q<Label>("cumulativeExpValue");
+        if (cumExpLabel != null) cumExpLabel.text = simulatedExp.ToString();
     }
 
-    private void UpdatePlayerStats()
+    private void UpdatePlayerStats(int lv)
     {
-        int lv = previewPlayerLevel;
         int hp = Mathf.RoundToInt(balanceData.PlayerBaseHP + (lv - 1) * balanceData.HPIncreasePerLevel);
         int atk = balanceData.PlayerBaseAttack + (lv - 1) * balanceData.AttackIncreasePerLevel;
         int nextReq = balanceData.ExpBaseRequirement + (lv - 1) * balanceData.ExpIncreasePerLevel;
@@ -121,15 +129,15 @@ public class GameBalanceSimulationWindow : EditorWindow
         if (expLabel != null) expLabel.text = $"{nextReq} EXP";
     }
 
-    private void UpdateMonsterAnalysis()
+    private void UpdateMonsterAnalysis(int lv)
     {
         var container = root.Q<VisualElement>("monsterAnalysisList");
         if (container == null) return;
         
         container.Clear();
 
-        int playerAtk = balanceData.PlayerBaseAttack + (previewPlayerLevel - 1) * balanceData.AttackIncreasePerLevel;
-        int playerHP = Mathf.RoundToInt(balanceData.PlayerBaseHP + (previewPlayerLevel - 1) * balanceData.HPIncreasePerLevel);
+        int playerAtk = balanceData.PlayerBaseAttack + (lv - 1) * balanceData.AttackIncreasePerLevel;
+        int playerHP = Mathf.RoundToInt(balanceData.PlayerBaseHP + (lv - 1) * balanceData.HPIncreasePerLevel);
 
         if (balanceData.EnemyDefinitions == null || balanceData.EnemyDefinitions.Count == 0)
         {
@@ -217,30 +225,8 @@ public class GameBalanceSimulationWindow : EditorWindow
         if (partyLabel != null) partyLabel.text = composition;
     }
 
-    private void UpdateProgressionProjection()
-    {
-        int simulatedLevel = 1;
-        int simulatedExp = 0;
-
-        for (int w = 1; w <= previewWave; w++)
-        {
-            int budget = Mathf.FloorToInt(balanceData.InitialWaveBudget + (w - 1) * balanceData.BudgetIncreasePerWave);
-            int enemyExp = 5 * budget;
-            int currentReq = balanceData.ExpBaseRequirement + (simulatedLevel - 1) * balanceData.ExpIncreasePerLevel;
-            simulatedExp += (enemyExp + Mathf.RoundToInt(currentReq * 0.3f));
-
-            while (simulatedExp >= GetThresholdForLevel(simulatedLevel + 1)) simulatedLevel++;
-        }
-
-        var estLevelLabel = root.Q<Label>("estLevelValue");
-        if (estLevelLabel != null) estLevelLabel.text = simulatedLevel.ToString();
-
-        var cumExpLabel = root.Q<Label>("cumulativeExpValue");
-        if (cumExpLabel != null) cumExpLabel.text = simulatedExp.ToString();
-    }
-
     private int GetThresholdForLevel(int targetLevel)
-    {
+{
         if (targetLevel <= 1) return 0;
         float total = 0;
         for (int i = 1; i < targetLevel; i++)
