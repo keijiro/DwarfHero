@@ -3077,6 +3077,12 @@
       "conversation_id": "30cca2ae-d526-49bd-874f-1f796a4c0114",
       "content": "タイトル画面の右下に Player Settings のバージョン番号を表示するように実装しました。\n\n### 実施内容\n\n1.  **UI 構成の更新 (`Title.uxml`)**:\n    *   `version-label` という名前の Label 要素をタイトル画面の階層に追加しました。\n2.  **スタイルの適用 (`Title.uss`)**:\n    *   画面の右下（`bottom: 5px`, `right: 10px`）に配置されるようにスタイルを設定しました。\n    *   メインの邪魔にならないよう、控えめな白の半透明色（`rgba(255, 255, 255, 0.4)`）と小さめのフォントサイズ（`14px`）を採用しています。\n3.  **スクリプトの実装 (`TitleScreenController.cs`)**:\n    *   起動時に `Application.version` を取得し、`v1.2.3` のような形式でラベルに代入する処理を追加しました。\n\nこれにより、Player Settings の Version 欄を更新するだけで、タイトル画面の表示も自動的に反映されるようになります。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "dc650f6c-dd9b-4b15-b5c9-ec1e544ea1a8",
+      "conversation_id": "30cca2ae-d526-49bd-874f-1f796a4c0114",
+      "content": "バージョン表示を大きくし、トランジション時の黒要素（`blackout`）の後ろ側に移動させました。\n\n### 実施内容\n1.  **サイズ変更**: `font-size` を `14px` から **`24px`** に変更しました。\n2.  **階層の調整**: `Title.uxml` 内で `version-label` を `blackout` よりも前の行に移動しました。UI Toolkit では、後に書かれた要素が前面に描画されるため、これで `blackout` が出現した際にバージョン表示が正しく隠れるようになります。\n\nこれで、通常時ははっきりと確認でき、ゲーム開始時には他の要素と同様に黒い幕で覆われるようになります。",
+      "snapshot_message_type": 1
     }
   ]
 }
