@@ -121,7 +121,7 @@ public class GameBalanceSimulationWindow : EditorWindow
         private void UpdatePlayerStats(int lv)
         {
         int hp = Mathf.RoundToInt(balanceData.PlayerBaseHP + (lv - 1) * balanceData.HPIncreasePerLevel);
-        int atk = balanceData.PlayerBaseAttack + (lv - 1) * balanceData.AttackIncreasePerLevel;
+        int atk = Mathf.RoundToInt(balanceData.PlayerBaseAttack + (lv - 1) * balanceData.AttackIncreasePerLevel);
 
         var hpLabel = root.Q<Label>("playerHpValue");
         if (hpLabel != null) hpLabel.text = hp.ToString();
@@ -130,18 +130,18 @@ public class GameBalanceSimulationWindow : EditorWindow
         if (atkLabel != null) atkLabel.text = atk.ToString();
         }
 
-    private void UpdateMonsterAnalysis(int lv)
-    {
+        private void UpdateMonsterAnalysis(int lv)
+        {
         var container = root.Q<VisualElement>("monsterAnalysisList");
         if (container == null) return;
         
         container.Clear();
 
-        int playerAtk = balanceData.PlayerBaseAttack + (lv - 1) * balanceData.AttackIncreasePerLevel;
+        int playerAtk = Mathf.RoundToInt(balanceData.PlayerBaseAttack + (lv - 1) * balanceData.AttackIncreasePerLevel);
         int playerHP = Mathf.RoundToInt(balanceData.PlayerBaseHP + (lv - 1) * balanceData.HPIncreasePerLevel);
 
         if (balanceData.EnemyDefinitions == null || balanceData.EnemyDefinitions.Count == 0)
-        {
+{
             container.Add(new Label("No enemies defined."));
             return;
         }

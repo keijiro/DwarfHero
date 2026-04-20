@@ -10,8 +10,8 @@ public class GameBalanceData : ScriptableObject
     public int PlayerBaseHP = 100;
     public int PlayerBaseAttack = 10;
     public float HPIncreasePerLevel = 11.11f; // 100/9
-    public int AttackIncreasePerLevel = 1;
-    public float MagicAttackRatio = 0.33f;
+    public float AttackIncreasePerLevel = 1.0f;
+public float MagicAttackRatio = 0.33f;
 
     public int ExpBaseRequirement = 80;
     public int ExpIncreasePerLevel = 26;

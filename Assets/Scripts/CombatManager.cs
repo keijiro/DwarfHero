@@ -136,7 +136,7 @@ public Animator FighterAnimator;
     private int GetAttackForLevel(int level)
     {
         if (balanceData == null) return 10;
-        return balanceData.PlayerBaseAttack + (level - 1) * balanceData.AttackIncreasePerLevel;
+        return Mathf.RoundToInt(balanceData.PlayerBaseAttack + (level - 1) * balanceData.AttackIncreasePerLevel);
     }
 
     private int GetMagicAttackForLevel(int level)
