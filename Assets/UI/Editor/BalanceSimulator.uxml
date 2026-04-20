@@ -9,7 +9,7 @@
 
             <!-- WAVE SLIDER SECTION -->
             <ui:VisualElement class="card">
-                <ui:SliderInt name="waveSlider" label="Target Wave" low-value="1" high-value="100" show-input-field="true" />
+                <ui:SliderInt name="waveSlider" label="Target Wave" low-value="1" high-value="50" show-input-field="true" />
             </ui:VisualElement>
 
             <!-- WAVE BUDGET & COMPOSITION SECTION -->
