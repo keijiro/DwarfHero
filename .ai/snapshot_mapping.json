@@ -3245,6 +3245,12 @@
       "conversation_id": "172083c7-d841-4279-ac97-7a7cd5c65c74",
       "content": "ご指摘に合わせて、追加した2つの TIPS をより正確かつ簡潔な表現に修正しました。\n\n修正後の最新の TIPS リスト（後半部分）は以下の通りです：\n\n*   12. **敵の隊列**: 「Enemies in the back row attack more slowly.」\n*   13. **「?」の威力（修正）**: 「**Blasting \"?\" blocks near your matches slightly increases their power.**」（マッチの近くで「?」を爆破すると、その威力がわずかに上昇します）\n    *   `SkaDivisor`（3.0）による補正を考慮した「slightly（わずかに）」という表現に変更し、他のTIPSと用語を合わせて「Blasting」を使用しました。\n*   14. **シールド制限（修正）**: 「**Shields cannot exceed your Max HP.**」（シールドは最大HPを超えられません）\n    *   より短く、直感的な表現に短縮しました。\n\nパズル中の各システム仕様が、より正確にプレイヤーに伝わるようになりました。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "848df122-a5d7-4c69-a29d-2531758f553b",
+      "conversation_id": "172083c7-d841-4279-ac97-7a7cd5c65c74",
+      "content": "TIPS の順序を入れ替え、「シールドの最大HP制限」に関する説明を、魔法攻撃の説明の直後（7番目）に移動しました。\n\n更新後の TIPS 表示順序は以下の通りです：\n\n1.  **「?」の基本**: 「\"?\" blocks cannot be matched. Shatter or Blast them.」\n2.  **「?」の出現**: 「Shattering an elemental block drops a \"?\" block from above.」\n3.  **「?」の浄化**: 「Shattering or Blasting a \"?\" drops an elemental block from above.」\n4.  **詰まった時**: 「If stuck, focus on shattering \"?\" blocks to find new matches.」\n5.  **物理防御**: 「Match Shields to block incoming physical attacks.」\n6.  **魔法攻撃**: 「Magic matches hit the entire enemy party.」\n7.  **移動済 - シールド制限**: 「**Shields cannot exceed your Max HP.**」\n8.  **魔法の貫通**: 「Shields cannot block enemy magic attacks.」\n9.  **鍵の所持**: 「A Key is needed for chests, but you can only carry one.」\n10. **経験値**: 「Match Gems to gain EXP.」\n11. **回復の転換**: 「Matching Heal blocks at full HP grants EXP.」\n12. **鍵の転換**: 「Matching Keys while holding one grants EXP.」\n13. **敵の隊列**: 「Enemies in the back row attack more slowly.」\n14. **「?」の威力**: 「Blasting \"?\" blocks near your matches slightly increases their power.」\n\nシールドに関する基本的な説明（5番）と、その制限（7番）、および魔法に対する性質（8番）が近い位置にまとまったことで、より理解しやすい流れになりました。",
+      "snapshot_message_type": 1
     }
   ]
 }

@@ -99,14 +99,14 @@ private Label shieldText;
         "If stuck, focus on shattering \"?\" blocks to find new matches.",
         "Match Shields to block incoming physical attacks.",
         "Magic matches hit the entire enemy party.",
+        "Shields cannot exceed your Max HP.",
         "Shields cannot block enemy magic attacks.",
         "A Key is needed for chests, but you can only carry one.",
         "Match Gems to gain EXP.",
         "Matching Heal blocks at full HP grants EXP.",
         "Matching Keys while holding one grants EXP.",
         "Enemies in the back row attack more slowly.",
-        "Blasting \"?\" blocks near your matches slightly increases their power.",
-        "Shields cannot exceed your Max HP."
+        "Blasting \"?\" blocks near your matches slightly increases their power."
         };
 
     private static int nextTipIndex = 0;
