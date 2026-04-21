@@ -32,6 +32,9 @@ public class EnemyUnit : MonoBehaviour
     {
         if (IsDead) return;
 
+        // Skip timer decrement if this enemy already has an action pending in the queue
+        if (CombatManager.Instance != null && CombatManager.Instance.HasPendingAction(this)) return;
+
         timer -= Time.deltaTime;
         if (timer <= 0f)
         {

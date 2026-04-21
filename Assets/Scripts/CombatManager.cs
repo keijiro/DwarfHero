@@ -66,6 +66,7 @@ public class CombatManager : MonoBehaviour
 
     private LinkedList<CombatAction> eventQueue = new LinkedList<CombatAction>();
     private bool isProcessingQueue = false;
+    private CombatAction currentAction = null;
 
     [Header("UI References")]
     public UIDocument HUD;
@@ -587,9 +588,25 @@ yield return null;
         }
     }
 
+    public bool HasPendingAction(EnemyUnit enemy)
+    {
+        if (enemy == null) return false;
+        
+        // 1. Check if the enemy is currently executing an action
+        if (currentAction != null && currentAction.SourceEnemy == enemy) return true;
+
+        // 2. Check if the enemy has an action in the queue
+        foreach (var action in eventQueue)
+        {
+            if (action.SourceEnemy == enemy) return true;
+        }
+        return false;
+    }
+
     private IEnumerator ExecuteAction(CombatAction action)
     {
         isProcessingQueue = true;
+        currentAction = action;
         
         switch (action.Type)
         {
@@ -626,7 +643,7 @@ yield return null;
                 Debug.Log($"Gained {action.Value} Shield. Total: {Shield} (Max: {MaxHP})");
                 yield return new WaitForSeconds(0.2f);
                 break;
-case CombatActionType.PlayerExp:
+    case CombatActionType.PlayerExp:
                 if (AudioManager.Instance != null) AudioManager.Instance.PlaySEWithRandomPitch(SEType.Exp, 0.7f);
                 AddExperience(action.Value);
                 Debug.Log($"Gained {action.Value} EXP. Total: {Experience}");
@@ -651,6 +668,7 @@ case CombatActionType.PlayerExp:
         }
 
         UpdateUI();
+        currentAction = null;
         isProcessingQueue = false;
     }
 
