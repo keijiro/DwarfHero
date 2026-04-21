@@ -105,9 +105,9 @@ private Label shieldText;
         "Matching Heal blocks at full HP grants EXP.",
         "Matching Keys while holding one grants EXP.",
         "Enemies in the back row attack more slowly.",
-        "Matching next to \"?\" blocks increases the power of your actions.",
-        "Shields are powerful, but cannot be stacked beyond your Max HP."
-    };
+        "Blasting \"?\" blocks near your matches slightly increases their power.",
+        "Shields cannot exceed your Max HP."
+        };
 
     private static int nextTipIndex = 0;
     private bool overlayClicked = false;
