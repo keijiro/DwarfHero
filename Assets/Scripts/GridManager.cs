@@ -181,14 +181,12 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
 
     private void Update()
     {
-        // Ignore input while processing
+        // Ignore input while processing or if a UI overlay (modal) is active
         if (isProcessing) return;
+        if (CombatManager.Instance != null && CombatManager.Instance.IsOverlayActive) return;
 
         if (Pointer.current != null && Pointer.current.press.wasPressedThisFrame)
         {
-            // Prevent interaction if clicking on UI elements
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
-
             HandleClick();
         }
     }

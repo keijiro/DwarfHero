@@ -78,6 +78,9 @@ private Label shieldText;
     private Label keyLabel;
     private VisualElement notificationLayer;
 
+    private bool isModalActive = false;
+    public bool IsOverlayActive => isModalActive;
+
     [Header("Treasure Chest Settings")]
     [Range(0f, 1f)] public float TreasureSpawnChance = 0.5f;
     public Sprite ChestClosedSprite;
@@ -801,16 +804,17 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         string currentTip = TIPS[nextTipIndex];
         nextTipIndex++;
 
+        // Reset state
+        isModalActive = true;
+        overlayClicked = false;
+        treasureOverlay.pickingMode = PickingMode.Position;
+        treasureOverlay.RegisterCallback<ClickEvent>(OnOverlayClicked);
+
         // Setup UI for Tip
         treasureImage.style.display = DisplayStyle.None;
         if (tipIcon != null) tipIcon.style.display = DisplayStyle.Flex;
         if (dialogueBox != null) dialogueBox.AddToClassList("dialogue-box--tip");
         treasureMessage.text = currentTip;
-
-        // Reset click flag and register callback
-        overlayClicked = false;
-        treasureOverlay.pickingMode = PickingMode.Position;
-        treasureOverlay.RegisterCallback<ClickEvent>(OnOverlayClicked);
 
         // Show
         treasureOverlay.style.display = DisplayStyle.Flex;
@@ -826,6 +830,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         yield return StartCoroutine(WaitForSecondsOrClick(0.5f));
 
         // Cleanup
+        isModalActive = false;
         treasureOverlay.UnregisterCallback<ClickEvent>(OnOverlayClicked);
         treasureOverlay.style.display = DisplayStyle.None;
         treasureOverlay.pickingMode = PickingMode.Ignore;
@@ -834,7 +839,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         treasureImage.style.display = DisplayStyle.Flex;
         if (tipIcon != null) tipIcon.style.display = DisplayStyle.None;
         if (dialogueBox != null) dialogueBox.RemoveFromClassList("dialogue-box--tip");
-        }
+    }
 
         private void OnOverlayClicked(ClickEvent evt)
         {
@@ -857,6 +862,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             if (treasureOverlay == null) yield break;
 
             // Reset state
+            isModalActive = true;
             overlayClicked = false;
             treasureOverlay.pickingMode = PickingMode.Position;
             treasureOverlay.RegisterCallback<ClickEvent>(OnOverlayClicked);
@@ -921,6 +927,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             yield return StartCoroutine(WaitForSecondsOrClick(0.5f)); // Fade out time
         
             // Cleanup
+            isModalActive = false;
             treasureOverlay.UnregisterCallback<ClickEvent>(OnOverlayClicked);
             treasureOverlay.style.display = DisplayStyle.None;
             treasureOverlay.pickingMode = PickingMode.Ignore;
