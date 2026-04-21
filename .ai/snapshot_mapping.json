@@ -3257,6 +3257,12 @@
       "conversation_id": "172083c7-d841-4279-ac97-7a7cd5c65c74",
       "content": "「?」ブロックの威力に関する TIPS を配列の最後に移動しました。\nこれで、序盤は基本的なシステム（Skaブロックやシールドの性質）の説明から始まり、高度な仕様（隣接爆破による威力上昇）は一通り他の TIPS を見終えた後に表示されるようになります。\n\n現在の TIPS 順序：\n1. **「?」の基本**: 「\"?\" blocks cannot be matched. Shatter or Blast them.」\n...\n13. **敵の隊列**: 「Enemies in the back row attack more slowly.」\n14. **「?」の威力**: 「Blasting \"?\" blocks near your matches slightly increases their power.」\n\n修正が完了し、エラーがないことも確認済みです。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "0b608002-fe70-474e-b179-06f0c5b098da",
+      "conversation_id": "172083c7-d841-4279-ac97-7a7cd5c65c74",
+      "content": "ご指摘失礼いたしました。TeX形式を避け、コードスニペットを使用して計算式を再提示します。\n\n### 0. 基礎：有効消滅数 (effectiveCount)\nすべての計算のベースとなる数値です。\n\n```text\neffectiveCount = matchCount + floor(skaCount / SkaDivisor)\n```\n*   `SkaDivisor`: デフォルト 3.0\n*   `matchCount`: マッチしたブロック数\n*   `skaCount`: 隣接して爆破された「?」ブロックの数\n\n---\n\n### 1. Heal（回復）ブロック\n\n#### 【HPが減少している場合】\n```text\n回復量 = round((effectiveCount / BaseMatchCount) * PlayerAttack * HealAttackRatio)\n```\n*   `BaseMatchCount`: デフォルト 3.0\n*   `PlayerAttack`: レベルに応じた攻撃力（初期値10）\n*   `HealAttackRatio`: デフォルト 0.6\n*   **計算の意図**: 攻撃力の60%をベースとし、3個マッチなら攻撃力の60%、6個なら120%が回復します。\n\n#### 【HPが満タンの場合：経験値変換】\n```text\n獲得EXP = floor((effectiveCount * (次レベルへの必要EXP / GemExpDivisor)) / 3)\n```\n*   `GemExpDivisor`: デフォルト 20\n*   **計算の意図**: 経験値ブロック（ジェム）を消した時の1/3の効率で経験値になります。\n\n---\n\n### 2. Shield（防御）ブロック\n最大HPを基準に算出されます。\n\n```text\nシールド加算量 = effectiveCount * max(1, MaxHP / ShieldMaxBlocksToReachMaxHP)\n```\n*   `ShieldMaxBlocksToReachMaxHP`: デフォルト 20\n*   **計算の意図**: 「20ブロック消せば最大HPと同じ量のシールドが溜まる」というバランスになっています。\n\n---\n\n### 参考：レベルアップによる基礎値の上昇\n```text\nPlayerAttack = PlayerBaseAttack(10) + (Level - 1) * AttackIncreasePerLevel(2)\nMaxHP = PlayerBaseHP(100) + (Level - 1) * HPIncreasePerLevel(20)\n```\n※括弧内はデフォルトのバランス設定値です。",
+      "snapshot_message_type": 1
     }
   ]
 }
