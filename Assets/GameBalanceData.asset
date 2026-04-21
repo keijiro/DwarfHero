@@ -56,7 +56,7 @@ MonoBehaviour:
     ATK: 16.2
     CD: 3
     IsMagic: 0
-  InitialWaveBudget: 6
+  InitialWaveBudget: 2.9
   BudgetIncreasePerWave: 1.2
   WaveWeightShiftFactor: 7.9
   FormationPenaltyFactor: 0.66
