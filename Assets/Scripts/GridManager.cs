@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
 /// <summary>
@@ -185,6 +186,9 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
 
         if (Pointer.current != null && Pointer.current.press.wasPressedThisFrame)
         {
+            // Prevent interaction if clicking on UI elements
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+
             HandleClick();
         }
     }

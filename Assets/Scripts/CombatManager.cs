@@ -105,7 +105,7 @@ private Label shieldText;
     };
 
     private static int nextTipIndex = 0;
-    private bool tipClicked = false;
+    private bool overlayClicked = false;
 
     [Header("Player Animators")]
 public Animator FighterAnimator;
@@ -808,9 +808,9 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         treasureMessage.text = currentTip;
 
         // Reset click flag and register callback
-tipClicked = false;
+        overlayClicked = false;
         treasureOverlay.pickingMode = PickingMode.Position;
-        treasureOverlay.RegisterCallback<ClickEvent>(OnTipOverlayClicked);
+        treasureOverlay.RegisterCallback<ClickEvent>(OnOverlayClicked);
 
         // Show
         treasureOverlay.style.display = DisplayStyle.Flex;
@@ -818,20 +818,15 @@ tipClicked = false;
         if (dialogueBox != null) dialogueBox.style.opacity = 1;
 
         // Wait for 4 seconds or click
-        float timer = 4.0f;
-        while (timer > 0 && !tipClicked)
-{
-            timer -= Time.deltaTime;
-            yield return null;
-        }
+        yield return StartCoroutine(WaitForSecondsOrClick(4.0f));
 
         // Hide
         treasureOverlay.RemoveFromClassList("treasure-overlay--visible");
         if (dialogueBox != null) dialogueBox.style.opacity = 0;
-        yield return new WaitForSeconds(0.5f);
+        yield return StartCoroutine(WaitForSecondsOrClick(0.5f));
 
         // Cleanup
-        treasureOverlay.UnregisterCallback<ClickEvent>(OnTipOverlayClicked);
+        treasureOverlay.UnregisterCallback<ClickEvent>(OnOverlayClicked);
         treasureOverlay.style.display = DisplayStyle.None;
         treasureOverlay.pickingMode = PickingMode.Ignore;
         
@@ -839,77 +834,96 @@ tipClicked = false;
         treasureImage.style.display = DisplayStyle.Flex;
         if (tipIcon != null) tipIcon.style.display = DisplayStyle.None;
         if (dialogueBox != null) dialogueBox.RemoveFromClassList("dialogue-box--tip");
-}
-
-    private void OnTipOverlayClicked(ClickEvent evt)
-    {
-        tipClicked = true;
-    }
-
-    private IEnumerator TreasureChestEventRoutine()
-{
-        if (treasureOverlay == null) yield break;
-
-        // Reset state
-        if (ChestClosedSprite != null)
-        {
-            treasureImage.style.backgroundImage = new StyleBackground(ChestClosedSprite);
-            treasureImage.style.opacity = 1;
         }
+
+        private void OnOverlayClicked(ClickEvent evt)
+        {
+            overlayClicked = true;
+        }
+
+        private IEnumerator WaitForSecondsOrClick(float seconds)
+        {
+            float timer = seconds;
+            while (timer > 0 && !overlayClicked)
+            {
+                timer -= Time.deltaTime;
+                yield return null;
+            }
+            overlayClicked = false;
+            }
+
+        private IEnumerator TreasureChestEventRoutine()
+        {
+            if (treasureOverlay == null) yield break;
+
+            // Reset state
+            overlayClicked = false;
+            treasureOverlay.pickingMode = PickingMode.Position;
+            treasureOverlay.RegisterCallback<ClickEvent>(OnOverlayClicked);
+
+            if (ChestClosedSprite != null)
+            {
+                treasureImage.style.backgroundImage = new StyleBackground(ChestClosedSprite);
+                treasureImage.style.opacity = 1;
+            }
             
-        treasureMessage.text = "You found a chest!";
-        if (dialogueBox != null) dialogueBox.style.opacity = 1;
+            treasureMessage.text = "You found a chest!";
+            if (dialogueBox != null) dialogueBox.style.opacity = 1;
         
-        // Show overlay
-        treasureOverlay.style.display = DisplayStyle.Flex;
-        treasureOverlay.AddToClassList("treasure-overlay--visible");
-        yield return new WaitForSeconds(0.5f); // Fade in time
+            // Show overlay
+            treasureOverlay.style.display = DisplayStyle.Flex;
+            treasureOverlay.AddToClassList("treasure-overlay--visible");
+            yield return StartCoroutine(WaitForSecondsOrClick(0.5f)); // Fade in time
 
-        yield return new WaitForSeconds(1.0f);
+            yield return StartCoroutine(WaitForSecondsOrClick(1.0f));
 
-        if (HasKey)
-        {
-            // Sync fade out for both dialogue box and closed chest
-            if (dialogueBox != null) dialogueBox.style.opacity = 0;
-            treasureImage.style.opacity = 0;
-            yield return new WaitForSeconds(0.3f);
+            if (HasKey)
+            {
+                // Sync fade out for both dialogue box and closed chest
+                if (dialogueBox != null) dialogueBox.style.opacity = 0;
+                treasureImage.style.opacity = 0;
+                yield return StartCoroutine(WaitForSecondsOrClick(0.3f));
 
-            // Opening success logic
-            HasKey = false;
-            int currentReq = GetThresholdForLevel(Level + 1) - GetThresholdForLevel(Level);
-            int chestDivisor = (balanceData != null) ? balanceData.ChestExpDivisor : 8;
-            AddExperience(Mathf.Max(1, currentReq / chestDivisor));
-            UpdateUI();
+                // Opening success logic
+                HasKey = false;
+                int currentReq = GetThresholdForLevel(Level + 1) - GetThresholdForLevel(Level);
+                int chestDivisor = (balanceData != null) ? balanceData.ChestExpDivisor : 8;
+                AddExperience(Mathf.Max(1, currentReq / chestDivisor));
+                UpdateUI();
 
-            // Play elegant harp SE
-            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.ChestOpen);
+                // Play elegant harp SE
+                if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.ChestOpen);
             
-            // Switch sprite to open state
-            if (ChestOpenSprite != null)
-                treasureImage.style.backgroundImage = new StyleBackground(ChestOpenSprite);
+                // Switch sprite to open state
+                if (ChestOpenSprite != null)
+                    treasureImage.style.backgroundImage = new StyleBackground(ChestOpenSprite);
             
-            // Sync fade in for both dialogue box (with new message) and open chest
-            treasureMessage.text = "Unlocked with the key!\nBonus EXP obtained!";
-            treasureImage.style.opacity = 1;
-            if (dialogueBox != null) dialogueBox.style.opacity = 1;
+                // Sync fade in for both dialogue box (with new message) and open chest
+                treasureMessage.text = "Unlocked with the key!\nBonus EXP obtained!";
+                treasureImage.style.opacity = 1;
+                if (dialogueBox != null) dialogueBox.style.opacity = 1;
             
-            yield return new WaitForSeconds(2.5f);
-        }
-        else
-        {
-            // Opening failure - Only fade the dialogue box
-            if (dialogueBox != null) dialogueBox.style.opacity = 0;
-            yield return new WaitForSeconds(0.3f);
+                yield return StartCoroutine(WaitForSecondsOrClick(2.5f));
+            }
+            else
+            {
+                // Opening failure - Only fade the dialogue box
+                if (dialogueBox != null) dialogueBox.style.opacity = 0;
+                yield return StartCoroutine(WaitForSecondsOrClick(0.3f));
 
-            treasureMessage.text = "No key to open it...";
-            if (dialogueBox != null) dialogueBox.style.opacity = 1;
-            yield return new WaitForSeconds(1.5f);
-        }
+                treasureMessage.text = "No key to open it...";
+                if (dialogueBox != null) dialogueBox.style.opacity = 1;
+                yield return StartCoroutine(WaitForSecondsOrClick(1.5f));
+            }
 
-        // Hide overlay (Fades out everything)
-        treasureOverlay.RemoveFromClassList("treasure-overlay--visible");
-        yield return new WaitForSeconds(0.5f); // Fade out time
-        treasureOverlay.style.display = DisplayStyle.None;
+            // Hide overlay (Fades out everything)
+            treasureOverlay.RemoveFromClassList("treasure-overlay--visible");
+            yield return StartCoroutine(WaitForSecondsOrClick(0.5f)); // Fade out time
+        
+            // Cleanup
+            treasureOverlay.UnregisterCallback<ClickEvent>(OnOverlayClicked);
+            treasureOverlay.style.display = DisplayStyle.None;
+            treasureOverlay.pickingMode = PickingMode.Ignore;
         }
 
         private IEnumerator SpawnWaveWithDelay()
