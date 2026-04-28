@@ -181,7 +181,7 @@
       }
     },
     "jp.keijiro.ai.assistant.extensions": {
-      "version": "1.0.1",
+      "version": "1.1.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
