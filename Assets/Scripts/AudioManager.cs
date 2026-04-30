@@ -42,8 +42,8 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private SEClip[] clips = default;
     [SerializeField] private int poolSize = 16;
-    [SerializeField] private AudioMixerGroup bypassGroup;
-    [SerializeField] private AudioMixerGroup reverbGroup;
+    [SerializeField] private AudioMixerGroup bypassGroup = null;
+    [SerializeField] private AudioMixerGroup reverbGroup = null;
 
     private Dictionary<SEType, AudioClip> clipDictionary = new Dictionary<SEType, AudioClip>();
     private Dictionary<SEType, bool> reverbDictionary = new Dictionary<SEType, bool>();

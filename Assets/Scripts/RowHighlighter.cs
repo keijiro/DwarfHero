@@ -3,7 +3,7 @@ using UnityEngine;
 public class RowHighlighter : MonoBehaviour
 {
     [SerializeField] private GridManager gridManager;
-    [SerializeField] private Material pulseMaterial;
+    [SerializeField] private Material pulseMaterial = null;
     [SerializeField] private Color pulseColor = Color.white;
     [SerializeField, Range(0f, 1f)] private float maxAlpha = 0.5f;
 

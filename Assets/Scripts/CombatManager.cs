@@ -233,8 +233,6 @@ shieldText = root.Q<Label>("shield-text");
         MaxHP = GetMaxHPForLevel(Level);
         CurrentHP = MaxHP; // Full heal as requested
         
-        Debug.Log($"<color=cyan>LEVEL UP! Level: {Level}, MaxHP: {MaxHP}</color>");
-        
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySE(SEType.LevelUp);
@@ -242,15 +240,15 @@ shieldText = root.Q<Label>("shield-text");
 
         ShowLevelUpPopup();
         UpdateUI();
-        }
+    }
 
-        private void ShowLevelUpPopup()
-        {
+    private void ShowLevelUpPopup()
+    {
         StartCoroutine(ShowLevelUpPopupRoutine());
-        }
+    }
 
-        private IEnumerator ShowLevelUpPopupRoutine()
-        {
+    private IEnumerator ShowLevelUpPopupRoutine()
+    {
         if (HUD == null) yield break;
         var root = HUD.rootVisualElement;
 
@@ -270,7 +268,7 @@ shieldText = root.Q<Label>("shield-text");
         label.AddToClassList("center-message--hiding");
         yield return new WaitForSeconds(0.4f); // Wait for fade out transition
         root.Remove(label);
-        }
+    }
 
     private void UpdateUI()
     {
@@ -322,7 +320,7 @@ yield return null;
         label.AddToClassList("center-message--hiding");
         yield return new WaitForSeconds(0.4f); // Wait for fade out transition
         root.Remove(label);
-        }
+    }
 
     private IEnumerator Start()
     {
@@ -404,7 +402,6 @@ yield return null;
 
         // Priority: Insert player actions at the head
         eventQueue.AddFirst(action);
-        Debug.Log($"Added Player Action: {action.Type} Value: {action.Value}. Interrupting queue.");
     }
 
     private void ShowActionNotification(CombatActionType type, int value, Vector3 worldPos)
@@ -462,15 +459,15 @@ yield return null;
         notificationLayer.Add(label);
 
         StartCoroutine(AnimateNotification(label));
-        }
+    }
 
-        public void ShowCombatNumber(int value, Color color, Vector3 worldPos)
-        {
-            if (notificationLayer == null) return;
+    public void ShowCombatNumber(int value, Color color, Vector3 worldPos)
+    {
+        if (notificationLayer == null) return;
 
-            Label label = new Label(value.ToString());
-            label.AddToClassList("combat-number");
-            label.style.color = color;
+        Label label = new Label(value.ToString());
+        label.AddToClassList("combat-number");
+        label.style.color = color;
 
         Vector2 panelPos = RuntimePanelUtils.CameraTransformWorldToPanel(notificationLayer.panel, worldPos, Camera.main);
         label.style.left = panelPos.x;
@@ -478,10 +475,10 @@ yield return null;
 
         notificationLayer.Add(label);
         StartCoroutine(AnimateCombatNumber(label, panelPos));
-        }
+    }
 
-        private IEnumerator AnimateCombatNumber(Label label, Vector2 basePos)
-        {
+    private IEnumerator AnimateCombatNumber(Label label, Vector2 basePos)
+    {
         float totalDuration = 1.0f;
         float elapsed = 0f;
         
@@ -516,20 +513,20 @@ yield return null;
         }
 
         label.RemoveFromHierarchy();
-        }
+    }
 
-        private Vector3 GetPartyCentroid()
-        {
+    private Vector3 GetPartyCentroid()
+    {
         Vector3 sum = Vector3.zero;
         int count = 0;
         if (FighterAnimator != null) { sum += FighterAnimator.transform.position; count++; }
         if (MageAnimator != null) { sum += MageAnimator.transform.position; count++; }
         if (TankAnimator != null) { sum += TankAnimator.transform.position; count++; }
         return count > 0 ? (sum / count) : Vector3.zero;
-        }
+    }
 
-        private IEnumerator AnimateNotification(Label label)
-        {
+    private IEnumerator AnimateNotification(Label label)
+    {
         // Initial state: Slightly below center, invisible
         label.style.opacity = 0;
         label.style.translate = new Translate(Length.Percent(-50), Length.Percent(0));
@@ -576,7 +573,6 @@ yield return null;
             IsMagic = isMagic
         };
         eventQueue.AddLast(action);
-        Debug.Log($"Added Enemy Action: {enemy.gameObject.name} Damage: {damage} (Magic: {isMagic})");
     }
 
     private IEnumerator QueueProcessor()
@@ -634,7 +630,6 @@ yield return null;
                 ShowCombatNumber(action.Value, Color.green, GetPartyCentroid());
 
                 CurrentHP = Mathf.Min(MaxHP, CurrentHP + action.Value);
-                Debug.Log($"Healed {action.Value}. HP: {CurrentHP}");
                 yield return new WaitForSeconds(0.2f);
                 break;
             case CombatActionType.PlayerShield:
@@ -645,13 +640,11 @@ yield return null;
                 ShowCombatNumber(action.Value, new Color(0.2f, 0.6f, 1f), TankAnimator.transform.position);
 
                 Shield = Mathf.Min(MaxHP, Shield + action.Value);
-                Debug.Log($"Gained {action.Value} Shield. Total: {Shield} (Max: {MaxHP})");
                 yield return new WaitForSeconds(0.2f);
                 break;
     case CombatActionType.PlayerExp:
                 if (AudioManager.Instance != null) AudioManager.Instance.PlaySEWithRandomPitch(SEType.Exp, 0.7f);
                 AddExperience(action.Value);
-                Debug.Log($"Gained {action.Value} EXP. Total: {Experience}");
                 yield return new WaitForSeconds(0.1f);
                 break;
             case CombatActionType.PlayerKey:
@@ -659,7 +652,6 @@ yield return null;
                 if (!HasKey)
                 {
                     HasKey = true;
-                    Debug.Log("Key Obtained!");
                 }
                 else
                 {
@@ -732,7 +724,6 @@ yield return null;
 EnemyUnit target = ActiveEnemies[0];
         if (target != null)
         {
-            Debug.Log($"Player attacks {target.name} for {damage} damage.");
             yield return StartCoroutine(target.TakeDamage(damage));
         }
 
@@ -756,7 +747,6 @@ EnemyUnit target = ActiveEnemies[0];
         if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Magic);
 
         // 3. Apply Damage to all and Enemy Reactions
-Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         List<EnemyUnit> targets = new List<EnemyUnit>(ActiveEnemies);
         List<Coroutine> coroutines = new List<Coroutine>();
         foreach (var enemy in targets)
@@ -843,99 +833,99 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         if (dialogueBox != null) dialogueBox.RemoveFromClassList("dialogue-box--tip");
     }
 
-        private void OnOverlayClicked(ClickEvent evt)
+    private void OnOverlayClicked(ClickEvent evt)
+    {
+        overlayClicked = true;
+    }
+
+    private IEnumerator WaitForSecondsOrClick(float seconds)
+    {
+        float timer = seconds;
+        while (timer > 0 && !overlayClicked)
         {
-            overlayClicked = true;
+            timer -= Time.deltaTime;
+            yield return null;
         }
+        overlayClicked = false;
+    }
 
-        private IEnumerator WaitForSecondsOrClick(float seconds)
+    private IEnumerator TreasureChestEventRoutine()
+    {
+        if (treasureOverlay == null) yield break;
+
+        // Reset state
+        isModalActive = true;
+        overlayClicked = false;
+        treasureOverlay.pickingMode = PickingMode.Position;
+        treasureOverlay.RegisterCallback<ClickEvent>(OnOverlayClicked);
+
+        if (ChestClosedSprite != null)
         {
-            float timer = seconds;
-            while (timer > 0 && !overlayClicked)
-            {
-                timer -= Time.deltaTime;
-                yield return null;
-            }
-            overlayClicked = false;
-            }
+            treasureImage.style.backgroundImage = new StyleBackground(ChestClosedSprite);
+            treasureImage.style.opacity = 1;
+        }
+        
+        treasureMessage.text = "You found a chest!";
+        if (dialogueBox != null) dialogueBox.style.opacity = 1;
+    
+        // Show overlay
+        treasureOverlay.style.display = DisplayStyle.Flex;
+        treasureOverlay.AddToClassList("treasure-overlay--visible");
+        yield return StartCoroutine(WaitForSecondsOrClick(0.5f)); // Fade in time
 
-        private IEnumerator TreasureChestEventRoutine()
+        yield return StartCoroutine(WaitForSecondsOrClick(1.0f));
+
+        if (HasKey)
         {
-            if (treasureOverlay == null) yield break;
+            // Sync fade out for both dialogue box and closed chest
+            if (dialogueBox != null) dialogueBox.style.opacity = 0;
+            treasureImage.style.opacity = 0;
+            yield return StartCoroutine(WaitForSecondsOrClick(0.3f));
 
-            // Reset state
-            isModalActive = true;
-            overlayClicked = false;
-            treasureOverlay.pickingMode = PickingMode.Position;
-            treasureOverlay.RegisterCallback<ClickEvent>(OnOverlayClicked);
+            // Opening success logic
+            HasKey = false;
+            int currentReq = GetThresholdForLevel(Level + 1) - GetThresholdForLevel(Level);
+            int chestDivisor = (balanceData != null) ? balanceData.ChestExpDivisor : 8;
+            AddExperience(Mathf.Max(1, currentReq / chestDivisor));
+            UpdateUI();
 
-            if (ChestClosedSprite != null)
-            {
-                treasureImage.style.backgroundImage = new StyleBackground(ChestClosedSprite);
-                treasureImage.style.opacity = 1;
-            }
-            
-            treasureMessage.text = "You found a chest!";
+            // Play elegant harp SE
+            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.ChestOpen);
+        
+            // Switch sprite to open state
+            if (ChestOpenSprite != null)
+                treasureImage.style.backgroundImage = new StyleBackground(ChestOpenSprite);
+        
+            // Sync fade in for both dialogue box (with new message) and open chest
+            treasureMessage.text = "Unlocked with the key!\nBonus EXP obtained!";
+            treasureImage.style.opacity = 1;
             if (dialogueBox != null) dialogueBox.style.opacity = 1;
         
-            // Show overlay
-            treasureOverlay.style.display = DisplayStyle.Flex;
-            treasureOverlay.AddToClassList("treasure-overlay--visible");
-            yield return StartCoroutine(WaitForSecondsOrClick(0.5f)); // Fade in time
+            yield return StartCoroutine(WaitForSecondsOrClick(2.5f));
+        }
+        else
+        {
+            // Opening failure - Only fade the dialogue box
+            if (dialogueBox != null) dialogueBox.style.opacity = 0;
+            yield return StartCoroutine(WaitForSecondsOrClick(0.3f));
 
-            yield return StartCoroutine(WaitForSecondsOrClick(1.0f));
-
-            if (HasKey)
-            {
-                // Sync fade out for both dialogue box and closed chest
-                if (dialogueBox != null) dialogueBox.style.opacity = 0;
-                treasureImage.style.opacity = 0;
-                yield return StartCoroutine(WaitForSecondsOrClick(0.3f));
-
-                // Opening success logic
-                HasKey = false;
-                int currentReq = GetThresholdForLevel(Level + 1) - GetThresholdForLevel(Level);
-                int chestDivisor = (balanceData != null) ? balanceData.ChestExpDivisor : 8;
-                AddExperience(Mathf.Max(1, currentReq / chestDivisor));
-                UpdateUI();
-
-                // Play elegant harp SE
-                if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.ChestOpen);
-            
-                // Switch sprite to open state
-                if (ChestOpenSprite != null)
-                    treasureImage.style.backgroundImage = new StyleBackground(ChestOpenSprite);
-            
-                // Sync fade in for both dialogue box (with new message) and open chest
-                treasureMessage.text = "Unlocked with the key!\nBonus EXP obtained!";
-                treasureImage.style.opacity = 1;
-                if (dialogueBox != null) dialogueBox.style.opacity = 1;
-            
-                yield return StartCoroutine(WaitForSecondsOrClick(2.5f));
-            }
-            else
-            {
-                // Opening failure - Only fade the dialogue box
-                if (dialogueBox != null) dialogueBox.style.opacity = 0;
-                yield return StartCoroutine(WaitForSecondsOrClick(0.3f));
-
-                treasureMessage.text = "No key to open it...";
-                if (dialogueBox != null) dialogueBox.style.opacity = 1;
-                yield return StartCoroutine(WaitForSecondsOrClick(1.5f));
-            }
-
-            // Hide overlay (Fades out everything)
-            treasureOverlay.RemoveFromClassList("treasure-overlay--visible");
-            yield return StartCoroutine(WaitForSecondsOrClick(0.5f)); // Fade out time
-        
-            // Cleanup
-            isModalActive = false;
-            treasureOverlay.UnregisterCallback<ClickEvent>(OnOverlayClicked);
-            treasureOverlay.style.display = DisplayStyle.None;
-            treasureOverlay.pickingMode = PickingMode.Ignore;
+            treasureMessage.text = "No key to open it...";
+            if (dialogueBox != null) dialogueBox.style.opacity = 1;
+            yield return StartCoroutine(WaitForSecondsOrClick(1.5f));
         }
 
-        private IEnumerator SpawnWaveWithDelay()
+        // Hide overlay (Fades out everything)
+        treasureOverlay.RemoveFromClassList("treasure-overlay--visible");
+        yield return StartCoroutine(WaitForSecondsOrClick(0.5f)); // Fade out time
+    
+        // Cleanup
+        isModalActive = false;
+        treasureOverlay.UnregisterCallback<ClickEvent>(OnOverlayClicked);
+        treasureOverlay.style.display = DisplayStyle.None;
+        treasureOverlay.pickingMode = PickingMode.Ignore;
+    }
+
+    private IEnumerator SpawnWaveWithDelay()
     {
         yield return new WaitForSeconds(1.0f);
         yield return StartCoroutine(ShowCenterMessageRoutine("MONSTERS APPROACH!", new Color(1f, 0.4f, 0.2f)));
@@ -996,30 +986,30 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
                 responseCoroutines.Add(StartCoroutine(tankVisuals.TriggerFlash(Color.yellow, 0.3f)));
                 responseCoroutines.Add(StartCoroutine(tankVisuals.ShakeRoutine(0.15f, 0.2f)));
                 ShowCombatNumber(action.Value, Color.yellow, TankAnimator.transform.position);
-                }
-                }
-                else
-                {
-                // Trigger Player Hit SE
-                if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Hit);
+            }
+        }
+        else
+        {
+            // Trigger Player Hit SE
+            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Hit);
 
-                // Trigger player damage visual (All characters Red Flash + Shake)
-                if (fighterVisuals != null)
-                {
+            // Trigger player damage visual (All characters Red Flash + Shake)
+            if (fighterVisuals != null)
+            {
                 responseCoroutines.Add(StartCoroutine(fighterVisuals.TriggerDamageEffect()));
                 ShowCombatNumber(finalDamage, Color.red, FighterAnimator.transform.position);
-                }
-                if (mageVisuals != null)
-                {
+            }
+            if (mageVisuals != null)
+            {
                 responseCoroutines.Add(StartCoroutine(mageVisuals.TriggerDamageEffect()));
                 ShowCombatNumber(finalDamage, Color.red, MageAnimator.transform.position);
-                }
-                if (tankVisuals != null)
-                {
+            }
+            if (tankVisuals != null)
+            {
                 responseCoroutines.Add(StartCoroutine(tankVisuals.TriggerDamageEffect()));
                 ShowCombatNumber(finalDamage, Color.red, TankAnimator.transform.position);
-                }
-                }
+            }
+        }
 
         foreach (var c in responseCoroutines) yield return c;
 
@@ -1045,8 +1035,6 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             if (mageVisuals != null) mageVisuals.SetPersistentColor(Color.black);
             if (tankVisuals != null) tankVisuals.SetPersistentColor(Color.black);
 
-            Debug.Log("Game Over (Party Wiped) - Transitioning to Game Over scene.");
-            
             // Save results for game over screen
             GameResults.FinalLevel = Level;
             GameResults.FinalExperience = Experience;
@@ -1054,7 +1042,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
 
             yield return new WaitForSeconds(1.0f);
             SceneManager.LoadScene("GameOver");
-}
+        }
 
         UpdateUI();
     }
@@ -1096,7 +1084,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             // Starts by favoring weaker enemies and shifts to favor stronger ones as waves progress.
             float shiftFactor = (balanceData != null) ? balanceData.WaveWeightShiftFactor : 10.0f;
             float power = -1.0f + (float)WaveCount / shiftFactor;
-float totalWeight = 0;
+            float totalWeight = 0;
             List<float> weights = new List<float>();
             foreach (int index in validIndices)
             {
@@ -1121,7 +1109,7 @@ float totalWeight = 0;
             }
 
             GameObject prefab = EnemyPrefabs[prefabIndex];
-GameBalanceData.EnemyDefinition def = enemyDefs[prefab.name];
+            GameBalanceData.EnemyDefinition def = enemyDefs[prefab.name];
 
             currentBudget -= def.Level;
 
@@ -1148,6 +1136,5 @@ GameBalanceData.EnemyDefinition def = enemyDefs[prefab.name];
             spawnIndex++;
             yield return new WaitForSeconds(0.4f);
         }
-        Debug.Log($"Wave {WaveCount} spawned. Budget: {budget}, Used: {budget - currentBudget}. {ActiveEnemies.Count} enemies.");
     }
 }

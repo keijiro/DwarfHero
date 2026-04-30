@@ -31,13 +31,13 @@ public class GridManager : MonoBehaviour
     }
 
     [Header("Assets")]
-    [SerializeField] private Sprite blockBaseSprite;
-    [SerializeField] private Sprite blockCrackedSprite;
+    [SerializeField] private Sprite blockBaseSprite = null;
+    [SerializeField] private Sprite blockCrackedSprite = null;
     [SerializeField] private Sprite[] iconSprites = new Sprite[7];
     [SerializeField, Range(0.1f, 2.0f)] private float iconScale = 0.8f;
-    [SerializeField] private ParticleSystem manualDestroyFX;
-    [SerializeField] private ParticleSystem matchDestroyFX;
-    [SerializeField] private ParticleSystem shockwaveFX;
+    [SerializeField] private ParticleSystem manualDestroyFX = null;
+    [SerializeField] private ParticleSystem matchDestroyFX = null;
+    [SerializeField] private ParticleSystem shockwaveFX = null;
 
     [Header("Visual Settings")]
     [SerializeField] private Color[] blockColors = new Color[7] {
@@ -66,13 +66,11 @@ public class GridManager : MonoBehaviour
     public event System.Action OnBottomRowClicked;
 
     private void Awake()
-{
-        Debug.Log("GridManager.Awake() called.");
+    {
     }
 
     private void Start()
     {
-        Debug.Log("GridManager.Start() called.");
         if (blockBaseSprite == null) Debug.LogWarning("blockBaseSprite is NULL in GridManager!");
         
         cameraShake = Camera.main.GetComponent<CameraShake>();
@@ -81,7 +79,6 @@ public class GridManager : MonoBehaviour
 
         int count = 0;
         foreach (var r in renderers) if (r != null) count++;
-        Debug.Log($"Grid initialized. {count} blocks created as children of {name}.");
     }
 
     private void InitializeGrid()
@@ -248,13 +245,13 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
                 comboCount++;
                 yield return StartCoroutine(AnimateMatchesAndDestroy(matchedSet, comboCount));
             }
-            } while (hasMatches);
+        } while (hasMatches);
 
-            isProcessing = false;
-            }
+        isProcessing = false;
+    }
 
-            private System.Collections.IEnumerator AnimateManualDestroy(GameObject block)
-            {
+    private System.Collections.IEnumerator AnimateManualDestroy(GameObject block)
+    {
         if (block == null) yield break;
 
         // 0. Shockwave immediately upon click
@@ -307,7 +304,7 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
         }
 
         // Hide visuals before physical destroy to avoid "pop"
-block.SetActive(false);
+        block.SetActive(false);
         block.transform.localScale = originalScale; // Reset for potential pool/reuse though not using pool
     }
 
@@ -408,8 +405,8 @@ block.SetActive(false);
                         {
                             AudioManager.Instance.PlaySEWithRandomPitch(SEType.Land, 0.3f);
                         }
-                        }
-    fb.renderer.transform.position = pos;
+                    }
+                    fb.renderer.transform.position = pos;
                 }
                 yield return null;
             }
@@ -563,17 +560,17 @@ block.SetActive(false);
             }
             elapsed += Time.deltaTime;
             yield return null;
-            }
+        }
 
-            if (AudioManager.Instance != null && positions.Count > 0)
-            {
-                // Pitch increases by 0.05 per combo, max 1.5
-                float pitch = Mathf.Min(1.0f + (comboCount - 1) * 0.05f, 1.5f);
-                AudioManager.Instance.PlaySE(SEType.Match, 0.9f, pitch);
-            }
+        if (AudioManager.Instance != null && positions.Count > 0)
+        {
+            // Pitch increases by 0.05 per combo, max 1.5
+            float pitch = Mathf.Min(1.0f + (comboCount - 1) * 0.05f, 1.5f);
+            AudioManager.Instance.PlaySE(SEType.Match, 0.9f, pitch);
+        }
 
-            foreach (var pos in positions)
-{
+        foreach (var pos in positions)
+        {
             if (matchDestroyFX != null && renderers[pos.Item1, pos.Item2] != null)
             {
                 Instantiate(matchDestroyFX, renderers[pos.Item1, pos.Item2].transform.position, Quaternion.identity);
@@ -595,5 +592,5 @@ block.SetActive(false);
         FindCluster(x - 1, y, type, cluster, visited);
         FindCluster(x, y + 1, type, cluster, visited);
         FindCluster(x, y - 1, type, cluster, visited);
-        }
-        }
+    }
+}

@@ -77,7 +77,6 @@ timer = effectiveInterval;
         if (IsDead) yield break;
 
         HP -= damage;
-        Debug.Log($"{name} took {damage} damage. HP: {HP}");
         
         CombatManager.Instance.ShowCombatNumber(damage, Color.red, transform.position);
 
@@ -104,7 +103,6 @@ timer = effectiveInterval;
         {
             AudioManager.Instance.PlaySE(SEType.EnemyDie, 0.7f);
         }
-        Debug.Log($"{name} died!");
         
         // Grant XP to player
         if (CombatManager.Instance != null)
