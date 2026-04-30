@@ -172,7 +172,7 @@ public class CharacterVisuals : MonoBehaviour
         {
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
-            // Smoothly fade out the overlay
+            // Smoothly fade out the overlay to return to the character's natural sprite look.
             float alpha = Mathf.Lerp(baseAlpha, 0f, t);
 
             sr.GetPropertyBlock(mpb);
@@ -193,7 +193,7 @@ public class CharacterVisuals : MonoBehaviour
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            // Only horizontal shake
+            // Horizontal-only shake to emphasize impact without vertical bouncing.
             float xOffset = Random.Range(-amount, amount);
             transform.localPosition = originalLocalPos + new Vector3(xOffset, 0, 0);
             yield return null;

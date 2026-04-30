@@ -93,10 +93,10 @@ public class CombatManager : MonoBehaviour
 
     private static readonly string[] TIPS = new string[]
     {
-        "\"?\" blocks cannot be matched. Shatter or Blast them.",
-        "Shattering an elemental block drops a \"?\" block from above.",
-        "Shattering or Blasting a \"?\" drops an elemental block from above.",
-        "If stuck, focus on shattering \"?\" blocks to find new matches.",
+        "\"Ska\" (?) blocks cannot be matched. Shatter or Blast them.",
+        "Shattering an elemental block drops a \"Ska\" block from above.",
+        "Shattering or Blasting a \"Ska\" block drops an elemental block from above.",
+        "If stuck, focus on shattering \"Ska\" blocks to find new matches.",
         "Match Shields to block incoming physical attacks.",
         "Magic matches hit the entire enemy party.",
         "Shields cannot exceed your Max HP.",
@@ -106,7 +106,7 @@ public class CombatManager : MonoBehaviour
         "Matching Heal blocks at full HP grants EXP.",
         "Matching Keys while holding one grants EXP.",
         "Enemies in the back row attack more slowly.",
-        "Blasting \"?\" blocks near your matches slightly increases their power."
+        "Blasting \"Ska\" blocks near your matches slightly increases their power."
     };
 
     private static int nextTipIndex = 0;
@@ -231,7 +231,7 @@ public class CombatManager : MonoBehaviour
     {
         Level++;
         MaxHP = GetMaxHPForLevel(Level);
-        CurrentHP = MaxHP; // Full heal as requested
+        CurrentHP = MaxHP; // Full heal upon leveling up
 
         if (AudioManager.Instance != null)
         {
@@ -279,6 +279,7 @@ public class CombatManager : MonoBehaviour
         }
         if (shieldBarFill != null)
         {
+            // Shield bar represents current shield strength relative to Max HP
             float percentage = (float)Shield / MaxHP * 100f;
             shieldBarFill.style.width = new Length(percentage, LengthUnit.Percent);
         }
@@ -333,6 +334,7 @@ public class CombatManager : MonoBehaviour
 
     public void AddPlayerAction(GridManager.BlockType type, int matchCount, int skaCount, Vector3 worldPos)
     {
+        // effectiveCount factors in adjacent Ska blocks to boost the action's power.
         float divisor = (balanceData != null) ? balanceData.SkaDivisor : 3.0f;
         float baseMatch = (balanceData != null) ? balanceData.BaseMatchCount : 3.0f;
         int effectiveCount = matchCount + Mathf.FloorToInt(skaCount / divisor);
@@ -346,7 +348,7 @@ public class CombatManager : MonoBehaviour
             case GridManager.BlockType.Sword:
                 {
                     action.Type = CombatActionType.PlayerAttack;
-                    // Value per unit (BaseMatchCount blocks = 1 unit)
+                    // Scale attack based on how many blocks were matched relative to 'BaseMatchCount'.
                     action.Value = Mathf.RoundToInt((effectiveCount / baseMatch) * GetAttackForLevel(Level));
                 }
                 break;
@@ -360,7 +362,7 @@ public class CombatManager : MonoBehaviour
                 {
                     if (CurrentHP >= MaxHP)
                     {
-                        // Full HP: Convert Heal to EXP (1/3 of Gem value)
+                        // Overhealing: Convert Heal to EXP (roughly 1/3 value of a Gem).
                         action.Type = CombatActionType.PlayerExp;
                         int gemDiv = (balanceData != null) ? balanceData.GemExpDivisor : 20;
                         int gemExpVal = effectiveCount * Mathf.Max(1, currentReq / gemDiv);
@@ -397,10 +399,10 @@ public class CombatManager : MonoBehaviour
                 break;
         }
 
-        // Show UI notification
+        // Show UI notification at the match centroid
         ShowActionNotification(action.Type, action.Value, worldPos);
 
-        // Priority: Insert player actions at the head
+        // Player actions are prioritized and placed at the head of the processing queue.
         eventQueue.AddFirst(action);
     }
 

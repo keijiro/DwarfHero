@@ -196,7 +196,7 @@ public class GridManager : MonoBehaviour
 
         if (hit.collider != null)
         {
-            // Interaction is only possible for the bottom row (y = 0)
+            // Interaction is strictly limited to the bottom row (y = 0) as per design.
             for (int x = 0; x < GridWidth; x++)
             {
                 if (hit.collider.gameObject == renderers[x, 0]?.gameObject)
@@ -217,7 +217,7 @@ public class GridManager : MonoBehaviour
     {
         isProcessing = true;
 
-        // Capture if the clicked block was Ska for "Ska-Cleansing" logic
+        // Ska-Cleansing: Identify if the target was a Ska block to prevent immediate re-generation.
         bool clickedSka = (grid[x, y] == BlockType.Ska);
 
         // Perform manual destruction animation
@@ -226,14 +226,15 @@ public class GridManager : MonoBehaviour
         // Logical destruction
         DestroyBlock(x, y);
 
-        // Gravity and refill (high Ska rate when manually destroyed)
+        // Gravity and refill. Manual destruction usually leads to Ska refill, 
+        // except when 'clickedSka' is true (Cleansing mechanic).
         bool firstRefill = true;
         bool hasMatches;
         int comboCount = 0;
 
         do
         {
-            // If the clicked block was Ska, force the first refill to be non-Ska
+            // Force non-Ska refill if the user successfully 'cleansed' a Ska block.
             yield return StartCoroutine(HandleGravityAndRefill(firstRefill, clickedSka && firstRefill));
             firstRefill = false;
 

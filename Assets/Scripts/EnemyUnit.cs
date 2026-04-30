@@ -33,6 +33,7 @@ public class EnemyUnit : MonoBehaviour
         if (IsDead) return;
 
         // Skip timer decrement if this enemy already has an action pending in the queue
+        // to prevent action overlapping and ensure sequential execution.
         if (CombatManager.Instance != null && CombatManager.Instance.HasPendingAction(this)) return;
 
         timer -= Time.deltaTime;
@@ -40,7 +41,8 @@ public class EnemyUnit : MonoBehaviour
         {
             CombatManager.Instance.AddEnemyAction(this, Mathf.RoundToInt(AttackPower), IsMagic);
 
-            // Formation-based frequency
+            // Formation-based attack frequency: 
+            // Enemies in the back row have their effective interval penalized by 'FormationPenaltyFactor'.
             float effectiveInterval = AttackInterval;
             if (!IsMagic && CombatManager.Instance != null)
             {
@@ -50,7 +52,7 @@ public class EnemyUnit : MonoBehaviour
                 int index = CombatManager.Instance.ActiveEnemies.IndexOf(this);
                 if (index > 0)
                 {
-                    // Back row enemies attack slower: Interval / factor^index
+                    // Penalize interval based on index (index 0 is front row).
                     effectiveInterval /= Mathf.Pow(factor, index);
                 }
             }
