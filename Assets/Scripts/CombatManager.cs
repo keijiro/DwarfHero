@@ -482,7 +482,7 @@ public class CombatManager : MonoBehaviour
         float totalDuration = 1.0f;
         float elapsed = 0f;
 
-        // 初期状態
+        // Initial state
         label.style.scale = new Scale(new Vector3(1.2f, 1.2f, 1));
         label.style.opacity = 1;
 
@@ -491,19 +491,19 @@ public class CombatManager : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / totalDuration;
 
-            // 1. 跳ねる動き (Physics-like bounce)
-            // 減衰率を上げ（Pow）、周波数を高めることでキレを出す
+            // 1. Bouncing motion (Physics-like bounce)
+            // Increase damping (Pow) and frequency to make it snappier
             float bounceAmplitude = 60f * Mathf.Pow(Mathf.Max(0, 1f - t * 2.0f), 2.0f);
             float bounceY = -Mathf.Abs(Mathf.Cos(t * 25f)) * bounceAmplitude;
 
             label.style.left = basePos.x;
             label.style.top = basePos.y + bounceY;
 
-            // 2. スケール演出 (1.2 -> 1.0)
+            // 2. Scale effect (1.2 -> 1.0)
             float scale = Mathf.Lerp(1.2f, 1.0f, Mathf.Min(1, t * 8f));
             label.style.scale = new Scale(new Vector3(scale, scale, 1));
 
-            // 3. フェードアウト (最後の0.3秒で消える)
+            // 3. Fade out (disappears in the last 0.3 seconds)
             if (t > 0.7f)
             {
                 label.style.opacity = 1f - (t - 0.7f) / 0.3f;
