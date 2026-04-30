@@ -51,7 +51,7 @@ public class GridManager : MonoBehaviour
     };
 
     [Header("Generation Settings")]
-[Tooltip("Weights for Sword, Shield, Magic, Heal, Gem, Key (Ska is handled separately)")]
+    [Tooltip("Weights for Sword, Shield, Magic, Heal, Gem, Key (Ska is handled separately)")]
     [SerializeField] private float[] typeWeights = new float[6] { 1.0f, 1.0f, 0.5f, 0.5f, 0.2f, 0.2f };
     [Range(0f, 1f)]
     [SerializeField] private float manualSkaRate = 1.0f; // Default 100%
@@ -72,7 +72,7 @@ public class GridManager : MonoBehaviour
     private void Start()
     {
         if (blockBaseSprite == null) Debug.LogWarning("blockBaseSprite is NULL in GridManager!");
-        
+
         cameraShake = Camera.main.GetComponent<CameraShake>();
 
         InitializeGrid();
@@ -98,7 +98,7 @@ public class GridManager : MonoBehaviour
                 {
                     type = GetWeightedRandomType();
                 } while (WouldMatch(x, y, type));
-                
+
                 grid[x, y] = type;
                 renderers[x, y] = CreateBlockObject(x, y, type);
             }
@@ -134,7 +134,7 @@ public class GridManager : MonoBehaviour
         GameObject root = new GameObject($"Block_{x}_{y}");
         root.transform.parent = this.transform;
         root.transform.position = GetWorldPosition(x, y);
-        
+
         // Base Layer
         var baseRenderer = root.AddComponent<SpriteRenderer>();
         baseRenderer.sprite = blockBaseSprite;
@@ -148,12 +148,12 @@ public class GridManager : MonoBehaviour
         iconObj.transform.localScale = Vector3.one * iconScale;
 
         var iconRenderer = iconObj.AddComponent<SpriteRenderer>();
-if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] != null)
+        if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] != null)
         {
             iconRenderer.sprite = iconSprites[(int)type];
         }
         iconRenderer.sortingOrder = 1;
-        
+
         // Add a collider for click detection to the root
         var col = root.AddComponent<BoxCollider2D>();
         col.size = Vector2.one;
@@ -203,7 +203,7 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
                 {
                     OnBottomRowClicked?.Invoke();
                     if (AudioManager.Instance != null)
-{
+                    {
                         AudioManager.Instance.PlaySEWithRandomPitch(SEType.Click, 0.8f);
                     }
                     StartCoroutine(ProcessMove(x, 0));
@@ -222,7 +222,7 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
 
         // Perform manual destruction animation
         yield return StartCoroutine(AnimateManualDestroy(renderers[x, y].gameObject));
-        
+
         // Logical destruction
         DestroyBlock(x, y);
 
@@ -236,7 +236,7 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
             // If the clicked block was Ska, force the first refill to be non-Ska
             yield return StartCoroutine(HandleGravityAndRefill(firstRefill, clickedSka && firstRefill));
             firstRefill = false;
-            
+
             // Match detection
             List<(int, int)> matchedSet = new List<(int, int)>();
             hasMatches = CheckMatches(out matchedSet);
@@ -315,7 +315,7 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
             Destroy(renderers[x, y].gameObject);
             renderers[x, y] = null;
             // Reset the logical value as well
-            grid[x, y] = (BlockType)(-1); 
+            grid[x, y] = (BlockType)(-1);
         }
     }
 
@@ -337,10 +337,10 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
                 {
                     // Existing block needs to fall
                     int targetY = y - emptyCount;
-                    
+
                     grid[x, targetY] = grid[x, y];
                     renderers[x, targetY] = renderers[x, y];
-                    
+
                     fallingBlocks.Add(new FallingBlockInfo {
                         renderer = renderers[x, targetY],
                         targetPos = GetWorldPosition(x, targetY),
@@ -358,7 +358,7 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
             {
                 int targetY = GridHeight - emptyCount + i;
                 BlockType newType = DecideNewBlockType(isManualRefill, forceNoSka);
-                
+
                 // Spawn above the grid
                 Vector3 spawnPos = GetWorldPosition(x, GridHeight + i + 0.5f);
                 SpriteRenderer newSR = CreateBlockObject(x, targetY, newType);
@@ -478,11 +478,11 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
             foreach (var pos in triggerSet)
             {
                 if (visited.Contains(pos)) continue;
-                
+
                 List<(int, int)> cluster = new List<(int, int)>();
                 BlockType type = grid[pos.Item1, pos.Item2];
                 FindCluster(pos.Item1, pos.Item2, type, cluster, visited);
-                
+
                 // Find unique Ska blocks adjacent to this cluster
                 HashSet<(int, int)> skaInCluster = new HashSet<(int, int)>();
                 int[] dx = { 1, -1, 0, 0 }, dy = { 0, 0, 1, -1 };

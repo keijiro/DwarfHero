@@ -39,14 +39,14 @@ public class EnemyUnit : MonoBehaviour
         if (timer <= 0f)
         {
             CombatManager.Instance.AddEnemyAction(this, Mathf.RoundToInt(AttackPower), IsMagic);
-            
+
             // Formation-based frequency
             float effectiveInterval = AttackInterval;
             if (!IsMagic && CombatManager.Instance != null)
             {
-                float factor = (CombatManager.Instance.balanceData != null) ? 
+                float factor = (CombatManager.Instance.balanceData != null) ?
                     CombatManager.Instance.balanceData.FormationPenaltyFactor : 0.75f;
-                
+
                 int index = CombatManager.Instance.ActiveEnemies.IndexOf(this);
                 if (index > 0)
                 {
@@ -54,7 +54,7 @@ public class EnemyUnit : MonoBehaviour
                     effectiveInterval /= Mathf.Pow(factor, index);
                 }
             }
-timer = effectiveInterval;
+            timer = effectiveInterval;
         }
     }
 
@@ -77,16 +77,16 @@ timer = effectiveInterval;
         if (IsDead) yield break;
 
         HP -= damage;
-        
+
         CombatManager.Instance.ShowCombatNumber(damage, Color.red, transform.position);
 
         if (AudioManager.Instance != null)
-{
+        {
             AudioManager.Instance.PlaySEWithRandomPitch(SEType.Hit, 0.8f);
         }
 
         if (visuals != null)
-{
+        {
             yield return StartCoroutine(visuals.TriggerDamageEffect());
         }
 
@@ -103,7 +103,7 @@ timer = effectiveInterval;
         {
             AudioManager.Instance.PlaySE(SEType.EnemyDie, 0.7f);
         }
-        
+
         // Grant XP to player
         if (CombatManager.Instance != null)
         {

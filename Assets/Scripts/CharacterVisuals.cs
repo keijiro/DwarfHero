@@ -19,7 +19,7 @@ public class CharacterVisuals : MonoBehaviour
 
     private void Awake()
     {
-sr = GetComponent<SpriteRenderer>();
+        sr = GetComponent<SpriteRenderer>();
         mpb = new MaterialPropertyBlock();
         if (sr != null)
         {
@@ -38,7 +38,7 @@ sr = GetComponent<SpriteRenderer>();
         // Parallel execution
         var flash = StartCoroutine(FlashRoutine(new Color(1f, 0f, 0f, 0.8f), 0.2f));
         var shake = StartCoroutine(ShakeRoutine(0.15f, 0.2f));
-        
+
         yield return flash;
         yield return shake;
     }

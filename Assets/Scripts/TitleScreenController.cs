@@ -32,20 +32,20 @@ public class TitleScreenController : MonoBehaviour
         }
 
         // Make root clickable to start the adventure
-root.RegisterCallback<PointerDownEvent>(OnRootClicked);
+        root.RegisterCallback<PointerDownEvent>(OnRootClicked);
 
         // Start blinking effect
         StartCoroutine(BlinkMessage());
-        
+
         // Trigger intro animation
         StartCoroutine(TriggerIntro());
 
         // Play Title SE after a short delay to ensure AudioManager is loaded
         StartCoroutine(PlayTitleSEWithDelay());
-        }
+    }
 
-        private IEnumerator PlayTitleSEWithDelay()
-        {
+    private IEnumerator PlayTitleSEWithDelay()
+    {
         // Wait until AudioManager is available
         while (AudioManager.Instance == null)
         {
@@ -54,20 +54,20 @@ root.RegisterCallback<PointerDownEvent>(OnRootClicked);
 
         // Additional small delay to be safe
         yield return new WaitForSeconds(0.2f);
-        
-        AudioManager.Instance.PlaySE(SEType.Title);
-        }
 
-        private IEnumerator TriggerIntro()
+        AudioManager.Instance.PlaySE(SEType.Title);
+    }
+
+    private IEnumerator TriggerIntro()
     {
         // Wait a bit to ensure the UI has been painted at least once in its intro state
         yield return new WaitForSeconds(0.1f);
-        
+
         root.Q("background")?.RemoveFromClassList("background--intro");
         root.Q("heroes")?.RemoveFromClassList("heroes--intro");
         root.Q("heroes-shadow")?.RemoveFromClassList("heroes--intro");
         root.Q("logo")?.RemoveFromClassList("logo--intro");
-        }
+    }
 
     private void OnDisable()
     {
@@ -111,4 +111,4 @@ root.RegisterCallback<PointerDownEvent>(OnRootClicked);
 
         SceneManager.LoadScene(nextSceneName);
     }
-    }
+}

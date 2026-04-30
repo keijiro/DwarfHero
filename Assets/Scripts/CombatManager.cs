@@ -73,7 +73,7 @@ public class CombatManager : MonoBehaviour
     private VisualElement hpBarFill;
     private VisualElement shieldBarFill;
     private Label hpText;
-private Label shieldText;
+    private Label shieldText;
     private Label expText;
     private Label keyLabel;
     private VisualElement notificationLayer;
@@ -113,7 +113,7 @@ private Label shieldText;
     private bool overlayClicked = false;
 
     [Header("Player Animators")]
-public Animator FighterAnimator;
+    public Animator FighterAnimator;
     public Animator MageAnimator;
     public Animator TankAnimator;
 
@@ -204,7 +204,7 @@ public Animator FighterAnimator;
         hpBarFill = root.Q<VisualElement>("hp-bar-fill");
         shieldBarFill = root.Q<VisualElement>("shield-bar-fill");
         hpText = root.Q<Label>("hp-text");
-shieldText = root.Q<Label>("shield-text");
+        shieldText = root.Q<Label>("shield-text");
         expText = root.Q<Label>("exp-text");
         keyLabel = root.Q<Label>("key-label");
         notificationLayer = root.Q<VisualElement>("notification-layer");
@@ -220,7 +220,7 @@ shieldText = root.Q<Label>("shield-text");
     public void AddExperience(int amount)
     {
         Experience += amount;
-        
+
         while (Experience >= GetThresholdForLevel(Level + 1))
         {
             LevelUp();
@@ -232,7 +232,7 @@ shieldText = root.Q<Label>("shield-text");
         Level++;
         MaxHP = GetMaxHPForLevel(Level);
         CurrentHP = MaxHP; // Full heal as requested
-        
+
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySE(SEType.LevelUp);
@@ -283,7 +283,7 @@ shieldText = root.Q<Label>("shield-text");
             shieldBarFill.style.width = new Length(percentage, LengthUnit.Percent);
         }
         if (hpText != null) hpText.text = $"{CurrentHP}/{MaxHP}";
-if (shieldText != null) shieldText.text = Shield.ToString();
+        if (shieldText != null) shieldText.text = Shield.ToString();
         if (expText != null) expText.text = Experience.ToString();
         if (keyLabel != null) keyLabel.text = HasKey ? "KEY: YES" : "KEY: NO";
     }
@@ -311,7 +311,7 @@ if (shieldText != null) shieldText.text = Shield.ToString();
         }
 
         // Small delay to allow UITK to pick up the initial state for transition
-yield return null;
+        yield return null;
         label.AddToClassList("center-message--visible");
 
         yield return new WaitForSeconds(1.5f);
@@ -415,7 +415,7 @@ yield return null;
         Vector2 panelPos = RuntimePanelUtils.CameraTransformWorldToPanel(notificationLayer.panel, worldPos, Camera.main);
         label.style.left = panelPos.x;
         label.style.top = panelPos.y;
-        
+
         string text = "";
         Color color = Color.white;
 
@@ -435,7 +435,7 @@ yield return null;
                 break;
             case CombatActionType.PlayerShield:
                 text = $"Shield! {value} pts.";
-                color = new Color(0.5f, 0.8f, 1f); 
+                color = new Color(0.5f, 0.8f, 1f);
                 break;
             case CombatActionType.PlayerExp:
                 text = $"EXP! +{value}";
@@ -452,7 +452,7 @@ yield return null;
                 }
                 color = Color.yellow;
                 break;
-            }
+        }
 
         label.text = text;
         label.style.color = color;
@@ -481,9 +481,9 @@ yield return null;
     {
         float totalDuration = 1.0f;
         float elapsed = 0f;
-        
+
         // 初期状態
-        label.style.scale = new Scale(new Vector3(1.2f, 1.2f, 1)); 
+        label.style.scale = new Scale(new Vector3(1.2f, 1.2f, 1));
         label.style.opacity = 1;
 
         while (elapsed < totalDuration)
@@ -495,7 +495,7 @@ yield return null;
             // 減衰率を上げ（Pow）、周波数を高めることでキレを出す
             float bounceAmplitude = 60f * Mathf.Pow(Mathf.Max(0, 1f - t * 2.0f), 2.0f);
             float bounceY = -Mathf.Abs(Mathf.Cos(t * 25f)) * bounceAmplitude;
-            
+
             label.style.left = basePos.x;
             label.style.top = basePos.y + bounceY;
 
@@ -539,7 +539,7 @@ yield return null;
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
             float easedT = 1 - Mathf.Pow(1 - t, 3); // Ease Out Cubic
-            
+
             label.style.opacity = t;
             // From 0 to -150% (was -50%)
             label.style.translate = new Translate(Length.Percent(-50), Length.Percent(Mathf.Lerp(0, -150, easedT)));
@@ -553,7 +553,7 @@ yield return null;
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
-            
+
             label.style.opacity = 1 - t;
             // From -150% to -250% (delta 100%, matching original travel speed)
             label.style.translate = new Translate(Length.Percent(-50), Length.Percent(Mathf.Lerp(-150, -250, t)));
@@ -592,7 +592,7 @@ yield return null;
     public bool HasPendingAction(EnemyUnit enemy)
     {
         if (enemy == null) return false;
-        
+
         // 1. Check if the enemy is currently executing an action
         if (currentAction != null && currentAction.SourceEnemy == enemy) return true;
 
@@ -608,7 +608,7 @@ yield return null;
     {
         isProcessingQueue = true;
         currentAction = action;
-        
+
         switch (action.Type)
         {
             case CombatActionType.PlayerAttack:
@@ -642,7 +642,7 @@ yield return null;
                 Shield = Mathf.Min(MaxHP, Shield + action.Value);
                 yield return new WaitForSeconds(0.2f);
                 break;
-    case CombatActionType.PlayerExp:
+            case CombatActionType.PlayerExp:
                 if (AudioManager.Instance != null) AudioManager.Instance.PlaySEWithRandomPitch(SEType.Exp, 0.7f);
                 AddExperience(action.Value);
                 yield return new WaitForSeconds(0.1f);
@@ -721,7 +721,7 @@ yield return null;
         if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Attack);
 
         // 3. Apply Damage and Enemy Reaction
-EnemyUnit target = ActiveEnemies[0];
+        EnemyUnit target = ActiveEnemies[0];
         if (target != null)
         {
             yield return StartCoroutine(target.TakeDamage(damage));
@@ -756,16 +756,16 @@ EnemyUnit target = ActiveEnemies[0];
                 coroutines.Add(StartCoroutine(enemy.TakeDamage(damage)));
             }
         }
-        
+
         foreach (var c in coroutines) yield return c;
-        
+
         CleanupEnemies();
     }
 
     private void CleanupEnemies()
     {
         ActiveEnemies.RemoveAll(e => e == null || e.IsDead);
-        
+
         if (ActiveEnemies.Count == 0)
         {
             StartCoroutine(HandleWaveClear());
@@ -776,7 +776,7 @@ EnemyUnit target = ActiveEnemies[0];
     {
         yield return new WaitForSeconds(0.8f);
         yield return StartCoroutine(ShowCenterMessageRoutine("VICTORY!", new Color(1f, 0.8f, 0.2f)));
-        
+
         // Use configured spawn chance
         if (Random.value < TreasureSpawnChance)
         {
@@ -826,7 +826,7 @@ EnemyUnit target = ActiveEnemies[0];
         treasureOverlay.UnregisterCallback<ClickEvent>(OnOverlayClicked);
         treasureOverlay.style.display = DisplayStyle.None;
         treasureOverlay.pickingMode = PickingMode.Ignore;
-        
+
         // Reset for potential TreasureChestEventRoutine
         treasureImage.style.display = DisplayStyle.Flex;
         if (tipIcon != null) tipIcon.style.display = DisplayStyle.None;
@@ -864,10 +864,10 @@ EnemyUnit target = ActiveEnemies[0];
             treasureImage.style.backgroundImage = new StyleBackground(ChestClosedSprite);
             treasureImage.style.opacity = 1;
         }
-        
+
         treasureMessage.text = "You found a chest!";
         if (dialogueBox != null) dialogueBox.style.opacity = 1;
-    
+
         // Show overlay
         treasureOverlay.style.display = DisplayStyle.Flex;
         treasureOverlay.AddToClassList("treasure-overlay--visible");
@@ -891,16 +891,16 @@ EnemyUnit target = ActiveEnemies[0];
 
             // Play elegant harp SE
             if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.ChestOpen);
-        
+
             // Switch sprite to open state
             if (ChestOpenSprite != null)
                 treasureImage.style.backgroundImage = new StyleBackground(ChestOpenSprite);
-        
+
             // Sync fade in for both dialogue box (with new message) and open chest
             treasureMessage.text = "Unlocked with the key!\nBonus EXP obtained!";
             treasureImage.style.opacity = 1;
             if (dialogueBox != null) dialogueBox.style.opacity = 1;
-        
+
             yield return StartCoroutine(WaitForSecondsOrClick(2.5f));
         }
         else
@@ -917,7 +917,7 @@ EnemyUnit target = ActiveEnemies[0];
         // Hide overlay (Fades out everything)
         treasureOverlay.RemoveFromClassList("treasure-overlay--visible");
         yield return StartCoroutine(WaitForSecondsOrClick(0.5f)); // Fade out time
-    
+
         // Cleanup
         isModalActive = false;
         treasureOverlay.UnregisterCallback<ClickEvent>(OnOverlayClicked);
@@ -1061,7 +1061,7 @@ EnemyUnit target = ActiveEnemies[0];
         WaveCount++;
         int budget = GetMaxLevelForWave(WaveCount);
         int currentBudget = budget;
-        
+
         int spawnIndex = 0;
         while (currentBudget >= 2) // Minimum level (Slime) is 2
         {

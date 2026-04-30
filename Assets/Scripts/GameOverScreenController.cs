@@ -38,7 +38,7 @@ public class GameOverScreenController : MonoBehaviour
         if (waveResult != null) waveResult.text = $"WAVES CLEARED: {GameResults.WavesWon}";
 
         // Runtime check: Immediately make it black for the starting fade-in
-blackout?.AddToClassList("blackout--active");
+        blackout?.AddToClassList("blackout--active");
 
         // Click to return to title
         root.RegisterCallback<PointerDownEvent>(OnRootClicked);
@@ -59,17 +59,16 @@ blackout?.AddToClassList("blackout--active");
     {
         // Wait a bit to ensure the UI has been painted at least once in its initial state.
         yield return new WaitForSeconds(0.1f);
-        
+
         // Start Fade-In (0.8s transition)
         blackout?.RemoveFromClassList("blackout--active");
-        
+
         // Start showing message earlier (e.g. 0.2s after fade start)
         yield return new WaitForSeconds(0.2f);
-        
+
         // Show loss message with a scale-up animation
         lossMessage?.AddToClassList("loss-message--visible");
-        
-        }
+    }
 
     private void OnRootClicked(PointerDownEvent evt)
     {

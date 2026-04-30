@@ -26,7 +26,7 @@ public enum SEType
     Victory,
     ChestOpen,
     LevelUp
-    }
+}
 
 [System.Serializable]
 public struct SEClip
