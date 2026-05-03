@@ -325,19 +325,17 @@ text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
     }
 
     .dialogue-box--tip .dialogue-text {
-        -unity-font-style: bold;
         -unity-text-align: middle-left;
         flex-shrink: 1;
     }
 
     .dialogue-text {
-color: white;
-    font-size: 28px;
-    -unity-font-style: bold;
-    -unity-text-align: middle-center;
-    -unity-font-definition: url("project://database/Assets/UI/Pirata_One/PirataOne-Regular SDF.asset");
-    white-space: normal;
-}
+        color: white;
+        font-size: 34px;
+        -unity-text-align: middle-left;
+        -unity-font-definition: url("project://database/Assets/UI/Jersey_10/Jersey10-Regular SDF.asset");
+        white-space: normal;
+    }
 
 .tip-icon {
     position: absolute;
