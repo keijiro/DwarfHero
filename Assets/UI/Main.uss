@@ -1,3 +1,7 @@
+/*
+2026-05-03 AI-Tag
+This was created with the help of Assistant, a Unity Artificial Intelligence product.
+*/
 .container {
     flex-grow: 1;
     padding: 20px;
@@ -118,14 +122,27 @@
 
 .start-hint {
     background-color: rgba(0, 0, 0, 0.8);
-    color: #FFD700;
-    padding: 10px 20px;
+    padding: 12px 24px;
     border-radius: 15px;
     border-width: 2px;
     border-color: #FFD700;
-    font-size: 24px;
-    -unity-font-style: bold;
+    align-items: center;
+    justify-content: center;
+}
+
+.hint-text-en {
+    color: #FFD700;
+    font-size: 32px;
     -unity-text-align: middle-center;
+    -unity-font-definition: url("project://database/Assets/UI/Jersey_10/Jersey10-Regular SDF.asset");
+    margin-bottom: 4px;
+}
+
+.hint-text-jp {
+    color: #FFD700;
+    font-size: 20px;
+    -unity-text-align: middle-center;
+    -unity-font-definition: url("project://database/Assets/UI/DotGothic16/DotGothic16-Regular SDF.asset");
 }
 
 .hint-notch {
@@ -320,16 +337,15 @@ color: white;
     -unity-text-align: middle-center;
     -unity-font-definition: url("project://database/Assets/UI/Pirata_One/PirataOne-Regular SDF.asset");
     white-space: normal;
-    }
+}
 
-    .tip-icon {
-        position: absolute;
-        top: 45%; /* Center (50%) and shift up slightly (-5%) */
-        left: -180px;
-        width: 160px;
-        height: 160px;
-        background-image: url("project://database/Assets/Sprites/UI/Icon_Tip.png");
-        -unity-background-scale-mode: scale-to-fit;
-        display: none;
-    }
-
+.tip-icon {
+    position: absolute;
+    top: 45%; /* Center (50%) and shift up slightly (-5%) */
+    left: -180px;
+    width: 160px;
+    height: 160px;
+    background-image: url("project://database/Assets/Sprites/UI/Icon_Tip.png");
+    -unity-background-scale-mode: scale-to-fit;
+    display: none;
+}

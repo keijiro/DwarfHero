@@ -3,7 +3,10 @@
     <ui:VisualElement name="root" class="container">
         <ui:VisualElement name="notification-layer" picking-mode="Ignore" class="notification-layer" />
         <ui:VisualElement name="hint-container" class="hint-container" picking-mode="Ignore">
-            <ui:Label name="start-hint" text="Click bottom row to shatter blocks!" class="start-hint" />
+            <ui:VisualElement name="start-hint" class="start-hint">
+                <ui:Label text="Click bottom row to shatter blocks!" class="hint-text-en" />
+                <ui:Label text="最下段をクリックしてブロックを砕け！" class="hint-text-jp" />
+            </ui:VisualElement>
             <ui:VisualElement name="hint-notch" class="hint-notch" />
         </ui:VisualElement>
 <ui:VisualElement name="treasure-overlay" class="treasure-overlay" picking-mode="Ignore">

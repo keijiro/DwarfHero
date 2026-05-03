@@ -72,11 +72,11 @@ private static readonly int PulseColorID = Shader.PropertyToID("_PulseColor");
         }
         else
         {
-            // [Normal: Weak] 3.0s cycle, 1 short snappy flash (0.2s), lower alpha (40% of maxAlpha)
-            float cycleTime = 3.0f;
+            // [Normal: Weak] 1.7s cycle, 1 short snappy flash (0.2s), lower alpha (40% of maxAlpha)
+            float cycleTime = 1.7f;
             float timeInCycle = Time.time % cycleTime;
             float flashDuration = 0.2f; 
-            float flashStart = 2.8f; // Wait 2.8s, then 0.2s flash to complete the 3s cycle
+            float flashStart = 1.5f; // Wait 1.5s, then 0.2s flash to complete the cycle
 
             if (timeInCycle > flashStart)
             {
