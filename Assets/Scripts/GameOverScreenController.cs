@@ -35,7 +35,7 @@ public class GameOverScreenController : MonoBehaviour
         // Set result values
         if (levelResult != null) levelResult.text = $"LEVEL: {GameResults.FinalLevel}";
         if (expResult != null) expResult.text = $"EXP: {GameResults.FinalExperience}";
-        if (waveResult != null) waveResult.text = $"WAVES CLEARED: {GameResults.WavesWon}";
+        if (waveResult != null) waveResult.text = $"WAVE: {GameResults.WavesWon}";
 
         // Runtime check: Immediately make it black for the starting fade-in
         blackout?.AddToClassList("blackout--active");

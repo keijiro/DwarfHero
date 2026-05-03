@@ -1,3 +1,7 @@
+/*
+2026-05-03 AI-Tag
+This was created with the help of Assistant, a Unity Artificial Intelligence product.
+*/
 :root {
     --color-message: rgb(173, 216, 230);
     --font-main: url("project://database/Assets/UI/Pirata_One/PirataOne-Regular%20SDF.asset?fileID=11400000&guid=aab34c00bfc7d41b7b9bea53c4674488&type=2#PirataOne-Regular SDF");
@@ -30,14 +34,19 @@
 
 .results-group {
     align-items: flex-start;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-width: 1.5px;
+    border-color: white;
+    border-radius: 20px;
+    padding: 20px 40px;
 }
 
 .result-label {
     color: white;
     font-size: 42px;
     margin: 8px 0;
-    -unity-font-style: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    -unity-font-definition: url("project://database/Assets/UI/Jersey_10/Jersey10-Regular SDF.asset");
 }
 
 .prompt-label {
