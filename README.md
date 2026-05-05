@@ -1,6 +1,8 @@
 # Dungeon Match Heroes
 
-<img src="Assets/Sprites/UI/Title_Logo.png" width="400">
+**Dungeon Match Heroes** is a sample project created using Unity AI Assistant.
+
+<img src="Assets/Sprites/UI/Title_Logo.png" width="200">
 
 ## ⚔️ The Tale of the Three Heroes
 In the deep, forgotten corridors of the Ancient Dungeon, a trio of heroes—the stalwart Fighter, the mystical Mage, and the ironclad Tank—stands as the last line of defense against an endless tide of monsters. To survive, they must harness the power of the **Mystic Grid**. By breaking the very foundations of the grid, they trigger cascading reactions that empower their blades, shields, and spells. Will you guide them to victory, or will they be overwhelmed by the darkness?
@@ -10,7 +12,7 @@ Play it on [Unity Play] or [unityroom]!
 [Unity Play]: https://play.unity.com/en/games/399e2e07-4d3f-462f-9a5c-6a8fb2c68c1a/dungeon-match-heroes
 [unityroom]: https://unityroom.com/games/dungeonmatch
 
-<img src="Assets/Sprites/UI/Title_Heroes.png" width="400">
+<img src="Assets/Sprites/UI/Title_Heroes.png" width="200">
 
 ---
 
@@ -46,5 +48,3 @@ The grid contains special blocks marked with a question mark. These blocks follo
 - **Formation:** Enemies in the front (Vanguard) attack faster than those in the back.
 - **Physical vs. Magic:** Shields are effective against physical strikes but offer no protection against enemy sorcery.
 - **Treasure Chests:** After clearing a wave, you may find a chest. You can only carry one Key at a time, so use it or lose it!
-
-<img src="Assets/Sprites/UI/Chest_Open.png" width="150">
