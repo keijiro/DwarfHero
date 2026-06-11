@@ -1,7 +1,5 @@
-﻿# Unity Project Planning in Japanese
+# Unity Project Planning in Japanese
 
-- **Project:** AIA-Extensions
-- **Path:** `/Users/keijiro/Documents/AIA-Extensions`
 - **Date:** 2026-04-10 11:29
 - **Task ID:** `5afae8a2-7707-41d7-a9a6-5ee8dcd2f026`
 - **Messages:** 24
