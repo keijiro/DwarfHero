@@ -22,5 +22,7 @@ Desktop.ini
 /*_DoNotShip
 /*.tgz
 
+/Assets/AI Toolkit/Temp.meta
+/Assets/AI Toolkit.meta
 /Assets/BuildReports
 /Assets/BuildReports.meta
