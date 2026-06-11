@@ -7,17 +7,24 @@
       "dependencies": {}
     },
     "com.unity.ai.assistant": {
-      "version": "2.7.0-pre.3",
+      "version": "2.11.0-pre.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.2d.sprite": "1.0.0",
         "com.unity.mathematics": "1.3.2",
-        "com.unity.cloud.gltfast": "6.14.1",
+        "com.unity.nuget.mono-cecil": "1.11.5",
         "com.unity.modules.uielements": "1.0.0",
         "com.unity.nuget.newtonsoft-json": "3.2.1",
         "com.unity.modules.unitywebrequest": "1.0.0"
       },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.build-report-inspector": {
+      "version": "0.3.0-preview",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.burst": {
@@ -30,25 +37,12 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.cloud.gltfast": {
-      "version": "6.14.1",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.burst": "1.8.24",
-        "com.unity.collections": "1.2.4",
-        "com.unity.mathematics": "1.2.6",
-        "com.unity.modules.jsonserialize": "1.0.0",
-        "com.unity.modules.unitywebrequest": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.collections": {
-      "version": "2.6.5",
+      "version": "2.6.6",
       "depth": 2,
       "source": "registry",
       "dependencies": {
-        "com.unity.burst": "1.8.27",
+        "com.unity.burst": "1.8.28",
         "com.unity.mathematics": "1.3.2",
         "com.unity.test-framework": "1.4.6",
         "com.unity.nuget.mono-cecil": "1.11.6",
@@ -80,7 +74,7 @@
     },
     "com.unity.nuget.mono-cecil": {
       "version": "1.11.6",
-      "depth": 3,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -151,7 +145,7 @@
       }
     },
     "com.unity.test-framework.performance": {
-      "version": "3.4.0",
+      "version": "3.5.0",
       "depth": 3,
       "source": "registry",
       "dependencies": {
@@ -170,11 +164,11 @@
       }
     },
     "jp.keijiro.ai.assistant.extensions": {
-      "version": "1.1.1",
+      "version": "1.3.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.ai.assistant": "2.7.0-pre.1"
+        "com.unity.ai.assistant": "2.11.0-pre.2"
       },
       "url": "https://registry.npmjs.com"
     },

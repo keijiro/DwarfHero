@@ -22,4 +22,5 @@ Desktop.ini
 /*_DoNotShip
 /*.tgz
 
-/Packages/com.unity.ai.assistant
+/Assets/BuildReports
+/Assets/BuildReports.meta
